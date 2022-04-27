@@ -1,0 +1,10 @@
+.app-bar {
+    min-height: 56px;
+}
+
+@media (min-width: 600px) {
+    .app-bar {
+        min-height: 64px;
+    }
+}
+

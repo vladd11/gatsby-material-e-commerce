@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import * as drawerStyles from '../styles/drawer.module.css'
 
 const Drawer = ({isDrawerOpened, onOpen, onClose}) => {
-    const [width, setWidth] = useState(window.innerWidth);
+    const [width, setWidth] = useState(1024);
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);

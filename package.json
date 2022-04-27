@@ -13,6 +13,7 @@
     "@mui/material": "latest",
     "@mui/icons-material": "latest",
     "gatsby": "latest",
+    "gatsby-plugin-preact": "latest",
     "gatsby-plugin-react-helmet": "latest",
     "react": "latest",
     "react-dom": "latest",

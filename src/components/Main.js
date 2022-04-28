@@ -5,7 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import '../styles/body-fix.css'
 
-const Main = () => {
+const Main = ({children}) => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(false)
 
     return (<>
@@ -32,6 +32,8 @@ const Main = () => {
             }} onClose={() => {
                 setDrawerOpened(false)
             }}/>
+
+            {children}
         </>
     )
 }

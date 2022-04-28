@@ -10,14 +10,20 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
-    "@mui/material": "latest",
     "@mui/icons-material": "latest",
+    "@mui/material": "latest",
     "gatsby": "latest",
+    "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-preact": "latest",
     "gatsby-plugin-react-helmet": "latest",
+    "gatsby-plugin-sharp": "^4.13.0",
+    "gatsby-source-filesystem": "^4.13.0",
+    "gatsby-source-sql": "github:edgarrmondragon/gatsby-source-sql",
+    "gatsby-transformer-sharp": "^4.13.0",
     "react": "latest",
     "react-dom": "latest",
-    "react-helmet": "latest"
+    "react-helmet": "latest",
+    "sqlite3": "^4.2.0"
   },
   "scripts": {
     "develop": "gatsby develop",

@@ -4,8 +4,7 @@ import theme from '../theme'
 import {ThemeProvider} from "@mui/material/styles";
 
 export default function Index() {
-    return (<ThemeProvider theme={theme}><Main>
-
-        </Main></ThemeProvider>
-    );
+    return (<ThemeProvider theme={theme}>
+            <Main/>
+        </ThemeProvider>);
 }

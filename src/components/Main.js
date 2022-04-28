@@ -3,6 +3,7 @@ import React from 'react'
 import {AppBar, IconButton, Toolbar} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
+import '../styles/body-fix.css'
 
 const Main = () => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(false)

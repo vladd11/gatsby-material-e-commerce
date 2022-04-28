@@ -1,17 +1,16 @@
 import React from 'react'
-import Typography from "@mui/material/Typography";
 import {GatsbyImage} from "gatsby-plugin-image";
+import {Card, CardHeader, CardMedia} from "@mui/material";
+
+import * as cardStyles from '../styles/card-styles.module.css'
 
 const Product = ({product}) => {
-    return <>
-        <Typography>
-            {product.Title}
-        </Typography>
-        <Typography>
-            {product.Description}
-        </Typography>
-        <GatsbyImage image={product.ImageURI} alt={product.Title}></GatsbyImage>
-    </>
+    return <Card className={cardStyles.card}>
+        <CardHeader title={product.Title} />
+        <CardMedia>
+            <GatsbyImage className={cardStyles.image} alt={product.Title} image={product.ImageURI} />
+        </CardMedia>
+    </Card>
 }
 
 export default Product

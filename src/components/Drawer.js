@@ -63,14 +63,14 @@ const Drawer = ({isDrawerOpened, onOpen, onClose}) => {
                     <ListItemText primary={'Войти'}/>
                 </ListItemButton>
 
-                <ListItemButton component={Link} key={"phone"} to={`tel:${info.admin.phone}`}>
+                <ListItemButton component={"a"} key={"phone"} to={`tel:${info.admin.phone}`}>
                     <ListItemIcon>
                         <PhoneOutlinedIcon/>
                     </ListItemIcon>
                     <ListItemText primary={'Позвоните нам'} secondary={`+${info.admin.phone}`}/>
                 </ListItemButton>
 
-                <ListItemButton component={Link} key={"place"}
+                <ListItemButton component={"a"} key={"place"}
                                 to={info.admin.addressLink}>
                     <ListItemIcon>
                         <PlaceOutlinedIcon/>

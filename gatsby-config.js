@@ -26,6 +26,13 @@ module.exports = {
                 }
             }
         },
+        {
+            resolve: "gatsby-source-filesystem",
+            options: {
+                path: `${__dirname}/static`,
+                name: "images",
+            },
+        },
         // If you want to use styled components you should add the plugin here.
         // 'gatsby-plugin-styled-components',
         'gatsby-plugin-mui-emotion',

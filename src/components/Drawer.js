@@ -22,7 +22,7 @@ const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNo
                     <ListItemButton key={"heading_drawer"} onClick={onClose} className={drawerStyles.appBar}
                                     style={{
                                         textAlign: 'center',
-                                        justifyContent: shouldNotExpand ? 'end' : 'center'
+                                        justifyContent: 'end'
                                     }}>
                         <ChevronLeftIcon/>
                     </ListItemButton>

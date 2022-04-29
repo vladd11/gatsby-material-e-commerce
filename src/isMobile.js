@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 function IsMobile () {
     const [width, setWidth] = useState(1024);

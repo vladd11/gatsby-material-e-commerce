@@ -1,0 +1,16 @@
+.products {
+  display: flex;
+  flex-wrap: wrap;
+}
+@media (min-width: 1024px) {
+  .app-bar {
+    width: calc(100% - 330px);
+    margin-left: calc(325px);
+  }
+}
+@media (max-width: 728px) {
+  .products {
+    display: flex;
+    justify-content: center;
+  }
+}

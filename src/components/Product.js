@@ -5,7 +5,7 @@ import {Button, Card, CardContent, CardHeader, CardMedia} from "@mui/material";
 import * as cardStyles from '../styles/product-styles.module.css'
 import Typography from "@mui/material/Typography";
 
-const Product = ({product, whenAddedToCart}) => {
+const Product = ({product, whenAddedToCart, disabled}) => {
     return <Card className={cardStyles.card}>
         <CardHeader title={product.Title}/>
 
@@ -22,8 +22,8 @@ const Product = ({product, whenAddedToCart}) => {
             <GatsbyImage className={cardStyles.image} alt={product.Title} image={product.Image}/>
         </CardMedia>
 
-        <Button size="small" style={{width: "100%", padding: "8px"}} onClick={whenAddedToCart}>
-            Добавить в корзину
+        <Button size="small" style={{width: "100%", padding: "8px"}} onClick={whenAddedToCart} disabled={disabled}>
+            {(disabled) ? "Добавлено" : "Добавить в корзину"}
         </Button>
     </Card>
 }

@@ -50,9 +50,15 @@ export default function Index() {
     const products = data.allContent.nodes.map((product) => {
         product.Image = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
 
-        return <Product product={product} whenAddedToCart={() => {
-            setCartProducts([...cartProducts, product])
-        }}/>
+        return <Product
+            disabled={cartProducts.some(cartProduct =>
+                cartProduct.ProductID === product.ProductID
+            )}
+            product={product}
+            whenAddedToCart={() => {
+                setCartProducts([...cartProducts, product])
+            }}
+        />
     });
 
     return (<ThemeProvider theme={theme}>
@@ -64,7 +70,7 @@ export default function Index() {
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
 
-        <Main info={data.site.siteMetadata} cartProducts={cartProducts}>
+        <Main info={data.site.siteMetadata} cartProducts={cartProducts} data={data}>
             {products}
         </Main>
     </ThemeProvider>);

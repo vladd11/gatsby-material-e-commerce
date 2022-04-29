@@ -6,21 +6,16 @@ import '../styles/body-fix.css'
 import Menu from "./Menu";
 import CartProduct from "./CartProduct";
 import IsMobile from '../isMobile'
+import * as mainStyles from "../styles/main.module.css"
 
 const menuWidth = 330;
 
 const Main = ({info, cartProducts, children}) => {
     const shouldNotExpand = IsMobile();
-    const [isDrawerOpened, setDrawerOpened] = React.useState(!shouldNotExpand)
+    const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <AppBar position="static" sx={
-            (shouldNotExpand) ?
-                {} : {
-                    width: {sm: `calc(100% - ${menuWidth}px)`},
-                    ml: {sm: `${menuWidth - 5}px`}
-                }
-        }>
+        <AppBar position="static" className={mainStyles.appBar}>
             <Toolbar>
                 {
                     (shouldNotExpand) ?
@@ -53,19 +48,18 @@ const Main = ({info, cartProducts, children}) => {
 
             sx={{width: menuWidth}}
             shouldNotExpand={shouldNotExpand}>
+
             {
                 cartProducts.map(value => {
-                    return <CartProduct product={value} />
+                    return <CartProduct product={value}/>
                 })
             }
         </Menu>
 
-        <div style={(shouldNotExpand)
-            ? {display: "flex", flexWrap: "wrap"}
-            : {marginLeft: menuWidth, display: "flex", flexWrap: "wrap"}}>
-
+        <div className={mainStyles.products}>
             {children}
         </div>
+
     </>)
 }
 

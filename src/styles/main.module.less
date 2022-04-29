@@ -1,0 +1,20 @@
+@menu-width: 330px;
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 1024px) {
+    .app-bar {
+        width: calc(~"100%" - @menu-width);
+        margin-left: calc(@menu-width - 5);
+    }
+}
+
+@media (max-width: 728px) {
+    .products {
+        display: flex;
+        justify-content: center;
+    }
+}

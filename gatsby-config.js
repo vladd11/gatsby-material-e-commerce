@@ -43,6 +43,11 @@ module.exports = {
         `gatsby-transformer-sharp`,
     ],
     siteMetadata: {
-        title: 'My page',
+        title: 'Shop',
+        description: "Just a shop site",
+        phone: "79170324874",
+
+        addressLink: "https://yandex.ru/maps/51/samara/house/novo_vokzalnaya_ulitsa_28/YUkYdANiTUEGQFtpfX5wd3lmYg==",
+        address: "Самара, Ново-Вокзальная улица, 18",
     },
 };

@@ -1,9 +1,19 @@
 .app-bar {
+    height: 56px;
     min-height: 56px;
+}
+
+.app-bar-list {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 @media (min-width: 600px) {
     .app-bar {
+        height: 64px;
         min-height: 64px;
     }
 }

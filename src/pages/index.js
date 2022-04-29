@@ -1,15 +1,14 @@
 import * as React from 'react';
 import Main from '../components/Main'
+import Product from '../components/Product'
 import theme from '../theme'
 import {ThemeProvider} from "@mui/material/styles";
-import {graphql, StaticQuery} from "gatsby";
-import Product from "../components/Product";
+import {graphql, useStaticQuery} from "gatsby";
 import {getImage} from "gatsby-plugin-image";
+import useStickyState from "../stickyState";
 
 export default function Index() {
-    return (<ThemeProvider theme={theme}>
-        <Main>
-            <StaticQuery query={graphql`
+    const data = useStaticQuery(graphql`
 {
   allContent {
     nodes {
@@ -31,12 +30,31 @@ export default function Index() {
       }
     }
   }
-}`} render={data => {
-                return data.allContent.nodes.map(product => {
-                    product.ImageURI = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
-                    return <Product product={product}/>
-                })
-            }}/>
+  site {
+    siteMetadata {
+      title
+      description
+      phone
+      
+      address
+      addressLink
+    }
+  }
+}`)
+
+    const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+
+    const products = data.allContent.nodes.map((product) => {
+        product.Image = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
+
+        return <Product product={product} whenAddedToCart={() => {
+            setCartProducts([...cartProducts, product])
+        }}/>
+    });
+
+    return (<ThemeProvider theme={theme}>
+        <Main info={data.site.siteMetadata} cartProducts={cartProducts}>
+            {products}
         </Main>
     </ThemeProvider>);
 }

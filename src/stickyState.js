@@ -4,15 +4,15 @@ function useStickyState(defaultValue, key) {
     const [value, setValue] = React.useState(defaultValue);
 
     React.useEffect(() => {
-        const stickyValue = window.localStorage.getItem(key);
-        return stickyValue !== null
+        const stickyValue = localStorage.getItem(key);
+        setValue(stickyValue !== null
             ? JSON.parse(stickyValue)
-            : defaultValue;
+            : defaultValue);
     }, [])
 
     React.useEffect(() => {
-        window.localStorage.setItem(key, JSON.stringify(value));
-    }, [key, value]);
+        localStorage.setItem(key, JSON.stringify(value));
+    }, [value]);
 
     return [value, setValue];
 }

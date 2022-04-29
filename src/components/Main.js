@@ -1,31 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {AppBar, IconButton, Toolbar} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import '../styles/body-fix.css'
 import Menu from "./Menu";
 import CartProduct from "./CartProduct";
+import IsMobile from '../isMobile'
 
 const menuWidth = 330;
 
 const Main = ({info, cartProducts, children}) => {
-    const [width, setWidth] = useState(1024);
-
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-    }
-
-    useEffect(() => {
-        handleWindowSizeChange();
-
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
-
-    const shouldNotExpand = (width <= 1024);
-
+    const shouldNotExpand = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(!shouldNotExpand)
 
     return (<>
@@ -56,18 +41,21 @@ const Main = ({info, cartProducts, children}) => {
         </AppBar>
 
         <Menu
-            sx={{width: menuWidth}}
             info={info}
+
             isDrawerOpened={isDrawerOpened}
             onOpen={() => {
             }}
             onClose={() => {
                 setDrawerOpened(false)
             }}
+            isCartEmpty={cartProducts.length === 0}
+
+            sx={{width: menuWidth}}
             shouldNotExpand={shouldNotExpand}>
             {
                 cartProducts.map(value => {
-                    return <CartProduct product={value}></CartProduct>
+                    return <CartProduct product={value} />
                 })
             }
         </Menu>

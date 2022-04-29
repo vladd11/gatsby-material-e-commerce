@@ -32,7 +32,7 @@ const Menu = ({info, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand, child
                         <ListItemText primary={'Войти'}/>
                     </ListItemButton>
 
-                    <ListItemButton component={"a"} key={"phone"} to={`tel:${info.phone}`}>
+                    <ListItemButton component={"a"} key={"phone"} href={`tel:${info.phone}`}>
                         <ListItemIcon>
                             <PhoneOutlinedIcon/>
                         </ListItemIcon>
@@ -40,7 +40,7 @@ const Menu = ({info, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand, child
                     </ListItemButton>
 
                     <ListItemButton component={"a"} key={"place"}
-                                    to={info.addressLink}>
+                                    href={info.addressLink}>
                         <ListItemIcon>
                             <PlaceOutlinedIcon/>
                         </ListItemIcon>

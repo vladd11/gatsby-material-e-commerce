@@ -16,6 +16,7 @@
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-preact": "latest",
     "gatsby-plugin-react-helmet": "latest",
+    "gatsby-plugin-robots-txt": "^1.7.1",
     "gatsby-plugin-sharp": "^4.13.0",
     "gatsby-source-filesystem": "^4.13.0",
     "gatsby-source-sql": "github:edgarrmondragon/gatsby-source-sql",

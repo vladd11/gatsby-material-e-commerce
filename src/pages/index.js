@@ -6,6 +6,7 @@ import {ThemeProvider} from "@mui/material/styles";
 import {graphql, useStaticQuery} from "gatsby";
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
+import {Helmet} from "react-helmet";
 
 export default function Index() {
     const data = useStaticQuery(graphql`
@@ -53,6 +54,14 @@ export default function Index() {
     });
 
     return (<ThemeProvider theme={theme}>
+        <Helmet htmlAttributes={{
+            lang: 'ru',
+        }}>
+            <title>{data.site.siteMetadata.title}</title>
+            <meta name="description" content={data.site.siteMetadata.description}/>
+            <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
+        </Helmet>
+
         <Main info={data.site.siteMetadata} cartProducts={cartProducts}>
             {products}
         </Main>

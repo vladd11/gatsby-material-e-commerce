@@ -33,6 +33,15 @@ module.exports = {
                 name: "images",
             },
         },
+
+        {
+            resolve: 'gatsby-plugin-robots-txt',
+            options: {
+                host: 'https://gatsby-test-nuk.pages.dev',
+                sitemap: 'https://gatsby-test-nuk.pages.dev/sitemap.xml',
+                policy: [{userAgent: '*', allow: '/'}]
+            }
+        },
         // If you want to use styled components you should add the plugin here.
         // 'gatsby-plugin-styled-components',
         'gatsby-plugin-mui-emotion',

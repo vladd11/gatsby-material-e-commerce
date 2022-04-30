@@ -12,6 +12,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+
     "gatsby": "latest",
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-preact": "latest",
@@ -21,11 +22,14 @@
     "gatsby-source-filesystem": "^4.13.0",
     "gatsby-source-sql": "github:edgarrmondragon/gatsby-source-sql",
     "gatsby-transformer-sharp": "^4.13.0",
+    "sqlite3": "^4.2.0",
+
     "jayson": "^3.6.6",
+    "mapbox-gl": "^2.8.2",
+
     "react": "latest",
     "react-dom": "latest",
-    "react-helmet": "latest",
-    "sqlite3": "^4.2.0"
+    "react-helmet": "latest"
   },
   "scripts": {
     "develop": "gatsby develop",

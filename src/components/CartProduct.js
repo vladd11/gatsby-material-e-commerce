@@ -5,7 +5,7 @@ import {GatsbyImage} from "gatsby-plugin-image";
 import * as cardStyles from "../styles/product-styles.module.css";
 
 const CartProduct = ({product}) => {
-  return <Card className={cartStyles.cartProduct}>
+  return <Card className={cartStyles.cartProduct} style={{minWidth: "150px"}}>
       <CardHeader title={product.Title} subheader={`${product.Price / 100} рублей`} />
 
       <CardMedia>

@@ -16,15 +16,16 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
 import React, {useEffect, useRef, useState} from "react";
+import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
 
 import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/order.module.css"
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from '!mapbox-gl';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoidmxhZGQxMSIsImEiOiJjbDJjMmR2ejkwbDUxM2RwOWR5YXFyMXJrIn0.IHatcZkWxh4NihPcN2PYcA';
+mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
 
 const OrderComponent = ({api}) => {
@@ -61,6 +62,8 @@ const OrderComponent = ({api}) => {
     }, [isAddressFormManual]);
 
     async function validateAndOrder(paymentMethod) {
+        console.log(paymentMethod)
+
         if (isEmptyOrSpaces(phone)) {
             setPhoneValid(false);
         }
@@ -70,11 +73,18 @@ const OrderComponent = ({api}) => {
         }
 
         if (isPhoneValid && isAddressValid) {
-            const result = await api.order(cartProducts, phone, address, paymentMethod)
-            if (result) {
-                window.location.replace(result);
-            } else {
+            try {
+                const result = await api.order(cartProducts, phone, address, paymentMethod)
+                if (result) {
+                    //window.location.replace(result);
+                } else {
 
+                }
+            } catch (e) {
+                if(e.code === 1005) {
+                    localStorage.setItem("paymentMethod", paymentMethod)
+                    navigate("/confirm/")
+                }
             }
         }
     }

@@ -11,7 +11,7 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {graphql, useStaticQuery} from "gatsby";
 
 const Order = () => {
-    const api = new Api(process.env.GATSBY_FUNCTION_URL, localStorage.getItem("jwt_token"))
+    const api = new Api()
 
     const data = useStaticQuery(graphql`
 {

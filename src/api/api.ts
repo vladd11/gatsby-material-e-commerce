@@ -4,36 +4,83 @@ class Api {
     private jwtToken?: string;
     private client: JSONRPCClient;
 
-    constructor(functionURL: string, jwtToken?: string) {
-        this.client = new JSONRPCClient(functionURL);
+    constructor() {
+        this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
 
-        this.jwtToken = jwtToken;
+        this.jwtToken = localStorage.getItem("jwt_token");
+    }
+
+    async sendCodeAndOrder(cartProducts: Array<any>, address: string, paymentMethod: string, phone: string, code: string): Promise<string> {
+        const result = await this.client.call([
+            Api._sendCode(phone, parseInt(code)),
+            Api._order(cartProducts, paymentMethod, address)
+        ])
+
+        const responses = result.responses
+        const errors = result.errors
+
+        if (errors !== null && errors.length === 0) {
+            localStorage.setItem("jwt_token", responses[0].token)
+            this.jwtToken = responses[0].token
+
+            return responses[1]
+        } else {
+            throw new JSONRPCError(errors[0].code, errors[0].message)
+        }
+    }
+
+    async resendCode(phone: string) : Promise<void> {
+         await this.client.call([
+             Api._resendCode(phone)
+         ])
     }
 
     async order(cartProducts: Array<any>, phone: string, address: string, paymentMethod: string): Promise<string> {
-        const request: Array<JSONRPCRequest> = []
+        const result = await this.client.call([
+            this._login(phone),
+            Api._order(cartProducts, address, paymentMethod)
+        ])
+
+        const responses = result.responses
+        const errors = result.errors
+
+        if (errors !== null && errors.length === 0) {
+            if (this.jwtToken === null) {
+                localStorage.setItem("jwt_token", responses[0].token)
+                this.jwtToken = responses[0].token
+            }
+
+            return responses[1]
+        } else { // This throws only one exception because method add_order depends on registration
+            throw new JSONRPCError(errors[0].code, errors[0].message)
+        }
+    }
+
+    private _login(phone: string): JSONRPCRequest {
         if (this.jwtToken === null) {
-            request.push({
+            return {
                 jsonrpc: '2.0',
                 id: "0",
-                method: 'register',
+                method: 'login',
                 params: {
                     phone: phone,
                     verify: false
                 },
-            })
+            }
         } else {
-            request.push({
+            return {
                 jsonrpc: '2.0',
                 id: '0',
                 method: 'verify',
                 params: {
                     token: this.jwtToken
                 }
-            })
+            }
         }
+    }
 
-        request.push({
+    private static _order(cartProducts: Array<any>, paymentMethod: string, address: string): JSONRPCRequest {
+        return {
             jsonrpc: '2.0',
             id: "1",
             method: 'add_order',
@@ -49,36 +96,30 @@ class Api {
                 paymentMethod: paymentMethod,
                 address: address
             }
-        })
-
-        const result = await this.client.call(request)
-        const responses = result.responses
-        const errors = result.errors
-
-        if (errors !== null && errors.length === 0) {
-            if (this.jwtToken === null) {
-                localStorage.setItem("jwt_token", responses[0])
-                this.jwtToken = responses[0]
-            } else {
-                return responses[1]
-            }
-        } else { // This throws only one exception because method add_order depends on registration
-            if(errors[0].code === 1001) {
-                throw new PhoneIsNotUniqueError();
-            }
-            throw new JSONRPCError(errors[0].code, errors[0].message)
         }
     }
-}
 
-class PhoneIsNotUniqueError extends Error {
-    public code: number;
+    private static _sendCode(phone: string, code: number) : JSONRPCRequest {
+        return {
+            jsonrpc: "2.0",
+            id: 0,
+            method: "check_code",
+            params: {
+                phone: phone,
+                code: code
+            }
+        }
+    }
 
-    constructor() {
-        super("Phone is not unique");
-        this.code = 1001;
-
-        Object.setPrototypeOf(this, JSONRPCError.prototype);
+    private static _resendCode(phone: string) : JSONRPCRequest {
+        return {
+            jsonrpc: "2.0",
+            id: 0,
+            method: "send_code",
+            params: {
+                phone: phone
+            }
+        }
     }
 }
 
@@ -89,7 +130,6 @@ class JSONRPCError extends Error {
         super(message);
 
         this.code = code;
-        Object.setPrototypeOf(this, JSONRPCError.prototype);
     }
 }
 

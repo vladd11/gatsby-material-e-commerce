@@ -1,7 +1,13 @@
 import React from "react";
-import {Divider, List, ListItemButton, SwipeableDrawer} from "@mui/material";
-import * as drawerStyles from "../styles/drawer.module.css";
+
+import Divider from "@mui/material/Divider"
+import List from "@mui/material/List"
+import ListItemButton from "@mui/material/ListItemButton"
+import SwipeableDrawer from "@mui/material/SwipeableDrawer"
+
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+import * as drawerStyles from "../styles/drawer.module.css";
 
 
 const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {

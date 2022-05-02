@@ -1,7 +1,11 @@
 import React from 'react'
-import {Card, CardHeader, CardMedia} from "@mui/material";
-import * as cartStyles from "../styles/cart-styles.module.css";
 import {GatsbyImage} from "gatsby-plugin-image";
+
+import Card from "@mui/material/Card"
+import CardHeader from "@mui/material/CardHeader"
+import CardMedia from "@mui/material/CardMedia"
+
+import * as cartStyles from "../styles/cart-styles.module.css";
 import * as cardStyles from "../styles/product-styles.module.css";
 
 const CartProduct = ({product}) => {

@@ -6,6 +6,7 @@
   .app-bar {
     width: calc(100% - 330px);
     margin-left: calc(325px);
+    padding-left: 16px;
   }
 }
 @media (max-width: 728px) {

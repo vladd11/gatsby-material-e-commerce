@@ -1,11 +1,16 @@
-import React from 'react'
-import {AppBar, IconButton, Toolbar} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import '../styles/body-fix.css'
+import AppBar from "@mui/material/AppBar";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+
+import React from 'react'
+
 import Menu from "./Menu";
 import CartProduct from "./CartProduct";
 import IsMobile from '../isMobile'
+
+import '../styles/body-fix.css'
 import * as mainStyles from "../styles/main.module.css"
 
 const menuWidth = 330;

@@ -1,12 +1,15 @@
 import * as React from 'react';
+import {Helmet} from "react-helmet";
+
 import Main from '../components/Main'
 import Product from '../components/Product'
+
 import theme from '../theme'
 import {ThemeProvider} from "@mui/material/styles";
 import {graphql, useStaticQuery} from "gatsby";
+
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
-import {Helmet} from "react-helmet";
 
 export default function Index() {
     const data = useStaticQuery(graphql`

@@ -1,60 +1,96 @@
-import {Client, HttpsClient, JSONRPCRequest} from "jayson";
-import CartProduct from "./cartProduct";
-import OrderResponse from "./orderResponse";
+import {JSONRPCClient, JSONRPCRequest} from "./client";
 
 class Api {
     private jwtToken?: string;
-    private client: HttpsClient;
+    private client: JSONRPCClient;
 
     constructor(functionURL: string, jwtToken?: string) {
-        this.client = Client.https({
-            host: functionURL
-        })
+        this.client = new JSONRPCClient(functionURL);
+
         this.jwtToken = jwtToken;
     }
 
-    order(cartProducts: Array<CartProduct>, phone: string, address: string): Promise<OrderResponse> {
+    async order(cartProducts: Array<any>, phone: string, address: string, paymentMethod: string): Promise<string> {
         const request: Array<JSONRPCRequest> = []
         if (this.jwtToken === null) {
             request.push({
                 jsonrpc: '2.0',
-                id: 0,
+                id: "0",
                 method: 'register',
                 params: {
-                    phone: phone
+                    phone: phone,
+                    verify: false
                 },
+            })
+        } else {
+            request.push({
+                jsonrpc: '2.0',
+                id: '0',
+                method: 'verify',
+                params: {
+                    token: this.jwtToken
+                }
             })
         }
 
         request.push({
             jsonrpc: '2.0',
-            id: 1,
+            id: "1",
             method: 'add_order',
             params: {
                 products: cartProducts.map(
-                    (cartProduct: CartProduct) => {
+                    (cartProduct) => {
                         return {
-                            id: cartProduct.id,
-                            count: cartProduct.count
+                            id: cartProduct.ProductID,
+                            count: 1
                         }
                     }
                 ),
+                paymentMethod: paymentMethod,
                 address: address
             }
         })
 
-        return new Promise<OrderResponse>((resolve) => {
-            this.client.request(request, (err, results) => {
-                console.log(err)
+        const result = await this.client.call(request)
+        const responses = result.responses
+        const errors = result.errors
 
-                if(this.jwtToken === null) {
-                    this.jwtToken = results[0]
-                }
-
-                resolve({
-                    newJWTToken: this.jwtToken
-                })
-            })
-        })
+        if (errors !== null && errors.length === 0) {
+            if (this.jwtToken === null) {
+                localStorage.setItem("jwt_token", responses[0])
+                this.jwtToken = responses[0]
+            } else {
+                return responses[1]
+            }
+        } else { // This throws only one exception because method add_order depends on registration
+            if(errors[0].code === 1001) {
+                throw new PhoneIsNotUniqueError();
+            }
+            throw new JSONRPCError(errors[0].code, errors[0].message)
+        }
     }
 }
+
+class PhoneIsNotUniqueError extends Error {
+    public code: number;
+
+    constructor() {
+        super("Phone is not unique");
+        this.code = 1001;
+
+        Object.setPrototypeOf(this, JSONRPCError.prototype);
+    }
+}
+
+class JSONRPCError extends Error {
+    public code: number;
+
+    constructor(code, message) {
+        super(message);
+
+        this.code = code;
+        Object.setPrototypeOf(this, JSONRPCError.prototype);
+    }
+}
+
+export default Api;

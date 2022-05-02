@@ -1,11 +1,18 @@
 import OrderComponent from '../components/OrderComponent'
+import Api from '../api/api'
+
 import React from 'react'
+import Helmet from "react-helmet/es/Helmet";
+
 import theme from "../theme";
-import {Helmet} from "react-helmet";
-import {ThemeProvider} from "@mui/material/styles";
+
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
+
 import {graphql, useStaticQuery} from "gatsby";
 
 const Order = () => {
+    const api = new Api(process.env.GATSBY_FUNCTION_URL, localStorage.getItem("jwt_token"))
+
     const data = useStaticQuery(graphql`
 {
   allContent {
@@ -56,7 +63,7 @@ const Order = () => {
 
             background: theme.palette.info.light
         }}>
-            <OrderComponent/>
+            <OrderComponent api={api}/>
         </div>
     </ThemeProvider>
 }

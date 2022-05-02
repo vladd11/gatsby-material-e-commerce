@@ -24,12 +24,14 @@
     "gatsby-transformer-sharp": "^4.13.0",
     "sqlite3": "^4.2.0",
 
-    "jayson": "^3.6.6",
     "mapbox-gl": "^2.8.2",
 
     "react": "latest",
     "react-dom": "latest",
     "react-helmet": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.3"
   },
   "scripts": {
     "develop": "gatsby develop",

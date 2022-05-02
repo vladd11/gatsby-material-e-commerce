@@ -1,17 +1,18 @@
-import {
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText
-} from "@mui/material";
-import Link from "./Link";
+import List from "@mui/material/List"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
+
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import React from "react";
-import Drawer from "./Drawer";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+
+import React from "react";
+
+import Link from "./Link";
+import Drawer from "./Drawer";
 
 const Menu = ({
                   info,

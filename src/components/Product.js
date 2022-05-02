@@ -1,9 +1,14 @@
 import React from 'react'
 import {GatsbyImage} from "gatsby-plugin-image";
-import {Button, Card, CardContent, CardHeader, CardMedia} from "@mui/material";
+
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 
 import * as cardStyles from '../styles/product-styles.module.css'
-import Typography from "@mui/material/Typography";
 
 const Product = ({product, whenAddedToCart, disabled}) => {
     return <Card className={cardStyles.card}>

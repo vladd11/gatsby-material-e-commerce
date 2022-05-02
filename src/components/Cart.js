@@ -1,5 +1,8 @@
 import React from "react";
-import {ListItemButton, ListItemText} from "@mui/material";
+
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemText from "@mui/material/ListItemText"
+
 import Drawer from "./Drawer";
 
 const Cart = ({isCartOpened, onOpen, onClose, shouldNotExpand}) => {

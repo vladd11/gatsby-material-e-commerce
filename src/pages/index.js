@@ -42,8 +42,6 @@ export default function Index() {
       
       address
       addressLink
-      
-      functionURL
     }
   }
 }`)

@@ -39,13 +39,11 @@ const Order = () => {
     siteMetadata {
       title
       description
-      
-      functionURL
     }
   }
 }`)
 
-    return <ThemeProvider theme={theme}>
+    return <>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -53,19 +51,20 @@ const Order = () => {
             <meta name="description" content={data.site.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
+        <ThemeProvider theme={theme}>
+            <div style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
 
-        <div style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-
-            background: theme.palette.info.light
-        }}>
-            <OrderComponent api={api}/>
-        </div>
-    </ThemeProvider>
+                background: theme.palette.info.light
+            }}>
+                <OrderComponent api={api}/>
+            </div>
+        </ThemeProvider>
+    </>
 }
 
 export default Order;

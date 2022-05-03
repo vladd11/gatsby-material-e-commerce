@@ -1,13 +1,11 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
 
 class Api {
-    private jwtToken?: string;
+    jwtToken?: string;
     private client: JSONRPCClient;
 
     constructor() {
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
-
-        this.jwtToken = localStorage.getItem("jwt_token");
     }
 
     async sendCodeAndOrder(cartProducts: Array<any>, address: string, paymentMethod: string, phone: string, code: string): Promise<string> {
@@ -123,7 +121,7 @@ class Api {
     }
 }
 
-class JSONRPCError extends Error {
+export class JSONRPCError extends Error {
     public code: number;
 
     constructor(code, message) {

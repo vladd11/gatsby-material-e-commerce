@@ -1,7 +1,7 @@
 import OrderComponent from '../components/OrderComponent'
 import Api from '../api/api'
 
-import React from 'react'
+import React, {useEffect} from 'react'
 import Helmet from "react-helmet/es/Helmet";
 
 import theme from "../theme";
@@ -12,6 +12,10 @@ import {graphql, useStaticQuery} from "gatsby";
 
 const Order = () => {
     const api = new Api()
+
+    useEffect(() => {
+        api.jwtToken = localStorage.getItem("jwt_token")
+    })
 
     const data = useStaticQuery(graphql`
 {

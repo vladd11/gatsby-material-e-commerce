@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
+import Chip from "@mui/material/Chip";
 
 import React from 'react'
 
@@ -10,8 +11,8 @@ import Menu from "./Menu";
 import CartProduct from "./CartProduct";
 import IsMobile from '../isMobile'
 
-import '../styles/body-fix.css'
-import * as mainStyles from "../styles/main.module.css"
+import '../styles/body-fix.sass'
+import * as mainStyles from "../styles/main.module.sass"
 
 const menuWidth = 330;
 
@@ -61,7 +62,7 @@ const Main = ({info, cartProducts, children}) => {
             }
         </Menu>
 
-        <div className={mainStyles.products}>
+        <div className={mainStyles.content}>
             {children}
         </div>
 

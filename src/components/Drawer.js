@@ -7,7 +7,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer"
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import * as drawerStyles from "../styles/drawer.module.css";
+import * as drawerStyles from "../styles/drawer.module.sass";
 
 
 const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {

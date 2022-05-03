@@ -5,8 +5,8 @@ import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
 import CardMedia from "@mui/material/CardMedia"
 
-import * as cartStyles from "../styles/cart-styles.module.css";
-import * as cardStyles from "../styles/product-styles.module.css";
+import * as cartStyles from "../styles/cart-styles.module.sass";
+import * as cardStyles from "../styles/product-styles.module.sass";
 
 const CartProduct = ({product}) => {
   return <Card className={cartStyles.cartProduct} style={{minWidth: "150px"}}>

@@ -8,11 +8,11 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {graphql, useStaticQuery} from "gatsby";
 
-import * as orderStyles from "../styles/order.module.css";
-import * as confirmStyles from "../styles/confirm.module.css"
+import * as orderStyles from "../styles/order.module.sass";
+import * as confirmStyles from "../styles/confirm.module.sass"
 
 import theme from "../theme";
 
@@ -22,6 +22,10 @@ import Helmet from "react-helmet";
 
 const Confirm = () => {
     const api = new Api()
+
+    useEffect(() => {
+        api.jwtToken = localStorage.getItem("jwt_token")
+    })
 
     const data = useStaticQuery(graphql`
 {

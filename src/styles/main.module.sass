@@ -1,0 +1,24 @@
+$menu-width: 330px
+
+.content
+  display: flex
+  flex-direction: column
+
+
+@media (min-width: 1024px)
+  .app-bar
+    width: calc(100% - #{$menu-width})
+    margin-left: calc(#{$menu-width} - 5px)
+    padding-left: 16px
+
+
+  .content
+    margin-left: $menu-width
+
+
+@media (max-width: 728px)
+  .content
+    display: flex
+    justify-content: center
+    
+

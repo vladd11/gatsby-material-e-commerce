@@ -46,6 +46,7 @@ module.exports = {
         // 'gatsby-plugin-styled-components',
         'gatsby-plugin-mui-emotion',
         `gatsby-plugin-preact`,
+        `gatsby-plugin-sass`,
 
         `gatsby-plugin-image`,
         `gatsby-plugin-sharp`,

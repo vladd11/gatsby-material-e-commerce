@@ -20,9 +20,8 @@ import Api from "../api/api";
 import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
-const Confirm = () => {
+const Confirm = ({location}) => {
     const api = new Api()
-
     useEffect(() => {
         api.jwtToken = localStorage.getItem("jwt_token")
     })
@@ -105,16 +104,19 @@ const Confirm = () => {
                                                // noinspection EqualityComparisonWithCoercionJS
                                                try {
                                                    const result = await api.sendCodeAndOrder(
-                                                       JSON.parse(localStorage.getItem("cartProducts")),
-                                                       JSON.parse(localStorage.getItem("address")),
-                                                       localStorage.getItem("paymentMethod"),
-                                                       JSON.parse(localStorage.getItem("phone")),
+                                                       location.state.cartProducts,
+                                                       location.state.address,
+                                                       location.state.paymentMethod,
+                                                       location.state.phone,
                                                        prev)
+
+                                                   console.log(result)
 
                                                    if (result) {
                                                        window.location.replace(result)
                                                    }
                                                } catch (e) {
+                                                   console.error(e)
                                                    if (e.code === 1001) {
                                                        setCodeError("Неверный SMS-код");
                                                    } else if (e.code === 1004) {

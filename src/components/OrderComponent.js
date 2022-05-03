@@ -83,7 +83,14 @@ const OrderComponent = ({api}) => {
             } catch (e) {
                 if (e.code === 1005) {
                     localStorage.setItem("paymentMethod", paymentMethod)
-                    navigate("/confirm/")
+                    navigate("/confirm/", {
+                        state: {
+                            cartProducts: cartProducts,
+                            address: address,
+                            paymentMethod: paymentMethod,
+                            phone: phone
+                        }
+                    })
                 }
             }
         }

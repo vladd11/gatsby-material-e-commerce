@@ -81,7 +81,7 @@ const OrderComponent = ({api}) => {
 
                 }
             } catch (e) {
-                if(e.code === 1005) {
+                if (e.code === 1005) {
                     localStorage.setItem("paymentMethod", paymentMethod)
                     navigate("/confirm/")
                 }
@@ -164,14 +164,16 @@ const OrderComponent = ({api}) => {
                 key="payCard"
 
                 tooltipTitle="Оплата картой"
-                onClick={async () => validateAndOrder("card")}
+
+                onFocus={() => validateAndOrder("card")}
 
                 icon={<CreditCardIcon/>}
             />
             <SpeedDialAction
                 key="payCash"
                 tooltipTitle="Оплата наличными"
-                onClick={async () => validateAndOrder("cash")}
+
+                onFocus={() => validateAndOrder("cash")}
 
                 icon={<MoneyIcon/>}
             />

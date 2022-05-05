@@ -18,7 +18,7 @@ import {navigate} from "gatsby";
 
 const menuWidth = 330;
 
-const Main = ({info, cartProducts, onDelete, children}) => {
+const Main = ({info, cartProducts, onDelete, children, menuOpen}) => {
     const shouldNotExpand = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 

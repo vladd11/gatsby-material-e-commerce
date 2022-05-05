@@ -16,14 +16,14 @@
     "gatsby-plugin-sass": "^5.13.0",
     "gatsby-plugin-sharp": "^4.13.0",
     "gatsby-source-filesystem": "^4.13.0",
-    "gatsby-source-sql": "github:edgarrmondragon/gatsby-source-sql",
     "gatsby-transformer-sharp": "^4.13.0",
     "mapbox-gl": "^2.8.2",
+    "node-fetch": "^2.6.7",
     "react": "latest",
     "react-dom": "latest",
     "react-helmet": "latest",
     "sass": "^1.51.0",
-    "sqlite3": "^4.2.0"
+    "transliteration": "^2.2.0"
   },
   "devDependencies": {
     "typescript": "^4.6.3"

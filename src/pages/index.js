@@ -18,7 +18,7 @@ import * as indexStyles from "../styles/index.module.sass"
 export default function Index() {
     const data = useStaticQuery(graphql`
 {
-  allContent {
+  allProducts {
     nodes {
       Category
       Description
@@ -53,7 +53,7 @@ export default function Index() {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 
-    const products = data.allContent.nodes.map((product) => {
+    const products = data.allProducts.nodes.map((product) => {
         if (currentCategory === 0) {
             product.Image = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
 
@@ -63,6 +63,7 @@ export default function Index() {
                 )}
                 product={product}
                 whenAddedToCart={() => {
+                    product.count = 1
                     setCartProducts([...cartProducts, product])
                 }}
             />

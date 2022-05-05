@@ -1,14 +1,14 @@
-import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import Chip from "@mui/material/Chip";
+import Badge from "@mui/material/Badge";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import React from 'react'
 
 import Menu from "./Menu";
-import CartProduct from "./CartProduct";
+import CartMenuProduct from "./CartMenuProduct";
 import IsMobile from '../isMobile'
 
 import '../styles/body-fix.sass'
@@ -32,7 +32,9 @@ const Main = ({info, cartProducts, children}) => {
 
                             sx={{mr: 2}}
                             onClick={() => setDrawerOpened(true)}>
-                            <MenuIcon/>
+                            <Badge badgeContent={cartProducts.length} color="error">
+                                <MenuIcon color="action"/>
+                            </Badge>
                         </IconButton> : null
                 }
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -56,8 +58,8 @@ const Main = ({info, cartProducts, children}) => {
             shouldNotExpand={shouldNotExpand}>
 
             {
-                cartProducts.map(value => {
-                    return <CartProduct product={value}/>
+                cartProducts.map(cartProduct => {
+                    return <CartMenuProduct product={cartProduct}/>
                 })
             }
         </Menu>

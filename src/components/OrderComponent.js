@@ -82,7 +82,6 @@ const OrderComponent = ({api}) => {
                 }
             } catch (e) {
                 if (e.code === 1005) {
-                    localStorage.setItem("paymentMethod", paymentMethod)
                     navigate("/confirm/", {
                         state: {
                             cartProducts: cartProducts,
@@ -129,7 +128,7 @@ const OrderComponent = ({api}) => {
             }}/>
         </FormControl>
 
-        <div>
+        <div className={orderStyles.addressInput}>
             <Button variant="small" sx={{width: "100%", textTransform: "initial"}} onClick={() => {
                 setAddressFormType(!isAddressFormManual)
             }}>
@@ -153,9 +152,9 @@ const OrderComponent = ({api}) => {
                 : null}
 
             <div className={orderStyles.container}
-                 style={(isAddressFormManual) ? {display: 'none'} : {height: '300px'}}>
+                 style={(isAddressFormManual) ? {display: 'none'} : null}>
 
-                <div ref={mapContainer} className="map-container" style={{height: '300px'}}/>
+                <div ref={mapContainer} className="map-container" style={{height: '100%'}}/>
                 <PlaceOutlinedIcon className={orderStyles.placeIcon}/>
             </div>
         </div>

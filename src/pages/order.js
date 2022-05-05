@@ -10,7 +10,7 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import {graphql, useStaticQuery} from "gatsby";
 
-const Order = () => {
+const Order = ({location}) => {
     const api = new Api()
 
     useEffect(() => {
@@ -19,16 +19,6 @@ const Order = () => {
 
     const data = useStaticQuery(graphql`
 {
-  allContent {
-    nodes {
-      Category
-      Description
-      Price
-      ProductID
-      Title
-      ImageURI
-    }
-  }
   allFile {
     edges {
       node {

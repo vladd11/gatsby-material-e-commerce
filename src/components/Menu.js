@@ -34,7 +34,11 @@ const Menu = ({
         onClose={onClose}
         shouldNotExpand={shouldNotExpand}
         anchor="left">
-        <List style={{height: '100%'}}>
+        <List sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
             {children}
         </List>
 

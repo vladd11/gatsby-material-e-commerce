@@ -3,7 +3,7 @@ import React from "react";
 import Divider from "@mui/material/Divider"
 import List from "@mui/material/List"
 import ListItemButton from "@mui/material/ListItemButton"
-import SwipeableDrawer from "@mui/material/SwipeableDrawer"
+import Drawer from "@mui/material/Drawer"
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
@@ -12,10 +12,7 @@ import * as drawerStyles from "../styles/drawer.module.sass";
 
 const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {
     return (
-        <SwipeableDrawer
-            disableBackdropTransition={true}
-            disableDiscovery={true}
-
+        <Drawer
             anchor={anchor}
             variant={shouldNotExpand ? 'persistent' : 'permanent'}
             open={isDrawerOpened}
@@ -38,7 +35,7 @@ const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNo
 
                 {children}
             </List>
-        </SwipeableDrawer>
+        </Drawer>
     )
 }
 

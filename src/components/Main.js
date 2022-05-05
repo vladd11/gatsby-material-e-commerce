@@ -13,6 +13,8 @@ import IsMobile from '../isMobile'
 
 import '../styles/body-fix.sass'
 import * as mainStyles from "../styles/main.module.sass"
+import {Router} from "@reach/router";
+import {navigate} from "gatsby";
 
 const menuWidth = 330;
 
@@ -31,7 +33,9 @@ const Main = ({info, cartProducts, onDelete, children}) => {
                             aria-label="menu"
 
                             sx={{mr: 2}}
-                            onClick={() => setDrawerOpened(true)}>
+                            onClick={() => {
+                                navigate('/menu')
+                            }}>
                             <Badge badgeContent={cartProducts.length} color="error">
                                 <MenuIcon color="action"/>
                             </Badge>
@@ -43,29 +47,32 @@ const Main = ({info, cartProducts, onDelete, children}) => {
             </Toolbar>
         </AppBar>
 
-        <Menu
-            info={info}
+        <Router basepath="/">
+            <Menu
+                path="/menu"
+                info={info}
 
-            isDrawerOpened={isDrawerOpened}
-            onOpen={() => {
-            }}
-            onClose={() => {
-                setDrawerOpened(false)
-            }}
-            isCartEmpty={cartProducts.length === 0}
+                isDrawerOpened={isDrawerOpened}
+                onOpen={() => {
+                }}
+                onClose={() => {
+                    setDrawerOpened(false)
+                }}
+                isCartEmpty={cartProducts.length === 0}
 
-            sx={{width: menuWidth}}
-            shouldNotExpand={shouldNotExpand}>
+                sx={{width: menuWidth}}
+                shouldNotExpand={shouldNotExpand}>
 
-            {
-                cartProducts.map((cartProduct, index) => {
-                    return <CartMenuProduct product={cartProduct}
-                    onDelete={() => {
-                        onDelete(index)
-                    }}/>
-                })
-            }
-        </Menu>
+                {
+                    cartProducts.map((cartProduct, index) => {
+                        return <CartMenuProduct product={cartProduct}
+                                                onDelete={() => {
+                                                    onDelete(index)
+                                                }}/>
+                    })
+                }
+            </Menu>
+        </Router>
 
         <div className={mainStyles.content}>
             {children}

@@ -18,7 +18,7 @@ import * as indexStyles from "../styles/index.module.sass"
 export default function Index() {
     const data = useStaticQuery(graphql`
 {
-  allProducts {
+  allProducts(limit: 12) {
     nodes {
       Category
       Description

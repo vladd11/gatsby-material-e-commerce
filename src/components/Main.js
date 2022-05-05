@@ -16,7 +16,7 @@ import * as mainStyles from "../styles/main.module.sass"
 
 const menuWidth = 330;
 
-const Main = ({info, cartProducts, children}) => {
+const Main = ({info, cartProducts, onDelete, children}) => {
     const shouldNotExpand = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
@@ -58,8 +58,11 @@ const Main = ({info, cartProducts, children}) => {
             shouldNotExpand={shouldNotExpand}>
 
             {
-                cartProducts.map(cartProduct => {
-                    return <CartMenuProduct product={cartProduct}/>
+                cartProducts.map((cartProduct, index) => {
+                    return <CartMenuProduct product={cartProduct}
+                    onDelete={() => {
+                        onDelete(index)
+                    }}/>
                 })
             }
         </Menu>

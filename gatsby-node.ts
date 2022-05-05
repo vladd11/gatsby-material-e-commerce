@@ -50,6 +50,7 @@ exports.sourceNodes = async (
     let result: Array<Product> = await (await fetch(process.env.BUILDER_FUNCTION_URL)).json()
 
     result.forEach((product: Product) => {
+        product.Price = Math.round(product.Price * 100) / 100
         createNode({
             ...product,
             id: createNodeId(`Products-${product.ProductID}`),

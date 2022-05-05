@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import * as cardStyles from '../styles/product-styles.module.sass'
 
-const Product = ({product, whenAddedToCart, disabled}) => {
+const Product = ({product, whenAddedToCart, disabled, loading="lazy"}) => {
     return <Card className={cardStyles.card}>
         <CardHeader title={product.Title}/>
 
@@ -24,7 +24,7 @@ const Product = ({product, whenAddedToCart, disabled}) => {
         </CardContent>
 
         <CardMedia>
-            <GatsbyImage loading="eager" className={cardStyles.image} alt={product.Title} image={product.Image}/>
+            <GatsbyImage loading={loading} className={cardStyles.image} alt={product.Title} image={product.Image}/>
         </CardMedia>
 
         <Button size="small" style={{width: "100%", padding: "8px"}} onClick={whenAddedToCart} disabled={disabled}>

@@ -53,7 +53,7 @@ export default function Index() {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 
-    const products = data.allProducts.nodes.map((product) => {
+    const products = data.allProducts.nodes.map((product, index) => {
         if (currentCategory === 0) {
             product.Image = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
 
@@ -66,6 +66,7 @@ export default function Index() {
                     product.count = 1
                     setCartProducts([...cartProducts, product])
                 }}
+                loading={(index > 5) ? "lazy" : "eager"}
             />
         } else {
             return <div/>;
@@ -81,7 +82,13 @@ export default function Index() {
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
 
-        <Main info={data.site.siteMetadata} cartProducts={cartProducts} data={data}>
+        <Main
+            info={data.site.siteMetadata}
+            cartProducts={cartProducts}
+            data={data}
+            onDelete={(index) => {
+                setCartProducts(cartProducts.splice(index, index))
+            }}>
             <div className={indexStyles.chips}>
                 <Chip label="Пиццы" className={indexStyles.chip} clickable onClick={() => {
                     setCurrentCategory(0)

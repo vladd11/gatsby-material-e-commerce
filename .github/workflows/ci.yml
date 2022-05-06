@@ -1,7 +1,9 @@
 name: lighthouse
 
 on:
-  check_run:
+  workflow_run:
+    workflows:
+      - "Cloudflare Pages"
     types:
       - completed
   workflow_dispatch:

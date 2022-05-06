@@ -21,7 +21,7 @@ import useStickyState from "../stickyState";
 
 import CartProduct from "./CartProduct";
 
-import * as orderStyles from "../styles/order.module.sass"
+import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
 

@@ -13,7 +13,7 @@ import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
 import Chip from "@mui/material/Chip";
 
-import * as indexStyles from "../styles/index.module.sass"
+import * as indexStyles from "../styles/components/index.module.sass"
 
 export default function Index() {
     const data = useStaticQuery(graphql`

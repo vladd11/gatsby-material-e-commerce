@@ -1,5 +1,5 @@
 import CartProduct from "./CartProduct";
-import * as cartStyles from "../styles/cart-product.module.sass";
+import * as cartStyles from "../styles/components/cart-product.module.sass";
 import Fab from "@mui/material/Fab";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";

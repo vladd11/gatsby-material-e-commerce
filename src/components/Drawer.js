@@ -7,7 +7,7 @@ import MuiDrawer from "@mui/material/Drawer"
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import * as drawerStyles from "../styles/drawer.module.sass";
+import * as drawerStyles from "../styles/components/drawer.module.sass";
 
 
 const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {

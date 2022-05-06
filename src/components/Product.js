@@ -8,7 +8,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-import * as cardStyles from '../styles/product-styles.module.sass'
+import * as cardStyles from '../styles/components/product-styles.module.sass'
 
 const Product = ({product, whenAddedToCart, disabled, loading="lazy"}) => {
     return <Card className={cardStyles.card}>

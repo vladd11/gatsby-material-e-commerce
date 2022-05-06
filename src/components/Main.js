@@ -1,10 +1,3 @@
-import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Badge from "@mui/material/Badge";
-import MenuIcon from "@mui/icons-material/Menu";
-
 import React from 'react'
 
 import Menu from "./Menu";
@@ -12,9 +5,13 @@ import CartMenuProduct from "./CartMenuProduct";
 import IsMobile from '../isMobile'
 
 import '../styles/body-fix.sass'
-import * as mainStyles from "../styles/main.module.sass"
-import {Router} from "@reach/router";
-import {navigate} from "gatsby";
+import * as mainStyles from "../styles/components/main.module.sass"
+
+import IconButton from "../ui/IconButton";
+import Appbar from "../ui/Appbar";
+import Badge from "../ui/Badge";
+
+import MenuIcon from "@mui/icons-material/Menu";
 
 const menuWidth = 330;
 
@@ -23,56 +20,41 @@ const Main = ({info, cartProducts, onDelete, children, menuOpen}) => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <AppBar position="static" className={mainStyles.appBar}>
-            <Toolbar>
-                {
-                    (shouldNotExpand) ?
-                        <IconButton
-                            size="large"
-                            color="inherit"
-                            aria-label="menu"
+        <Appbar title={info.title}>
+            {(shouldNotExpand) ?
+                <IconButton
+                    onClick={() => {
+                        setDrawerOpened(true)
+                    }}>
+                    <Badge marker="1">
+                        <MenuIcon color="action"/>
+                    </Badge>
+                </IconButton> : null}
+        </Appbar>
 
-                            sx={{mr: 2}}
-                            onClick={() => {
-                                navigate('/menu')
-                            }}>
-                            <Badge badgeContent={cartProducts.length} color="error">
-                                <MenuIcon color="action"/>
-                            </Badge>
-                        </IconButton> : null
-                }
-                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    Shop
-                </Typography>
-            </Toolbar>
-        </AppBar>
+        <Menu
+            info={info}
 
-        <Router basepath="/">
-            <Menu
-                path="/menu"
-                info={info}
+            isDrawerOpened={isDrawerOpened}
+            onOpen={() => {
+            }}
+            onClose={() => {
+                setDrawerOpened(false)
+            }}
+            isCartEmpty={cartProducts.length === 0}
 
-                isDrawerOpened={isDrawerOpened}
-                onOpen={() => {
-                }}
-                onClose={() => {
-                    setDrawerOpened(false)
-                }}
-                isCartEmpty={cartProducts.length === 0}
+            sx={{width: menuWidth}}
+            shouldNotExpand={shouldNotExpand}>
 
-                sx={{width: menuWidth}}
-                shouldNotExpand={shouldNotExpand}>
-
-                {
-                    cartProducts.map((cartProduct, index) => {
-                        return <CartMenuProduct product={cartProduct}
-                                                onDelete={() => {
-                                                    onDelete(index)
-                                                }}/>
-                    })
-                }
-            </Menu>
-        </Router>
+            {
+                cartProducts.map((cartProduct, index) => {
+                    return <CartMenuProduct product={cartProduct}
+                                            onDelete={() => {
+                                                onDelete(index)
+                                            }}/>
+                })
+            }
+        </Menu>
 
         <div className={mainStyles.content}>
             {children}

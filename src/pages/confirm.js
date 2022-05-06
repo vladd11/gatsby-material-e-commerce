@@ -11,8 +11,8 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import React, {useState, useEffect} from "react";
 import {graphql, useStaticQuery} from "gatsby";
 
-import * as orderStyles from "../styles/order.module.sass";
-import * as confirmStyles from "../styles/confirm.module.sass"
+import * as orderStyles from "../styles/components/order.module.sass";
+import * as confirmStyles from "../styles/components/confirm.module.sass"
 
 import theme from "../theme";
 

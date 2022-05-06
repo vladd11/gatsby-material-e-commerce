@@ -47,6 +47,7 @@ exports.sourceNodes = async (
 ) => {
     const {createNode} = actions
 
+    console.log(process.env.BUILDER_FUNCTION_URL)
     let result: Array<Product> = await (await fetch(process.env.BUILDER_FUNCTION_URL)).json()
 
     result.forEach((product: Product) => {

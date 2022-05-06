@@ -28,7 +28,8 @@ const Index = (props: IndexProps) => {
                 )}
                 product={product}
                 whenAddedToCart={() => {
-                    product.count = setCartProducts([...cartProducts, product])
+                    product.count = 1;
+                    setCartProducts([...cartProducts, product])
                 }}
                 loading={(index > 5) ? "lazy" : "eager"}
             />
@@ -36,11 +37,6 @@ const Index = (props: IndexProps) => {
             return <div/>;
         }
     });
-
-    function removeProduct(index: number) {
-        cartProducts.splice(index, index + 1)
-        this.setState({cartProducts: cartProducts})
-    }
 
     return (<>
         <Helmet htmlAttributes={{
@@ -54,7 +50,11 @@ const Index = (props: IndexProps) => {
         <Main
             info={props.data.site.siteMetadata}
             cartProducts={cartProducts}
-            onDelete={removeProduct}>
+            onDelete={(index: number) => {
+                setCartProducts(cartProducts.filter((value, arrIndex) => {
+                    return index !== arrIndex;
+                }))
+            }}>
             {/*<div className={indexStyles.chips}>
                 <Chip label="Пиццы" className={indexStyles.chip} clickable onClick={() => {
                     setCurrentCategory(0)

@@ -5,7 +5,7 @@ import * as appBarStyles from "../styles/ui/appbar.module.sass"
 interface AppbarProps {
     title : string,
     className? : string,
-    children
+    children?
 }
 
 const Appbar = (props: AppbarProps) => {

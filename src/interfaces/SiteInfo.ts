@@ -1,4 +1,4 @@
-interface SiteInfo {
+export default interface SiteInfo {
     title: string,
     description: string,
     phone: string,
@@ -6,5 +6,3 @@ interface SiteInfo {
     address: string,
     addressLink: string
 }
-
-export default SiteInfo;

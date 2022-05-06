@@ -12,28 +12,37 @@ import Appbar from "../ui/Appbar";
 import Badge from "../ui/Badge";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import CartProduct from "../api/cartProduct";
+import SiteInfo from "../interfaces/SiteInfo";
 
 const menuWidth = 330;
 
-const Main = ({info, cartProducts, onDelete, children}) => {
+interface MainProps {
+    info: SiteInfo,
+    cartProducts: Array<CartProduct>,
+    onDelete: (index: number) => void,
+    children
+}
+
+const Main = (props: MainProps) => {
     const shouldNotExpand = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <Appbar title={info.title}>
+        <Appbar title={props.info.title}>
             {(shouldNotExpand) ?
                 <IconButton
                     onClick={() => {
                         setDrawerOpened(true)
                     }}>
-                    <Badge marker={(cartProducts.length === 0) ? null : cartProducts.length}>
-                        <MenuIcon />
+                    <Badge marker={(props.cartProducts.length === 0) ? null : props.cartProducts.length}>
+                        <MenuIcon/>
                     </Badge>
                 </IconButton> : null}
         </Appbar>
 
         <Menu
-            info={info}
+            info={props.info}
 
             isDrawerOpened={isDrawerOpened}
             onOpen={() => {
@@ -41,23 +50,23 @@ const Main = ({info, cartProducts, onDelete, children}) => {
             onClose={() => {
                 setDrawerOpened(false)
             }}
-            isCartEmpty={cartProducts.length === 0}
+            isCartEmpty={props.cartProducts.length === 0}
 
             sx={{width: menuWidth}}
             shouldNotExpand={shouldNotExpand}>
 
             {
-                cartProducts.map((cartProduct, index) => {
+                props.cartProducts.map((cartProduct, index) => {
                     return <CartMenuProduct product={cartProduct}
                                             onDelete={() => {
-                                                onDelete(index)
+                                                props.onDelete(index)
                                             }}/>
                 })
             }
         </Menu>
 
         <div className={mainStyles.content}>
-            {children}
+            {props.children}
         </div>
 
     </>)

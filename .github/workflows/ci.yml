@@ -1,13 +1,19 @@
-name: CI
-on: [push]
+name: lighthouse
+
+on:
+  check_run:
+    types:
+      - completed
+  workflow_dispatch:
+  # Test
+
 jobs:
-  lighthouseci:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: 14
-      - run: npm install && npm install -g @lhci/cli@0.8.x
-      - run: npm run build
-      - run: lhci autorun
+      - run: npm install -g @lhci/cli@0.8.x
+      - run: lhci autorun --collect.url=https://gatsby-test-nuk.pages.dev/

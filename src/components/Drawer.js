@@ -5,14 +5,14 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import * as drawerStyles from "../styles/components/drawer.module.sass"
 
 
-const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {
+const Drawer = ({children, isDrawerOpened, onClose, shouldNotExpand}) => {
     return (
         <div
             className={drawerStyles.drawer}
-            style={(isDrawerOpened) ? {display: "block"} : null}>
+            style={(isDrawerOpened || !shouldNotExpand) ? {display: "block"} : null}>
             <div className={drawerStyles.appBarList}>
                 {(shouldNotExpand) ?
-                    <div onClick={onClose} className={drawerStyles.appBar}>
+                    <div onClick={onClose} className={drawerStyles.closeDrawer}>
                         <ChevronLeftIcon/>
                     </div>
                     : null}

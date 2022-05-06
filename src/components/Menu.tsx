@@ -18,12 +18,9 @@ import SiteInfo from "../interfaces/SiteInfo";
 
 const Menu = (props: MenuProps) => {
     return (<Drawer
-        sx={props.sx}
         isDrawerOpened={props.isDrawerOpened}
-        onOpen={props.onOpen}
         onClose={props.onClose}
-        shouldNotExpand={props.shouldNotExpand}
-        anchor="left">
+        shouldNotExpand={props.shouldNotExpand}>
         <div className={menuStyles.menuList}>
             {props.children}
         </div>

@@ -22,7 +22,7 @@ import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from '!mapbox-gl';
 import Appbar from "../ui/Appbar";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;

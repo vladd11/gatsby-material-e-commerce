@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 const menuWidth = 330;
 
-const Main = ({info, cartProducts, onDelete, children, menuOpen}) => {
+const Main = ({info, cartProducts, onDelete, children}) => {
     const shouldNotExpand = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
@@ -26,8 +26,8 @@ const Main = ({info, cartProducts, onDelete, children, menuOpen}) => {
                     onClick={() => {
                         setDrawerOpened(true)
                     }}>
-                    <Badge marker="1">
-                        <MenuIcon color="action"/>
+                    <Badge marker={(cartProducts.length === 0) ? null : cartProducts.length}>
+                        <MenuIcon />
                     </Badge>
                 </IconButton> : null}
         </Appbar>

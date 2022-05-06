@@ -1,41 +1,25 @@
 import React from "react";
 
-import Divider from "@mui/material/Divider"
-import List from "@mui/material/List"
-import ListItemButton from "@mui/material/ListItemButton"
-import MuiDrawer from "@mui/material/Drawer"
-
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import * as drawerStyles from "../styles/components/drawer.module.sass";
+import * as drawerStyles from "../styles/components/drawer.module.sass"
 
 
 const Drawer = ({children, anchor, isDrawerOpened, onOpen, onClose, sx, shouldNotExpand}) => {
     return (
-        <MuiDrawer
-            anchor={anchor}
-            variant={shouldNotExpand ? 'persistent' : 'permanent'}
-            open={isDrawerOpened}
-            onClose={onClose}
-            onOpen={onOpen}
-
-            sx={sx}>
-            <List disablePadding={true} className={drawerStyles.appBarList}>
+        <div
+            className={drawerStyles.drawer}
+            style={(isDrawerOpened) ? {display: "block"} : null}>
+            <div className={drawerStyles.appBarList}>
                 {(shouldNotExpand) ?
-                    <ListItemButton key={"heading_drawer"} onClick={onClose} className={drawerStyles.appBar}
-                                    style={{
-                                        textAlign: 'center',
-                                        justifyContent: 'end'
-                                    }}>
+                    <div onClick={onClose} className={drawerStyles.appBar}>
                         <ChevronLeftIcon/>
-                    </ListItemButton>
+                    </div>
                     : null}
 
-                <Divider/>
-
                 {children}
-            </List>
-        </MuiDrawer>
+            </div>
+        </div>
     )
 }
 

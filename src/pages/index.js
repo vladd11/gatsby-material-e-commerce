@@ -6,11 +6,11 @@ import Main from '../components/Main'
 import Product from '../components/Product'
 
 import theme from '../theme'
-import {ThemeProvider} from "@mui/material/styles";
 import {graphql, useStaticQuery} from "gatsby";
 
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
+
 import Chip from "@mui/material/Chip";
 
 import * as indexStyles from "../styles/components/index.module.sass"
@@ -73,7 +73,7 @@ export default function Index() {
         }
     });
 
-    return (<ThemeProvider theme={theme}>
+    return (<>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -87,7 +87,8 @@ export default function Index() {
             cartProducts={cartProducts}
             data={data}
             onDelete={(index) => {
-                setCartProducts(cartProducts.splice(index, index))
+                cartProducts.splice(index, index + 1)
+                this.setState({cartProducts: cartProducts})
             }}>
             <div className={indexStyles.chips}>
                 <Chip label="Пиццы" className={indexStyles.chip} clickable onClick={() => {
@@ -99,5 +100,5 @@ export default function Index() {
                 {products}
             </div>
         </Main>
-    </ThemeProvider>);
+    </>);
 }

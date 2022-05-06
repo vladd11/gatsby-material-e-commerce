@@ -1,3 +1,5 @@
+@import "../theme.sass"
+
 $menu-width: 330px
 
 .content
@@ -5,14 +7,13 @@ $menu-width: 330px
   flex-direction: column
 
 
-@media (min-width: 1024px)
+@media #{$large}
   .content
     margin-left: $menu-width
 
 
-@media (max-width: 728px)
+@media #{$mobile}
   .content
-    display: flex
     justify-content: center
     
 

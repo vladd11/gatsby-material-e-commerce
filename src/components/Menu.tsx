@@ -12,7 +12,7 @@ import React from "react";
 
 import Drawer from "./Drawer";
 
-import * as menuStyles from '../styles/ui/menu-styles.module.sass'
+import * as menuStyles from '../styles/ui/menu.module.sass'
 
 import SiteInfo from "../interfaces/SiteInfo";
 

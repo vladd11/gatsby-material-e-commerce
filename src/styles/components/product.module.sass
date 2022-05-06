@@ -1,0 +1,43 @@
+@import "../theme"
+@import "../ui/card.module"
+
+.card
+  width: 280px
+  margin: 20px
+
+  @include card
+
+.image
+  min-width: 100%
+
+.header
+  padding: 16px
+
+  font-size: 1.5rem
+  @include text
+
+.content
+  @include content
+
+.button
+  width: 100%
+  padding: 8px
+
+  cursor: pointer
+
+  border: none
+  outline: none
+
+  text-transform: uppercase
+  line-height: 1.75
+  @include text
+
+  background: #fff
+  color: #1976d2
+
+.button:disabled
+  color: rgba(0, 0, 0, 0.26)
+
+@media #{$mobile}
+  .card
+    max-width: 100%

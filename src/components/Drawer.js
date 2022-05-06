@@ -12,9 +12,9 @@ const Drawer = ({children, isDrawerOpened, onClose, shouldNotExpand}) => {
             style={(isDrawerOpened || !shouldNotExpand) ? {display: "block"} : null}>
             <div className={drawerStyles.appBarList}>
                 {(shouldNotExpand) ?
-                    <div onClick={onClose} className={drawerStyles.closeDrawer}>
+                    <button onClick={onClose} className={drawerStyles.closeDrawer}>
                         <ChevronLeftIcon/>
-                    </div>
+                    </button>
                     : null}
 
                 {children}

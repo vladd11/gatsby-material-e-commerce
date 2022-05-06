@@ -1,4 +1,12 @@
+@import "../ui/card.module"
+
 .cart-product
+  @include card
+  @include text
+  flex-direction: column
+
+  min-width: 150px
+
   margin: 12px
 
 .header
@@ -9,3 +17,9 @@
 .counter
   display: flex
   align-items: center
+  padding-right: 0.5em
+
+  .counter-text
+    padding-left: 0.5em
+    padding-right: 0.5em
+

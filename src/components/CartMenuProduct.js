@@ -1,22 +1,20 @@
 import CartProduct from "./CartProduct";
+import ActionButton from "./ActionButton";
 import * as cartStyles from "../styles/components/cart-product.module.sass";
-import Fab from "@mui/material/Fab";
+
 import RemoveIcon from "@mui/icons-material/Remove";
-import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import React, {useState} from "react";
 
+import React, {useState} from "react";
 
 function CartMenuProduct({product, onDelete}) {
     const [count, setCount] = useState(product.count)
 
     return <CartProduct product={product}>
         <div className={cartStyles.counter}>
-            <Fab
-                size="small"
-                color="error"
-                aria-label="Уменьшить количество продуктов"
+            <ActionButton
+                color="#d32f2f"
                 onClick={() => {
                     if (count === 1) {
                         onDelete()
@@ -26,28 +24,20 @@ function CartMenuProduct({product, onDelete}) {
                     }
                 }}>
                 {(count === 1) ? <DeleteForeverIcon/> : <RemoveIcon/>}
-            </Fab>
+            </ActionButton>
 
-            <Typography sx={{
-                pl: 1,
-                pr: 1
-            }}>
+            <span className={cartStyles.counterText}>
                 {product.count}
-            </Typography>
+            </span>
 
-            <Fab
-                size="small"
-                color="success"
-                aria-label="Увеличить количество продуктов"
-                sx={{
-                    mr: 1
-                }}
+            <ActionButton
+                color="#2e7d32"
                 onClick={() => {
                     product.count++;
                     setCount(product.count)
                 }}>
                 <AddIcon/>
-            </Fab>
+            </ActionButton>
         </div>
     </CartProduct>
 }

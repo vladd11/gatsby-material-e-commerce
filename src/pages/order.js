@@ -4,11 +4,9 @@ import Api from '../api/api'
 import React, {useEffect} from 'react'
 import Helmet from "react-helmet/es/Helmet";
 
-import theme from "../theme";
-
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
-
 import {graphql, useStaticQuery} from "gatsby";
+
+import * as orderPageStyles from "../styles/components/order-page.module.sass"
 
 const Order = ({location}) => {
     const api = new Api()
@@ -45,19 +43,9 @@ const Order = ({location}) => {
             <meta name="description" content={data.site.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
-        <ThemeProvider theme={theme}>
-            <div style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-
-                background: theme.palette.info.light
-            }}>
-                <OrderComponent api={api}/>
-            </div>
-        </ThemeProvider>
+        <div className={orderPageStyles.root}>
+            <OrderComponent api={api}/>
+        </div>
     </>
 }
 

@@ -4,7 +4,6 @@ import MoneyIcon from '@mui/icons-material/Money';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
 import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
@@ -24,6 +23,7 @@ import CartProduct from "./CartProduct";
 import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
+import Appbar from "../ui/Appbar";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -96,15 +96,9 @@ const OrderComponent = ({api}) => {
     }
 
     return <div className={orderStyles.order}>
-        <AppBar position="static">
-            <Toolbar>
-                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    Оформление заказа
-                </Typography>
-            </Toolbar>
-        </AppBar>
+        <Appbar title="Оформление заказа" />
 
-        <List style={{display: "flex", flexDirection: "row", maxHeight: 200, overflow: 'auto'}}>
+        <List sx={{display: "flex", flexDirection: "row", maxHeight: 200, overflow: 'auto'}}>
             {cartProducts.map(cartProduct => {
                 return <CartProduct product={cartProduct}/>
             })}

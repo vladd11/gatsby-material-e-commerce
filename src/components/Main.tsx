@@ -29,7 +29,7 @@ const Main = (props: MainProps) => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <Appbar title={props.info.title}>
+        <Appbar className={mainStyles.appBar} title={props.info.title}>
             {(shouldNotExpand) ?
                 <IconButton
                     onClick={() => {

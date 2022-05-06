@@ -3,12 +3,12 @@ import * as iconButtonStyles from "../styles/ui/icon-button.module.sass"
 
 
 const IconButton = ({children, onClick, ...rest}) => {
-    return <div
+    return <button
         className={iconButtonStyles.iconButton}
         onClick={onClick}
         {...rest}>
         {children}
-    </div>
+    </button>
 }
 
 export default IconButton

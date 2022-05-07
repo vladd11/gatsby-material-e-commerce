@@ -115,7 +115,7 @@ const OrderComponent = ({api}) => {
 
         <hr className={orderStyles.divider}/>
 
-        <Input className={orderStyles.phoneInput} key="phone" type="tel" onChange={(e) => {
+        <Input className={orderStyles.phoneInput} id="phone" type="tel" onChange={(e) => {
             setPhone(e.target.value)
         }} value={phone}>
             Номер телефона
@@ -129,7 +129,7 @@ const OrderComponent = ({api}) => {
             </button>
 
             {(isAddressFormManual)
-                ? <Input key="address" type="address" onChange={e => {
+                ? <Input id="address" type="address" onChange={e => {
                     setAddress(e.target.value)
                 }}>
                     Адрес доставки

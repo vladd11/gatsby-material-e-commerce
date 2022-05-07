@@ -17,7 +17,7 @@ const Wrapper = (props: WrapperProps) => {
 
 const ListItemLink = (props: ListItemLinkProps) => {
     if (props.isExternalLink) {
-        return <Wrapper component="a" disabled={props.disabled} selected={props.selected}>
+        return <Wrapper component="a" disabled={props.disabled} selected={props.selected} href={props.to}>
             {props.children}
         </Wrapper>;
     } else {
@@ -37,7 +37,6 @@ type WrapperProps = {
 }
 
 interface ListItemLinkProps {
-    component?,
     children,
     to: string,
 

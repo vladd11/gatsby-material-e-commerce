@@ -43,7 +43,7 @@ const Menu = (props: MenuProps) => {
             </ListItemText>
         </ListItemLink>
 
-        <ListItemLink component="a" to={`tel:${props.info.phone}`} isExternalLink={true}>
+        <ListItemLink to={`tel:${props.info.phone}`} isExternalLink={true}>
             <ListItemIcon>
                 <PhoneOutlinedIcon/>
             </ListItemIcon>
@@ -52,7 +52,7 @@ const Menu = (props: MenuProps) => {
             </ListItemText>
         </ListItemLink>
 
-        <ListItemLink component="a" to={props.info.addressLink} isExternalLink={true}>
+        <ListItemLink to={props.info.addressLink} isExternalLink={true}>
             <ListItemIcon>
                 <PlaceOutlinedIcon/>
             </ListItemIcon>

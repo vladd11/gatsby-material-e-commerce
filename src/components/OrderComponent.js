@@ -3,14 +3,6 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import MoneyIcon from '@mui/icons-material/Money';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import FormControl from "@mui/material/FormControl";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import List from "@mui/material/List";
-import Toolbar from "@mui/material/Toolbar";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
@@ -21,8 +13,11 @@ import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
+
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
+
+import Input from "../ui/Input";
 import Appbar from "../ui/Appbar";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
@@ -96,53 +91,44 @@ const OrderComponent = ({api}) => {
     }
 
     return <div className={orderStyles.order}>
-        <Appbar title="Оформление заказа" />
+        <Appbar title="Оформление заказа"/>
 
-        <List sx={{display: "flex", flexDirection: "row", maxHeight: 200, overflow: 'auto'}}>
+        <div className={orderStyles.products}>
             {cartProducts.map(cartProduct => {
                 return <CartProduct product={cartProduct}/>
             })}
-        </List>
+        </div>
 
-        <Typography sx={{marginLeft: "12px"}}>
+        <span className={orderStyles.priceLabel}>
             Итого:
-            <span style={{paddingLeft: "4px", fontWeight: "bold"}}>
+            <span className={orderStyles.price}>
                 {cartProducts.reduce((n, cartProduct) => {
                     return n + cartProduct.Price;
                 }, 0) / 100} рублей
             </span>
-        </Typography>
+        </span>
 
-        <Divider style={{borderBottomWidth: "medium", marginTop: '4px'}}/>
+        <hr className={orderStyles.divider}/>
 
-        <FormControl sx={{mt: '16px'}} required={true} style={{width: "100%"}} error={!isPhoneValid}>
-            <InputLabel htmlFor="phone">Номер телефона</InputLabel>
-            <Input inputmode="tel" id="phone" aria-describedby="tel" sx={{pl: 1}} value={phone} onChange={event => {
-                setPhone(event.target.value)
-            }}/>
-        </FormControl>
+        <Input key="phone" type="tel" onChange={(e) => {
+            setPhone(e.target.value)
+        }} value={phone}>
+            Номер телефона
+        </Input>
 
         <div className={orderStyles.addressInput}>
-            <Button variant="small" sx={{width: "100%", textTransform: "initial"}} onClick={() => {
+            <button className={orderStyles.button} onClick={() => {
                 setAddressFormType(!isAddressFormManual)
             }}>
                 {(isAddressFormManual) ? "Указать позицию на карте" : "Указать адрес вручную"}
-            </Button>
+            </button>
 
             {(isAddressFormManual)
-                ? <FormControl sx={{mt: '8px', mb: '64px'}}
-                               required={true}
-                               style={{width: "100%"}}
-                               error={!isAddressValid}>
-                    <InputLabel htmlFor="address">Адрес доставки</InputLabel>
-                    <Input id="address"
-                           aria-describedby="address"
-                           sx={{pl: 1}}
-                           value={address}
-                           onChange={event => {
-                               setAddress(event.target.value)
-                           }}/>
-                </FormControl>
+                ? <Input key="phone" type="address" onChange={e => {
+
+                }}>
+                    Адрес доставки
+                </Input>
                 : null}
 
             <div className={orderStyles.container}

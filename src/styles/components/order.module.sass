@@ -1,4 +1,6 @@
 @import "../theme"
+@import "../ui/button.module"
+
 @mixin mobileOrder
   width: 100%
   height: 100%
@@ -22,6 +24,43 @@
 
   border-radius: 10%
 
+  .products
+    display: flex
+    flex-direction: row
+    max-height: 200px
+
+    overflow: auto
+
+    margin-top: 8px
+    margin-bottom: 8px
+
+  .priceLabel
+    margin-left: 12px
+    @include text
+
+    .price
+      padding-left: 4px
+      font-weight: bold
+
+  .button
+    @include button
+
+    padding: 6px 16px
+
+    font-weight: 500
+    font-size: 0.875rem
+    text-transform: initial
+
+    width: 100%
+
+  .button:hover
+    background: rgba(0, 0, 0, 0.04)
+
+  .divider
+    border-width: 0
+    border-bottom: rgba(0, 0, 0, 0.12) solid 3px
+    margin-top: 4px
+
 
 .placeIcon
   position: absolute
@@ -33,12 +72,12 @@
   font-size: 48px
 
 
-.container
-  position: relative
-  height: 100%
-
 .addressInput
   height: 300px
+
+.container
+  height: 100%
+  position: relative
 
 .fab
   position: absolute

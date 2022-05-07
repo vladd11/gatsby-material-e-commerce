@@ -23,37 +23,37 @@ export default class Database {
     }
 
     private async _readProducts(session: Session): Promise<Array<Product>> {
-        const result = await session.executeQuery(`
-            SELECT \`id\`, \`category\`, \`description\`, \`image_uri\`, \`price\`, \`title\`
-            FROM \`products\`
-        `)
+        return new Promise(async (resolve, reject) => {
+            await session.streamReadTable("products", (result1) => {
+                    const products: Array<Product> = []
 
-        const products: Array<Product> = []
+                    for (const row of result1.resultSet.rows) {
+                        let price: (number | Long) = row.items[5].uint64Value!
+                        if (typeof price === "number") {
+                            price = price / 100
+                        } else {
+                            price = price.divide(100).toNumber()
+                            if (price >= Number.MAX_SAFE_INTEGER) {
+                                throw new PriceIsTooBigException(price)
+                            }
+                        }
 
-        for (const row of result.resultSets[0].rows) {
-            let price: (number | Long) = row.items[4].uint64Value!
-            if (typeof price === "number") {
-                price = price / 100
-            } else {
-                price = price.divide(100).toNumber()
-                if (price >= Number.MAX_SAFE_INTEGER) {
-                    throw new PriceIsTooBigException(price)
+                        products.push({
+                            ProductID: row.items[1].bytesValue.toString(),
+                            Category: row.items[4].int32Value,
+
+                            Description: row.items[3].textValue,
+                            ImageURI: row.items[0].textValue,
+
+                            Price: price,
+                            Title: row.items[2].textValue,
+                        })
+                    }
+
+                    resolve(products)
                 }
-            }
-
-            products.push({
-                ProductID: row.items[0].bytesValue.toString(),
-                Category: row.items[1].int32Value,
-
-                Description: row.items[2].textValue,
-                ImageURI: row.items[3].textValue,
-
-                Price: price,
-                Title: row.items[5].textValue,
-            })
-        }
-
-        return products;
+            )
+        });
     }
 
     async connect() {
@@ -65,10 +65,9 @@ export default class Database {
         })).json()).iamToken
 
         const authService = ydb.getCredentialsFromEnv();
-        console.log('Driver initializing...');
 
         this.driver = new ydb.Driver({
-            endpoint: "grpcs://ydb.serverless.yandexcloud.net:2135",
+            endpoint: process.env.ENDPOINT || "grpcs://ydb.serverless.yandexcloud.net:2135",
             database: process.env.DATABASE,
             authService
         });

@@ -8,7 +8,7 @@ const Wrapper = (props: WrapperProps) => {
 
     return <div style={(props.selected) ? {background: "rgba(85, 108, 214, 0.08)"} : null}>
         <props.component className={listItemButton.itemButton}
-                         style={(props.disabled) ? {opacity: '0.38'} : null}
+                         style={(props.disabled) ? {opacity: '0.38', cursor: "not-allowed"} : null}
                          {...rest}>
             {props.children}
         </props.component>

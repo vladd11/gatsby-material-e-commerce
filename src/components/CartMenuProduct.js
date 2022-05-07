@@ -14,7 +14,7 @@ function CartMenuProduct({product, onDelete}) {
     return <CartProduct product={product}>
         <div className={cartStyles.counter}>
             <ActionButton
-                color="#d32f2f"
+                className={cartStyles.counterDecreaseButton}
                 onClick={() => {
                     if (count === 1) {
                         onDelete()
@@ -31,7 +31,7 @@ function CartMenuProduct({product, onDelete}) {
             </span>
 
             <ActionButton
-                color="#2e7d32"
+                className={cartStyles.counterIncreaseButton}
                 onClick={() => {
                     product.count++;
                     setCount(product.count)

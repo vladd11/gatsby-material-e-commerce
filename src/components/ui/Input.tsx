@@ -1,14 +1,15 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import * as inputStyles from "../../styles/ui/input.module.sass"
 
-export default function Input({key, onChange, type, value, children}) {
+export default function Input({key, onChange, type, value, className, children}) {
     const [isFocused, setFocused] = useState(false)
+    const [isEmpty, setEmpty] = useState(!!value)
 
-    const [isEmpty, setEmpty] = useState((!value))
+    useEffect(() => setEmpty(!!value), [value])
 
     const input = useRef(null)
 
-    return <div className={inputStyles.form}
+    return <div className={`${inputStyles.form} ${className}`}
                 onFocus={(e) => {
                     e.preventDefault()
                     input.current.focus()
@@ -22,7 +23,7 @@ export default function Input({key, onChange, type, value, children}) {
                 tabIndex={0}>
 
         <label htmlFor={key} className={inputStyles.label}
-               style={(isFocused || !isEmpty)
+               style={(isFocused || isEmpty)
                    ? {transform: "translate(14px, -9px) scale(0.75)", color: (isFocused) ? "#556cd6" : null}
                    : {transform: "translate(14px, 16px) scale(1)"}}>
             {children}

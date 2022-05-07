@@ -6,7 +6,6 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 /*
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";*/
-
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
@@ -16,10 +15,14 @@ import CartProduct from "./CartProduct";
 import * as orderStyles from "../styles/components/order.module.sass"
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl from '!mapbox-gl';
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
+import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 
 import Input from "./ui/Input";
 import Appbar from "./ui/Appbar";
+import SpeedDial from "./ui/SpeedDial";
+import ActionButton from "./ui/ActionButton";
+import SpeedDialButton from "./ui/SpeedDialButton";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -30,6 +33,7 @@ const OrderComponent = ({api}) => {
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('+7', 'phone')
 
+    const [isDialSelected, setDialSelected] = useState(false)
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
 
@@ -43,6 +47,8 @@ const OrderComponent = ({api}) => {
         if (map.current || isAddressFormManual) {
             return;
         }
+
+        mapboxgl.workerClass = MapboxWorker;
 
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
@@ -58,8 +64,6 @@ const OrderComponent = ({api}) => {
     }, [isAddressFormManual]);
 
     async function validateAndOrder(paymentMethod) {
-        console.log(paymentMethod)
-
         if (isEmptyOrSpaces(phone)) {
             setPhoneValid(false);
         }
@@ -78,7 +82,7 @@ const OrderComponent = ({api}) => {
                 }
             } catch (e) {
                 if (e.code === 1005) {
-                    navigate("/confirm/", {
+                    await navigate("/confirm/", {
                         state: {
                             cartProducts: cartProducts,
                             address: address,
@@ -111,13 +115,13 @@ const OrderComponent = ({api}) => {
 
         <hr className={orderStyles.divider}/>
 
-        <Input key="phone" type="tel" onChange={(e) => {
+        <Input className={orderStyles.phoneInput} key="phone" type="tel" onChange={(e) => {
             setPhone(e.target.value)
         }} value={phone}>
             Номер телефона
         </Input>
 
-        <div className={orderStyles.addressInput}>
+        <div className={orderStyles.addressInput} style={(isAddressFormManual) ? {height: '300px'} : null}>
             <button className={orderStyles.button} onClick={() => {
                 setAddressFormType(!isAddressFormManual)
             }}>
@@ -139,6 +143,24 @@ const OrderComponent = ({api}) => {
                 <PlaceOutlinedIcon className={orderStyles.placeIcon}/>
             </div>
         </div>
+
+        <SpeedDial className={orderStyles.speedDial} main={
+            <ActionButton className={orderStyles.orderButton}
+                          onClick={() => setDialSelected(!isDialSelected)}>
+                <LocalShippingIcon/>
+                <span className={orderStyles.text}>
+                    Заказать
+                </span>
+            </ActionButton>
+        } shown={isDialSelected}>
+            <SpeedDialButton tooltipText="Предоплата картой" onClick={() => validateAndOrder("card")}>
+                <CreditCardIcon/>
+            </SpeedDialButton>
+
+            <SpeedDialButton tooltipText="Наличными при получении" onClick={() => validateAndOrder("cash")}>
+                <MoneyIcon/>
+            </SpeedDialButton>
+        </SpeedDial>
 
         {/*<SpeedDial
             color="primary"

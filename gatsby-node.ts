@@ -2,6 +2,8 @@ const path = require("path")
 const fs = require("fs")
 const transliteration = require('transliteration');
 
+import Database from "./db";
+
 // @ts-ignore
 const fetch = require("node-fetch");
 
@@ -47,10 +49,10 @@ exports.sourceNodes = async (
 ) => {
     const {createNode} = actions
 
-    console.log(process.env.BUILDER_FUNCTION_URL)
-    let result: Array<Product> = await (await fetch(process.env.BUILDER_FUNCTION_URL)).json()
+    const db = new Database()
 
-    result.forEach((product: Product) => {
+    await db.connect();
+    (await db.readProducts()).forEach((product) => {
         product.Price = Math.round(product.Price * 100) / 100
         createNode({
             ...product,

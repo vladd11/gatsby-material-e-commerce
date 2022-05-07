@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import * as inputStyles from "../styles/ui/input.module.sass"
+import * as inputStyles from "../../styles/ui/input.module.sass"
 
 export default function Input({key, onChange, type, value, children}) {
     const [isFocused, setFocused] = useState(false)

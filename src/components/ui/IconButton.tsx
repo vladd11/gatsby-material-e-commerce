@@ -1,5 +1,5 @@
 import React from "react";
-import * as iconButtonStyles from "../styles/ui/icon-button.module.sass"
+import * as iconButtonStyles from "../../styles/ui/icon-button.module.sass"
 
 
 const IconButton = ({children, onClick, ...rest}) => {

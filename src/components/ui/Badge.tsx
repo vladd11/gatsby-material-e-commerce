@@ -1,5 +1,5 @@
 import React from "react";
-import * as badgeStyles from "../styles/ui/badges.module.sass"
+import * as badgeStyles from "../../styles/ui/badges.module.sass"
 
 const Badge = ({children, marker}) => {
   if(!marker) return children;

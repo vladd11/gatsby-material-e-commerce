@@ -1,4 +1,4 @@
-import * as listItemButton from "../styles/ui/list-item-button.module.sass"
+import * as listItemButton from "../../styles/ui/list-item-button.module.sass"
 
 import React from "react"
 import {Link} from "gatsby";

@@ -17,8 +17,8 @@ import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
 
-import Input from "../ui/Input";
-import Appbar from "../ui/Appbar";
+import Input from "./ui/Input";
+import Appbar from "./ui/Appbar";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 

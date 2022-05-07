@@ -7,9 +7,9 @@ import IsMobile from '../isMobile'
 import '../styles/body-fix.sass'
 import * as mainStyles from "../styles/components/main.module.sass"
 
-import IconButton from "../ui/IconButton";
-import Appbar from "../ui/Appbar";
-import Badge from "../ui/Badge";
+import IconButton from "./ui/IconButton";
+import Appbar from "./ui/Appbar";
+import Badge from "./ui/Badge";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CartProduct from "../api/cartProduct";

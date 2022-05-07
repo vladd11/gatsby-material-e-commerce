@@ -1,6 +1,6 @@
-import ListItemLink from "../ui/ListItemLink"
-import ListItemIcon from "../ui/ListItemIcon"
-import ListItemText from "../ui/ListItemText"
+import ListItemLink from "./ui/ListItemLink"
+import ListItemIcon from "./ui/ListItemIcon"
+import ListItemText from "./ui/ListItemText"
 
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";

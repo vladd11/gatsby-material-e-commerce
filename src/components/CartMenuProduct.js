@@ -1,5 +1,5 @@
 import CartProduct from "./CartProduct";
-import ActionButton from "./ActionButton";
+import ActionButton from "./ui/ActionButton";
 import * as cartStyles from "../styles/components/cart-product.module.sass";
 
 import RemoveIcon from "@mui/icons-material/Remove";

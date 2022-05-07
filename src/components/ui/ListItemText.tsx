@@ -1,5 +1,5 @@
 import React from 'react'
-import * as textStyles from '../styles/ui/list-item-text.module.sass'
+import * as textStyles from '../../styles/ui/list-item-text.module.sass'
 
 const ListItemText = (props: ListItemTextProps) => {
     return <span className={textStyles.root}>

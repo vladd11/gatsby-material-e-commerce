@@ -3,7 +3,8 @@ import * as inputStyles from "../styles/ui/input.module.sass"
 
 export default function Input({key, onChange, type, value, children}) {
     const [isFocused, setFocused] = useState(false)
-    const [isEmpty, setEmpty] = useState(value === "")
+
+    const [isEmpty, setEmpty] = useState((!value))
 
     const input = useRef(null)
 
@@ -29,7 +30,10 @@ export default function Input({key, onChange, type, value, children}) {
         <div className={inputStyles.holder}>
             <input className={inputStyles.field} type={type} id={key} aria-describedby={type} value={value}
                    onChange={(e) => {
-                       setEmpty(e.target.value === "")
+                       if (e.target.value) {
+                           setEmpty(false)
+                       } else setEmpty(true)
+
                        onChange(e)
                    }}
 

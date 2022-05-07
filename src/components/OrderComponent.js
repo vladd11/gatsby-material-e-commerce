@@ -124,8 +124,8 @@ const OrderComponent = ({api}) => {
             </button>
 
             {(isAddressFormManual)
-                ? <Input key="phone" type="address" onChange={e => {
-
+                ? <Input key="address" type="address" onChange={e => {
+                    setAddress(e.target.value)
                 }}>
                     Адрес доставки
                 </Input>

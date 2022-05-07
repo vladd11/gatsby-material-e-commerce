@@ -3,8 +3,9 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import MoneyIcon from '@mui/icons-material/Money';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
+/*
 import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
+import SpeedDialAction from "@mui/material/SpeedDialAction";*/
 
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
@@ -139,7 +140,7 @@ const OrderComponent = ({api}) => {
             </div>
         </div>
 
-        <SpeedDial
+        {/*<SpeedDial
             color="primary"
             ariaLabel="Заказать"
             style={{textTransform: 'initial'}}
@@ -163,7 +164,7 @@ const OrderComponent = ({api}) => {
 
                 icon={<MoneyIcon/>}
             />
-        </SpeedDial>
+        </SpeedDial>*/}
     </div>
 }
 

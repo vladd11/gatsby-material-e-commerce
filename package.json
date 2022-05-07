@@ -7,7 +7,6 @@
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
-    "@mui/material": "latest",
     "gatsby": "latest",
     "gatsby-plugin-image": "^2.13.0",
     "gatsby-plugin-preact": "latest",

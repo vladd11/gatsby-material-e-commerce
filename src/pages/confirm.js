@@ -1,14 +1,25 @@
-import React, {useEffect, useState} from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
+
+import React, {useState, useEffect} from "react";
 import {graphql, useStaticQuery} from "gatsby";
 
 import * as orderStyles from "../styles/components/order.module.sass";
+import * as orderPageStyles from "../styles/components/order-page.module.sass";
 import * as confirmStyles from "../styles/components/confirm.module.sass"
 
+import theme from "../theme";
+
 import Api from "../api/api";
+import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
-import Appbar from "../components/ui/Appbar";
-import Input from "../components/ui/Input";
-import InputHelper from "../components/ui/InputHelper";
 
 const Confirm = ({location}) => {
     const api = new Api()
@@ -29,16 +40,12 @@ const Confirm = ({location}) => {
     const [code, setCode] = useState("")
     const [timeToResend, setTimeToResend] = useState(60);
     const [codeError, setCodeError] = useState("")
-    const [lockButton, setLockButton] = useState(false)
 
     setTimeout(() => {
         if (timeToResend !== 0) {
             setTimeToResend(timeToResend - 1)
         }
     }, 1000)
-
-    const {state = {}} = location
-    const {cartProducts, address, paymentMethod, phone} = state
 
     return <>
         <Helmet htmlAttributes={{
@@ -48,75 +55,91 @@ const Confirm = ({location}) => {
             <meta name="description" content={data.site.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>
         </Helmet>
-        <div className={confirmStyles.root}>
-            <div className={orderStyles.order}>
-                <Appbar title="Подтвердите номер телефона"/>
+        <ThemeProvider theme={theme}>
+            <div className={orderPageStyles.root}>
+                <div className={orderStyles.order}>
+                    <AppBar position="static">
+                        <Toolbar>
+                            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                                Подтвердите номер телефона
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
 
-                <div className={confirmStyles.phoneCard}>
-                    <span>
-                        Ваш номер телефона:
-                    </span>
-                    <b className={confirmStyles.phoneText}>
-                        {phone}
-                    </b>
-                </div>
+                    <div className={confirmStyles.phoneCard}>
+                        <Typography component="span">
+                            Ваш номер телефона:
+                        </Typography>
+                        <Typography sx={{
+                            ml: "8px",
+                            fontWeight: "bold"
+                        }} component="span">
+                            +79170324874
+                        </Typography>
+                    </div>
 
-                <Input className={confirmStyles.input} type="numeric" id="code" value={code} error={!!codeError}
-                       onChange={event => {
-                           const prev = event.target.value;
-                           setCode(event.target.value)
-                           setCodeError("")
+                    <FormControl
+                        required={true}
+                        style={{width: "100%"}}
+                        error={codeError !== ""}
+                        sx={{mt: '8px', mb: '8px'}}>
 
-                           if (event.target.value.length === 6) {
-                               setTimeout(async () => {
-                                   if (event.target.value === prev) {
-                                       // noinspection EqualityComparisonWithCoercionJS
-                                       try {
-                                           const result = await api.sendCodeAndOrder(cartProducts, address, paymentMethod, phone, prev)
+                        <InputLabel htmlFor="phone">Код</InputLabel>
+                        <Input inputmode="numeric" id="phone" aria-describedby="code" sx={{pl: 1}} value={code}
+                               onChange={event => {
+                                   const prev = event.target.value;
+                                   setCode(event.target.value)
+                                   setCodeError("")
 
-                                           console.log(result)
+                                   if (event.target.value.length === 6) {
+                                       setTimeout(async () => {
+                                           if (event.target.value === prev) {
+                                               try {
+                                                   const result = await api.sendCodeAndOrder(
+                                                       location.state.cartProducts,
+                                                       location.state.address,
+                                                       location.state.paymentMethod,
+                                                       location.state.phone,
+                                                       prev)
 
-                                           if (result) {
-                                               window.location.replace(result)
+                                                   if (result) {
+                                                       window.location.replace(result)
+                                                   }
+                                               } catch (e) {
+                                                   if (e.code === 1001) {
+                                                       setCodeError("Неверный SMS-код");
+                                                   } else if (e.code === 1004) {
+                                                       setCodeError("Срок действия кода истёк");
+                                                   }
+                                               }
                                            }
-                                       } catch (e) {
-                                           console.error(e)
-                                           if (e.code === 1001) {
-                                               setCodeError("Неверный SMS-код");
-                                           } else if (e.code === 1004) {
-                                               setCodeError("Срок действия кода истёк");
-                                           }
-                                       }
+                                       }, 1000)
+
                                    }
-                               }, 1000)
-
-                           }
-                       }}>
-                    Код
-                </Input>
-                <InputHelper error={!!codeError}>
-                    {(codeError === "") ? "Код будет проверен автоматически." : codeError}
-                </InputHelper>
-                <button
-                    style={(timeToResend !== 0 || lockButton) ? null : {
-                        justifyContent: "center",
-                        color: "#556cd6",
-                        pointerEvents: "all",
-                        cursor: "pointer"
+                               }}/>
+                        <FormHelperText>
+                            {(codeError === "") ? "Код будет проверен автоматически." : codeError}
+                        </FormHelperText>
+                    </FormControl>
+                    <Button sx={{
+                        width: '100%',
+                        justifyContent: (timeToResend === 0) ? "center" : "space-between",
                     }}
-                    className={confirmStyles.button}
-                    disabled={timeToResend !== 0 || lockButton}
-                    onClick={async () => {
-                        setLockButton(true)
-
-                        await api.resendCode(JSON.parse(localStorage.getItem("phone")));
-                        setTimeToResend(60);
-                    }}>
-                    Отправить СМС заново
-                    {(timeToResend === 0) ? null : <span>{timeToResend}</span>}
-                </button>
+                            disabled={timeToResend !== 0}
+                            onClick={async () => {
+                                await api.resendCode(JSON.parse(localStorage.getItem("phone")))
+                                setTimeToResend(60);
+                            }}>
+                        Отправить СМС заново
+                        {
+                            (timeToResend === 0)
+                                ? null
+                                : <Typography>{timeToResend}</Typography>
+                        }
+                    </Button>
+                </div>
             </div>
-        </div>
+        </ThemeProvider>
     </>
 }
 

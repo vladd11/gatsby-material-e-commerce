@@ -1,15 +1,15 @@
 import React from 'react'
 
-import Menu from "./Menu";
-import CartMenuProduct from "./CartMenuProduct";
 import IsMobile from '../isMobile'
 
-import '../styles/body-fix.sass'
-import * as mainStyles from "../styles/components/main.module.sass"
-
-import IconButton from "./ui/IconButton";
+import Menu from "./Menu";
+import CartMenuProduct from "./CartMenuProduct";
 import Appbar from "./ui/Appbar";
+import IconButton from "./ui/IconButton";
 import Badge from "./ui/Badge";
+import '../styles/body-fix.sass';
+
+import * as mainStyles from "../styles/components/main.module.sass"
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CartProduct from "../api/cartProduct";
@@ -29,7 +29,7 @@ const Main = (props: MainProps) => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <Appbar className={mainStyles.appBar} title={props.info.title}>
+        <Appbar className={mainStyles.mainAppBar} title={props.info.title}>
             {(shouldNotExpand) ?
                 <IconButton
                     onClick={() => {

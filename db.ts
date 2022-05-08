@@ -39,7 +39,8 @@ export default class Database {
                         }
 
                         products.push({
-                            ProductID: row.items[1].bytesValue.toString(),
+                            // @ts-ignore
+                            ProductID: row.items[1].bytesValue.toString('hex'),
                             Category: row.items[4].int32Value,
 
                             Description: row.items[3].textValue,

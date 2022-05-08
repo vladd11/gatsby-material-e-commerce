@@ -4,10 +4,11 @@ import {Helmet} from "react-helmet";
 import Main from '../components/Main'
 import Product from '../components/Product'
 
+import * as indexStyles from "../styles/components/index.module.sass"
+
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
 
-import * as indexStyles from "../styles/components/index.module.sass"
 import Data from "../interfaces/Data";
 
 interface IndexProps {

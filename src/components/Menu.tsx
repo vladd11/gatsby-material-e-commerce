@@ -25,7 +25,9 @@ const Menu = (props: MenuProps) => {
             {props.children}
         </div>
 
-        <ListItemLink to={"order"} disabled={props.isCartEmpty} selected={!props.isCartEmpty}>
+        <ListItemLink to={"order"}
+                      disabled={props.isCartEmpty}
+                      selected={!props.isCartEmpty}>
             <ListItemIcon>
                 <LocalShippingIcon/>
             </ListItemIcon>

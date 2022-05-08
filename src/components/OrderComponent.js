@@ -1,11 +1,20 @@
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import MoneyIcon from '@mui/icons-material/Money';
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-
-/*
+import Typography from "@mui/material/Typography";
+import AppBar from "@mui/material/AppBar";
+import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import List from "@mui/material/List";
+import Toolbar from "@mui/material/Toolbar";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import Button from "@mui/material/Button";
 import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialAction from "@mui/material/SpeedDialAction";*/
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import MoneyIcon from "@mui/icons-material/Money";
+
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
@@ -13,16 +22,8 @@ import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
-
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl-csp';
-import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
-
-import Input from "./ui/Input";
-import Appbar from "./ui/Appbar";
-import SpeedDial from "./ui/SpeedDial";
-import ActionButton from "./ui/ActionButton";
-import SpeedDialButton from "./ui/SpeedDialButton";
+import mapboxgl from '!mapbox-gl';
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -33,7 +34,6 @@ const OrderComponent = ({api}) => {
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('+7', 'phone')
 
-    const [isDialSelected, setDialSelected] = useState(false)
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
 
@@ -47,8 +47,6 @@ const OrderComponent = ({api}) => {
         if (map.current || isAddressFormManual) {
             return;
         }
-
-        mapboxgl.workerClass = MapboxWorker;
 
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
@@ -64,6 +62,8 @@ const OrderComponent = ({api}) => {
     }, [isAddressFormManual]);
 
     async function validateAndOrder(paymentMethod) {
+        console.log(paymentMethod)
+
         if (isEmptyOrSpaces(phone)) {
             setPhoneValid(false);
         }
@@ -96,76 +96,96 @@ const OrderComponent = ({api}) => {
     }
 
     return <div className={orderStyles.order}>
-        <Appbar title="Оформление заказа"/>
+        <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                    Оформление заказа
+                </Typography>
+            </Toolbar>
+        </AppBar>
 
-        <div className={orderStyles.products}>
+        <List sx={{
+            display: "flex",
+            flexDirection: "row",
+
+            maxHeight: 200,
+            overflow: 'auto'
+        }}>
             {cartProducts.map(cartProduct => {
                 return <CartProduct product={cartProduct}/>
             })}
-        </div>
+        </List>
 
-        <span className={orderStyles.priceLabel}>
+        <Typography sx={{marginLeft: "12px"}}>
             Итого:
-            <span className={orderStyles.price}>
+            <Typography component="span" sx={{paddingLeft: "4px", fontWeight: "bold"}}>
                 {cartProducts.reduce((n, cartProduct) => {
                     return n + cartProduct.Price;
-                }, 0) / 100} рублей
-            </span>
-        </span>
+                }, 0)} рублей
+            </Typography>
+        </Typography>
 
-        <hr className={orderStyles.divider}/>
+        <Divider sx={{
+            borderBottomWidth: "medium",
+            marginTop: '4px'
+        }}/>
 
-        <Input className={orderStyles.phoneInput} id="phone" type="tel" onChange={(e) => {
-            setPhone(e.target.value)
-        }} value={phone}>
-            Номер телефона
-        </Input>
+        <FormControl
+            sx={{
+                mt: '16px',
+                width: "100%"
+            }}
+            required={true}
+            error={!isPhoneValid}>
 
-        <div className={orderStyles.addressInput} style={(isAddressFormManual) ? {height: '300px'} : null}>
-            <button className={orderStyles.button} onClick={() => {
+            <InputLabel htmlFor="phone">Номер телефона</InputLabel>
+            <Input inputmode="tel" id="phone" aria-describedby="tel" sx={{pl: 1}} value={phone} onChange={event => {
+                setPhone(event.target.value)
+            }}/>
+        </FormControl>
+
+        <div className={orderStyles.addressInput}>
+            <Button variant="small" sx={{width: "100%", textTransform: "initial"}} onClick={() => {
                 setAddressFormType(!isAddressFormManual)
             }}>
                 {(isAddressFormManual) ? "Указать позицию на карте" : "Указать адрес вручную"}
-            </button>
+            </Button>
 
             {(isAddressFormManual)
-                ? <Input id="address" type="address" onChange={e => {
-                    setAddress(e.target.value)
-                }}>
-                    Адрес доставки
-                </Input>
+                ? <FormControl sx={{mt: '8px', mb: '64px', width: "100%"}}
+                               required={true}
+                               error={!isAddressValid}>
+                    <InputLabel htmlFor="address">Адрес доставки</InputLabel>
+                    <Input id="address"
+                           aria-describedby="address"
+                           sx={{pl: 1}}
+                           value={address}
+                           onChange={event => {
+                               setAddress(event.target.value)
+                           }}/>
+                </FormControl>
                 : null}
 
             <div className={orderStyles.container}
                  style={(isAddressFormManual) ? {display: 'none'} : null}>
 
-                <div ref={mapContainer} className="map-container" style={{height: '100%'}}/>
-                <PlaceOutlinedIcon className={orderStyles.placeIcon}/>
+                <div ref={mapContainer} className={orderStyles.mapContainer}/>
+                <PlaceOutlinedIcon sx={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    paddingBottom: "48px",
+
+                    fontSize: "48px"
+                }}/>
             </div>
         </div>
 
-        <SpeedDial className={orderStyles.speedDial} main={
-            <ActionButton className={orderStyles.orderButton}
-                          onClick={() => setDialSelected(!isDialSelected)}>
-                <LocalShippingIcon/>
-                <span className={orderStyles.text}>
-                    Заказать
-                </span>
-            </ActionButton>
-        } shown={isDialSelected}>
-            <SpeedDialButton tooltipText="Предоплата картой" onClick={() => validateAndOrder("card")}>
-                <CreditCardIcon/>
-            </SpeedDialButton>
-
-            <SpeedDialButton tooltipText="Наличными при получении" onClick={() => validateAndOrder("cash")}>
-                <MoneyIcon/>
-            </SpeedDialButton>
-        </SpeedDial>
-
-        {/*<SpeedDial
+        <SpeedDial
             color="primary"
             ariaLabel="Заказать"
-            style={{textTransform: 'initial'}}
+            sx={{textTransform: 'initial'}}
             className={orderStyles.fab}
             icon={<LocalShippingIcon/>}
         >
@@ -173,6 +193,7 @@ const OrderComponent = ({api}) => {
                 key="payCard"
 
                 tooltipTitle="Оплата картой"
+                tooltipOpen
 
                 onFocus={() => validateAndOrder("card")}
 
@@ -181,12 +202,13 @@ const OrderComponent = ({api}) => {
             <SpeedDialAction
                 key="payCash"
                 tooltipTitle="Оплата наличными"
+                tooltipOpen
 
                 onFocus={() => validateAndOrder("cash")}
 
                 icon={<MoneyIcon/>}
             />
-        </SpeedDial>*/}
+        </SpeedDial>
     </div>
 }
 

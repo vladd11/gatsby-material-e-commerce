@@ -6,9 +6,13 @@ $menu-width: 330px
   display: flex
   flex-direction: column
 
-.app-bar
+.main-app-bar
   padding-left: $menu-width + 16px
 
 @media #{$large}
   .content
     margin-left: $menu-width
+
+@media #{$not-large}
+  .main-app-bar
+    padding-left: 0

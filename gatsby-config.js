@@ -24,8 +24,8 @@ module.exports = {
                 name: `Shop`,
                 short_name: `Shop`,
                 start_url: `/`,
-                background_color: `#f7f0eb`,
-                theme_color: `#a2466c`,
+                background_color: `#fff`,
+                theme_color: `#556cd6`,
                 display: `standalone`,
                 icon: "icon.png",
                 icon_options: {

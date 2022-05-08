@@ -20,7 +20,10 @@ const Product = ({product, whenAddedToCart, disabled, loading = "lazy"}) => {
 
         <GatsbyImage loading={loading} className={cardStyles.image} alt={product.Title} image={product.Image}/>
 
-        <button className={cardStyles.button} onClick={whenAddedToCart} disabled={disabled}>
+        <button className={cardStyles.button}
+                onClick={whenAddedToCart}
+                disabled={disabled}
+                style={(disabled) ? {cursor: "auto"} : null}>
             {(disabled) ? "Добавлено" : "Добавить в корзину"}
         </button>
     </div>

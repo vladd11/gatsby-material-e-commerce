@@ -9,6 +9,8 @@
     "@mui/icons-material": "latest",
     "gatsby": "latest",
     "gatsby-plugin-image": "^2.13.0",
+    "gatsby-plugin-manifest": "^4.13.0",
+    "gatsby-plugin-offline": "^5.13.0",
     "gatsby-plugin-preact": "latest",
     "gatsby-plugin-react-helmet": "latest",
     "gatsby-plugin-robots-txt": "^1.7.1",

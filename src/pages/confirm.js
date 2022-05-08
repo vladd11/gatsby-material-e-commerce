@@ -37,6 +37,9 @@ const Confirm = ({location}) => {
         }
     }, 1000)
 
+    const {state = {}} = location
+    const {cartProducts, address, paymentMethod, phone} = state
+
     return <>
         <Helmet htmlAttributes={{
             lang: 'ru',
@@ -54,7 +57,7 @@ const Confirm = ({location}) => {
                         Ваш номер телефона:
                     </span>
                     <b className={confirmStyles.phoneText}>
-                        {location.state.phone}
+                        {phone}
                     </b>
                 </div>
 
@@ -69,7 +72,7 @@ const Confirm = ({location}) => {
                                    if (event.target.value === prev) {
                                        // noinspection EqualityComparisonWithCoercionJS
                                        try {
-                                           const result = await api.sendCodeAndOrder(location.state.cartProducts, location.state.address, location.state.paymentMethod, location.state.phone, prev)
+                                           const result = await api.sendCodeAndOrder(cartProducts, address, paymentMethod, phone, prev)
 
                                            console.log(result)
 

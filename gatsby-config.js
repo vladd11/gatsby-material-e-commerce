@@ -17,6 +17,40 @@ module.exports = {
                 policy: [{userAgent: '*', allow: '/'}]
             }
         },
+
+        {
+            resolve: `gatsby-plugin-manifest`,
+            options: {
+                name: `GatsbyJS`,
+                short_name: `GatsbyJS`,
+                start_url: `/`,
+                background_color: `#f7f0eb`,
+                theme_color: `#a2466c`,
+                display: `standalone`,
+                icons: [
+                    {
+                        "src": "icons/icon-192x192.png",
+                        "sizes": "192x192",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "icons/icon-256x256.png",
+                        "sizes": "256x256",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "icons/icon-384x384.png",
+                        "sizes": "384x384",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "icons/icon-512x512.png",
+                        "sizes": "512x512",
+                        "type": "image/png"
+                    }
+                ]
+            },
+        },
         // If you want to use styled components you should add the plugin here.
         // 'gatsby-plugin-styled-components',
         'gatsby-plugin-mui-emotion',

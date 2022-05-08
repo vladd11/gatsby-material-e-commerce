@@ -21,34 +21,23 @@ module.exports = {
         {
             resolve: `gatsby-plugin-manifest`,
             options: {
-                name: `GatsbyJS`,
-                short_name: `GatsbyJS`,
+                name: `Shop`,
+                short_name: `Shop`,
                 start_url: `/`,
                 background_color: `#f7f0eb`,
                 theme_color: `#a2466c`,
                 display: `standalone`,
-                icons: [
-                    {
-                        "src": "icons/icon-192x192.png",
-                        "sizes": "192x192",
-                        "type": "image/png"
-                    },
-                    {
-                        "src": "icons/icon-256x256.png",
-                        "sizes": "256x256",
-                        "type": "image/png"
-                    },
-                    {
-                        "src": "icons/icon-384x384.png",
-                        "sizes": "384x384",
-                        "type": "image/png"
-                    },
-                    {
-                        "src": "icons/icon-512x512.png",
-                        "sizes": "512x512",
-                        "type": "image/png"
-                    }
-                ]
+                icon: "icon.png",
+                icon_options: {
+                    purpose: `any maskable`,
+                },
+            },
+        },
+
+        {
+            resolve: `gatsby-plugin-offline`,
+            options: {
+                precachePages: ["/"]
             },
         },
         // If you want to use styled components you should add the plugin here.

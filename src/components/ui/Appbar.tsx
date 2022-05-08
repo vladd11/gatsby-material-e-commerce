@@ -2,10 +2,8 @@ import React from "react";
 
 import * as appBarStyles from "../../styles/ui/appbar.module.sass"
 
-interface AppbarProps {
-    title : string,
-    className? : string,
-    children?
+type AppbarProps = BaseProps & {
+    title : string
 }
 
 const Appbar = (props: AppbarProps) => {

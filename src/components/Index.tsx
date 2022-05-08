@@ -38,7 +38,7 @@ const Index = (props: IndexProps) => {
         }
     });
 
-    return (<>
+    return (<div className={indexStyles.root}>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -65,7 +65,7 @@ const Index = (props: IndexProps) => {
                 {products}
             </div>
         </Main>
-    </>);
+    </div>);
 }
 
 export default Index

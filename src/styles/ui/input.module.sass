@@ -18,13 +18,16 @@ $input-animation: color 200ms cubic-bezier(0, 0, 0.2, 1) 0ms, transform 200ms cu
     transition: $input-animation
 
     position: absolute
-    @include text
+
+  .label-disabled
+    color: #FF1744
+
 
   .holder
     display: inline-flex
     width: 100%
 
-    @include text
+
     line-height: 1.4375em
 
     .field

@@ -1,9 +1,11 @@
 import React from "react"
 import * as listItemIconStyles from "../../styles/ui/list-item-icon.module.sass"
 
-const ListItemIcon = ({children}) => {
-  return <div className={listItemIconStyles.menuIcon}>
-      {children}
+type ListItemIconProps = BaseProps
+
+const ListItemIcon = (props: ListItemIconProps) => {
+  return <div className={`${listItemIconStyles.menuIcon} ${props.className}`}>
+      {props.children}
   </div>
 }
 

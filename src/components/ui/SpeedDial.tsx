@@ -3,33 +3,38 @@ import * as speedDialStyles from "../../styles/ui/speed-dial.module.sass"
 
 export const animationContext = createContext(false);
 
-export default function SpeedDial({children, className, main, shown}) {
+type SpeedDialProps = BaseProps & {
+    main, // Main action button, that will cause another buttons to open
+    shown?: boolean
+}
+
+export default function SpeedDial(props: SpeedDialProps) {
     const [isClosing, setClosing] = useState(false);
     const [displayed, setDisplayed] = useState(false)
 
     useEffect(() => {
-        if (shown) {
+        if (props.shown) {
             setDisplayed(true)
         } else {
-            setClosing(!shown)
+            setClosing(!props.shown)
         }
-    }, [shown])
+    }, [props.shown])
 
     useEffect(() => {
-        if(displayed) {
+        if (displayed) {
             setClosing(false)
         }
     }, [displayed])
 
-    return <div className={`${speedDialStyles.speedDial} ${className}`}>
+    return <div className={`${speedDialStyles.speedDial} ${props.className}`}>
         <div className={speedDialStyles.dials} style={{
             display: (displayed) ? "flex" : "none",
-        }} onTransitionEnd={() => setDisplayed(shown)}>
+        }} onTransitionEnd={() => setDisplayed(props.shown)}>
 
             <animationContext.Provider value={isClosing}>
-                {children}
+                {props.children}
             </animationContext.Provider>
         </div>
-        {main}
+        {props.main}
     </div>
 }

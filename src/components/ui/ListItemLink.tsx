@@ -4,10 +4,10 @@ import React from "react"
 import {Link} from "gatsby";
 
 const Wrapper = (props: WrapperProps) => {
-    const {component, selected, disabled, children, ...rest} = props;
+    const {component, selected, disabled, className, children, ...rest} = props;
 
     return <div style={(props.selected) ? {background: "rgba(85, 108, 214, 0.08)"} : null}>
-        <props.component className={listItemButton.itemButton}
+        <props.component className={`${listItemButton.itemButton} ${className}`}
                          style={(props.disabled) ? {opacity: '0.38', cursor: "not-allowed"} : null}
                          {...rest}>
             {props.children}
@@ -17,27 +17,33 @@ const Wrapper = (props: WrapperProps) => {
 
 const ListItemLink = (props: ListItemLinkProps) => {
     if (props.isExternalLink) {
-        return <Wrapper component="a" disabled={props.disabled} selected={props.selected} href={props.to}>
+        return <Wrapper component="a"
+                        disabled={props.disabled}
+                        selected={props.selected}
+                        href={props.to}
+                        className={props.className}>
             {props.children}
         </Wrapper>;
     } else {
-        return <Wrapper component={Link} disabled={props.disabled} selected={props.selected} to={props.to}>
+        return <Wrapper component={Link}
+                        disabled={props.disabled}
+                        selected={props.selected}
+                        to={props.to}
+                        className={props.className}>
             {props.children}
         </Wrapper>;
     }
 }
 
-type WrapperProps = {
+type WrapperProps = BaseProps & {
     selected: boolean,
     disabled: boolean,
 
     component,
-    children,
-    [x:string]: any
+    [x: string]: any
 }
 
-interface ListItemLinkProps {
-    children,
+type ListItemLinkProps = BaseProps & {
     to: string,
 
     disabled?: boolean,

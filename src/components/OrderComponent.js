@@ -112,17 +112,17 @@ const OrderComponent = ({api, cartProducts}) => {
             maxHeight: 200,
             overflow: 'auto'
         }}>
-            {cartProducts.map(cartProduct => {
+            {(cartProducts) ? cartProducts.map(cartProduct => {
                 return <CartProduct product={cartProduct}/>
-            })}
+            }) : null}
         </List>
 
         <Typography sx={{marginLeft: "12px"}}>
             Итого:
             <Typography component="span" sx={{paddingLeft: "4px", fontWeight: "bold"}}>
-                {cartProducts.reduce((n, cartProduct) => {
+                {(cartProducts) ? cartProducts.reduce((n, cartProduct) => {
                     return n + cartProduct.Price;
-                }, 0)} рублей
+                }, 0) : null} рублей
             </Typography>
         </Typography>
 

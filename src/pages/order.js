@@ -12,7 +12,7 @@ import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import * as orderPageStyles from "../styles/components/order-page.module.sass"
 
-const Order = ({location}) => {
+export default function Order({location}) {
     const data = useStaticQuery(graphql`
 {
   allFile {
@@ -61,5 +61,3 @@ const Order = ({location}) => {
         </ThemeProvider>
     </>
 }
-
-export default Order;

@@ -22,7 +22,7 @@ const Menu = (props: MenuProps) => {
         shouldNotExpand={props.shouldNotExpand}>
         <div css={css`
           height: 100%;
-
+          
           display: flex;
           flex-direction: column;
         `}>

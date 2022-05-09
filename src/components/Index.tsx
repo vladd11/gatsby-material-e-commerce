@@ -68,13 +68,13 @@ const Index = (props: IndexProps) => {
             }}>
 
             <div css={css`
-              padding: 16px 16px 0;
-            `}>
+                  padding: 16px 16px 0;
+                `}>
                 {
                     ["Пиццы", "Роллы"].map(value =>
                         <Chip css={css`
-                          margin: 0 4px;
-                        `} label={value} clickable onClick={() => {
+                              margin: 0 4px;
+                            `} label={value} clickable onClick={() => {
                             setCurrentCategory(0)
                         }}/>)
                 }

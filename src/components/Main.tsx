@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import IsMobile from '../isMobile'
 
@@ -27,8 +27,12 @@ interface MainProps {
 }
 
 const Main = (props: MainProps) => {
-    const shouldNotExpand = IsMobile();
-    const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
+    const isMobile = IsMobile();
+    const [isDrawerOpened, setDrawerOpened] = React.useState(!isMobile)
+
+    useEffect(() => {
+        setDrawerOpened(!isMobile)
+    }, [isMobile])
 
     return (<>
         <Appbar css={css`
@@ -38,7 +42,7 @@ const Main = (props: MainProps) => {
             padding-left: 0
           }
         `} title={props.info.title}>
-            {(shouldNotExpand) ?
+            {(isMobile) ?
                 <IconButton
                     onClick={() => {
                         setDrawerOpened(true)
@@ -63,7 +67,7 @@ const Main = (props: MainProps) => {
             orderLinkState={{cartProducts: props.cartProducts}}
 
             sx={{width: menuWidth}}
-            shouldNotExpand={shouldNotExpand}>
+            shouldNotExpand={isMobile}>
 
             {
                 props.cartProducts.map((cartProduct, index) => {

@@ -20,7 +20,7 @@ const Drawer = (props: DrawerProps) => {
             ` : null} />
             <div
                 css={css`
-                  display: none;
+                  display: ${(props.isDrawerOpened) ? "block" : "none"};
                   position: fixed;
                   top: 0;
                   left: 0;
@@ -33,8 +33,7 @@ const Drawer = (props: DrawerProps) => {
                   height: 100%;
                   overflow-y: auto;
                 `}
-                className={props.className}
-                style={(props.isDrawerOpened || !props.shouldNotExpand) ? {display: "block"} : null}>
+                className={props.className}>
                 <div css={css`
                   display: flex;
                   flex-direction: column;

@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
 import {Helmet} from "react-helmet";
+import {css, Global} from "@emotion/react";
+
+import Chip from "@mui/material/Chip";
 
 import Main from '../components/Main'
 import Product from '../components/Product'
 
-import * as indexStyles from "../styles/components/index.module.sass"
+import queries from "../queries"
 
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
 
 import Data from "../interfaces/Data";
+
+import theme from "../theme"
 
 interface IndexProps {
     data: Data
@@ -39,7 +44,12 @@ const Index = (props: IndexProps) => {
         }
     });
 
-    return (<div className={indexStyles.root}>
+    return (<div>
+        <Global styles={css`
+          body {
+            font-family: ${theme.typography.fontFamily};
+          }
+        `}/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -56,13 +66,28 @@ const Index = (props: IndexProps) => {
                     return index !== arrIndex;
                 }))
             }}>
-            {/*<div className={indexStyles.chips}>
-                <Chip label="Пиццы" className={indexStyles.chip} clickable onClick={() => {
-                    setCurrentCategory(0)
-                }}/>
-            </div>*/}
 
-            <div className={indexStyles.products}>
+            <div css={css`
+              padding: 16px 16px 0;
+            `}>
+                {
+                    ["Пиццы", "Роллы"].map(value =>
+                        <Chip css={css`
+                          margin: 0 4px;
+                        `} label={value} clickable onClick={() => {
+                            setCurrentCategory(0)
+                        }}/>)
+                }
+            </div>
+
+            <div css={css`
+              display: flex;
+              flex-wrap: wrap;
+
+              @media ${queries.mobile} {
+                justify-content: center
+              }
+            `}>
                 {products}
             </div>
         </Main>

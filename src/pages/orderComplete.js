@@ -15,6 +15,7 @@ import React from "react"
 import theme from "../theme";
 import Helmet from "react-helmet";
 import {graphql, useStaticQuery} from "gatsby";
+import {css, Global} from "@emotion/react";
 
 const OrderComplete = () => {
     const data = useStaticQuery(graphql`
@@ -27,6 +28,11 @@ const OrderComplete = () => {
   }
 }`)
     return <>
+        <Global styles={css`
+          body {
+            font-family: ${theme.typography.fontFamily};
+          }
+        `}/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

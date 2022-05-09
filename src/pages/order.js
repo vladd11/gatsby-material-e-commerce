@@ -11,6 +11,7 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import * as orderPageStyles from "../styles/components/order-page.module.sass"
+import {css, Global} from "@emotion/react";
 
 export default function Order({location}) {
     const data = useStaticQuery(graphql`
@@ -47,6 +48,11 @@ export default function Order({location}) {
     const {cartProducts} = state
 
     return <>
+        <Global styles={css`
+          body {
+            font-family: ${theme.typography.fontFamily};
+          }
+        `}/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

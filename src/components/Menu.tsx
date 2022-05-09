@@ -9,10 +9,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import React from "react";
+import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
-
-import * as menuStyles from '../styles/ui/menu.module.sass'
 
 import SiteInfo from "../interfaces/SiteInfo";
 
@@ -21,7 +20,12 @@ const Menu = (props: MenuProps) => {
         isDrawerOpened={props.isDrawerOpened}
         onClose={props.onClose}
         shouldNotExpand={props.shouldNotExpand}>
-        <div className={menuStyles.menuList}>
+        <div css={css`
+          height: 100%;
+
+          display: flex;
+          flex-direction: column;
+        `}>
             {props.children}
         </div>
 

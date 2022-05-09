@@ -7,19 +7,21 @@ import CartMenuProduct from "./CartMenuProduct";
 import Appbar from "./ui/Appbar";
 import IconButton from "./ui/IconButton";
 import Badge from "./ui/Badge";
+
 import '../styles/body-fix.sass';
 
-import * as mainStyles from "../styles/components/main.module.sass"
-
 import MenuIcon from "@mui/icons-material/Menu";
-import APICartProduct from "../api/APICartProduct";
 import SiteInfo from "../interfaces/SiteInfo";
+import {css} from "@emotion/react";
+
+import queries from "../queries";
+import Product from "../interfaces/Product";
 
 const menuWidth = 330;
 
 interface MainProps {
     info: SiteInfo,
-    cartProducts: Array<APICartProduct>,
+    cartProducts: Array<Product>,
     onDelete: (index: number) => void,
     children
 }
@@ -29,7 +31,13 @@ const Main = (props: MainProps) => {
     const [isDrawerOpened, setDrawerOpened] = React.useState(shouldNotExpand)
 
     return (<>
-        <Appbar className={mainStyles.mainAppBar} title={props.info.title}>
+        <Appbar css={css`
+          padding-left: ${menuWidth + 16}px;
+
+          ${queries.notLarge} {
+            padding-left: 0
+          }
+        `} title={props.info.title}>
             {(shouldNotExpand) ?
                 <IconButton
                     onClick={() => {
@@ -67,7 +75,14 @@ const Main = (props: MainProps) => {
             }
         </Menu>
 
-        <div className={mainStyles.content}>
+        <div css={css`
+          display: flex;
+          flex-direction: column;
+
+          @media (${queries.large}) {
+            margin-left: ${menuWidth}
+          }
+        `}>
             {props.children}
         </div>
 

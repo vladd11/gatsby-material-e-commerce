@@ -41,7 +41,6 @@ const Drawer = (props: DrawerProps) => {
                   justify-content: space-between;
 
                   height: 100%;
-                  max-width: 330px;
                 `}>
                     {(props.shouldNotExpand) ?
                         <button onClick={props.onClose} css={css`

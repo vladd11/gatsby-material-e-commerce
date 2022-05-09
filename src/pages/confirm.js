@@ -9,11 +9,11 @@ import FormHelperText from "@mui/material/FormHelperText";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import React, {useEffect, useState} from "react";
+import {css} from "@emotion/react";
 import {graphql, useStaticQuery} from "gatsby";
 
 import * as orderStyles from "../styles/components/order.module.sass";
 import * as orderPageStyles from "../styles/components/order-page.module.sass";
-import * as confirmStyles from "../styles/components/confirm.module.sass"
 
 import theme from "../theme";
 
@@ -74,7 +74,10 @@ const Confirm = ({location}) => {
                         </Toolbar>
                     </AppBar>
 
-                    <div className={confirmStyles.phoneCard}>
+                    <div css={css`
+                      margin-top: 8px;
+                      margin-left: 12px;
+                    `}>
                         <Typography component="span">
                             Ваш номер телефона:
                         </Typography>

@@ -9,8 +9,11 @@ import Fab from "@mui/material/Fab"
 import React, {useState} from "react";
 import {css} from "@emotion/react";
 
+import Product from "../interfaces/Product";
+
+
 interface CartMenuProductProps {
-    product: CartProduct,
+    product: Product,
     onDelete?
 }
 
@@ -24,7 +27,7 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
         `}>
             <Fab size="small"
                  color="error"
-                 aria-label={`Уменьшить количество ${props.product.title}`}
+                 aria-label={`Уменьшить количество ${props.product.Title}`}
                  onClick={() => {
                      if (count === 1) {
                          props.onDelete()
@@ -45,7 +48,7 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
 
             <Fab size="small"
                  color="success"
-                 aria-label={`Увеличить количество ${props.product.title}`}
+                 aria-label={`Увеличить количество ${props.product.Title}`}
                  onClick={() => {
                      props.product.count++;
                      setCount(props.product.count)

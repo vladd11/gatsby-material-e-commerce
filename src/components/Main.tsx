@@ -12,14 +12,14 @@ import '../styles/body-fix.sass';
 import * as mainStyles from "../styles/components/main.module.sass"
 
 import MenuIcon from "@mui/icons-material/Menu";
-import CartProduct from "../api/cartProduct";
+import APICartProduct from "../api/APICartProduct";
 import SiteInfo from "../interfaces/SiteInfo";
 
 const menuWidth = 330;
 
 interface MainProps {
     info: SiteInfo,
-    cartProducts: Array<CartProduct>,
+    cartProducts: Array<APICartProduct>,
     onDelete: (index: number) => void,
     children
 }

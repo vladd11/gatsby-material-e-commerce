@@ -83,8 +83,8 @@ const Main = (props: MainProps) => {
           display: flex;
           flex-direction: column;
 
-          @media (${queries.large}) {
-            margin-left: ${menuWidth}
+          ${queries.large} {
+            margin-left: ${menuWidth}px
           }
         `}>
             {props.children}

@@ -8,17 +8,11 @@ import theme from "../theme";
 
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
-import {graphql, useStaticQuery} from "gatsby";
+import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import * as orderPageStyles from "../styles/components/order-page.module.sass"
 
 const Order = ({location}) => {
-    const api = new Api()
-
-    useEffect(() => {
-        api.jwtToken = localStorage.getItem("jwt_token")
-    })
-
     const data = useStaticQuery(graphql`
 {
   allFile {
@@ -39,6 +33,19 @@ const Order = ({location}) => {
   }
 }`)
 
+    const api = new Api()
+    useEffect(() => {
+        api.jwtToken = localStorage.getItem("jwt_token")
+    })
+
+    const {state = {}} = location
+    if(state === null) {
+        navigate("/")
+        return
+    }
+
+    const {cartProducts} = state
+
     return <>
         <Helmet htmlAttributes={{
             lang: 'ru',
@@ -49,7 +56,7 @@ const Order = ({location}) => {
         </Helmet>
         <ThemeProvider theme={theme}>
             <div className={orderPageStyles.root}>
-                <OrderComponent api={api}/>
+                <OrderComponent api={api} cartProducts={cartProducts}/>
             </div>
         </ThemeProvider>
     </>

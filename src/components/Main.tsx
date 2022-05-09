@@ -52,6 +52,8 @@ const Main = (props: MainProps) => {
             }}
             isCartEmpty={props.cartProducts.length === 0}
 
+            orderLinkState={{cartProducts: props.cartProducts}}
+
             sx={{width: menuWidth}}
             shouldNotExpand={shouldNotExpand}>
 

@@ -43,6 +43,17 @@ module.exports = {
         // If you want to use styled components you should add the plugin here.
         // 'gatsby-plugin-styled-components',
         'gatsby-plugin-mui-emotion',
+        {
+            resolve: `gatsby-plugin-emotion`,
+            options: {
+                // Accepts the following options, all of which are defined by `@emotion/babel-plugin` plugin.
+                // The values for each key in this example are the defaults the plugin uses.
+                sourceMap: true,
+                autoLabel: "dev-only",
+                labelFormat: `[local]`,
+                cssPropOptimization: true,
+            },
+        },
         `gatsby-plugin-preact`,
         `gatsby-plugin-sass`,
 

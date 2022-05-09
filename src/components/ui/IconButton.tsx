@@ -1,5 +1,5 @@
 import React from "react";
-import * as iconButtonStyles from "../../styles/ui/icon-button.module.sass"
+import {css} from "@emotion/react";
 
 type IconButtonProps = BaseProps & {
     onClick?
@@ -10,7 +10,18 @@ const IconButton = (props: IconButtonProps) => {
     const {children, className, onClick, ...rest} = props;
 
     return <button
-        className={`${iconButtonStyles.iconButton} ${className}`}
+        css={css`
+          border: none;
+          padding: 12px;
+          margin: 0 16px 0 0;
+
+          color: #fff;
+          background: transparent;
+
+          display: inline-flex;
+
+          cursor: pointer;`}
+        className={className}
         onClick={onClick}
         {...rest}>
         {children}

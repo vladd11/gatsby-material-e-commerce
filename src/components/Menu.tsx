@@ -26,6 +26,7 @@ const Menu = (props: MenuProps) => {
         </div>
 
         <ListItemLink to={"order"}
+                      state={props.orderLinkState}
                       disabled={props.isCartEmpty}
                       selected={!props.isCartEmpty}>
             <ListItemIcon>
@@ -80,6 +81,8 @@ interface MenuProps {
     isDrawerOpened: boolean,
     onOpen,
     onClose,
+
+    orderLinkState?,
 
     isCartEmpty: boolean,
 

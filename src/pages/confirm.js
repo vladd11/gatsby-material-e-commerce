@@ -8,7 +8,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {graphql, useStaticQuery} from "gatsby";
 
 import * as orderStyles from "../styles/components/order.module.sass";
@@ -22,6 +22,14 @@ import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
 const Confirm = ({location}) => {
+    const {state = {}} = location
+    const {
+        cartProducts,
+        address,
+        paymentMethod,
+        phone,
+    } = state
+
     const api = new Api()
     useEffect(() => {
         api.jwtToken = localStorage.getItem("jwt_token")
@@ -96,10 +104,10 @@ const Confirm = ({location}) => {
                                            if (event.target.value === prev) {
                                                try {
                                                    const result = await api.sendCodeAndOrder(
-                                                       location.state.cartProducts,
-                                                       location.state.address,
-                                                       location.state.paymentMethod,
-                                                       location.state.phone,
+                                                       cartProducts,
+                                                       address,
+                                                       paymentMethod,
+                                                       phone,
                                                        prev)
 
                                                    if (result) {

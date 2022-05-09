@@ -1,5 +1,4 @@
 import CartProduct from "./CartProduct";
-import * as cartStyles from "../styles/components/cart-product.module.sass";
 
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
@@ -8,6 +7,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Fab from "@mui/material/Fab"
 
 import React, {useState} from "react";
+import {css} from "@emotion/react";
 
 interface CartMenuProductProps {
     product: CartProduct,
@@ -18,7 +18,10 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
     const [count, setCount] = useState(props.product.count)
 
     return <CartProduct product={props.product}>
-        <div className={cartStyles.counter}>
+        <div css={css`
+          display: flex;
+          align-items: center;
+        `}>
             <Fab size="small"
                  color="error"
                  aria-label={`Уменьшить количество ${props.product.title}`}
@@ -36,7 +39,7 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
                 {(count === 1) ? <DeleteForeverIcon/> : <RemoveIcon/>}
             </Fab>
 
-            <span className={cartStyles.counterText}>
+            <span>
                 {props.product.count}
             </span>
 

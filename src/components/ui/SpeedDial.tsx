@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from "react"
-import * as speedDialStyles from "../../styles/ui/speed-dial.module.sass"
+import {css} from "@emotion/react";
 
 export const animationContext = createContext(false);
 
@@ -26,10 +26,20 @@ export default function SpeedDial(props: SpeedDialProps) {
         }
     }, [displayed])
 
-    return <div className={`${speedDialStyles.speedDial} ${props.className}`}>
-        <div className={speedDialStyles.dials} style={{
-            display: (displayed) ? "flex" : "none",
-        }} onTransitionEnd={() => setDisplayed(props.shown)}>
+    return <div className={props.className} css={css`
+      z-index: 2;
+
+      display: flex;
+      flex-direction: column;
+
+      margin: 12px;`}>
+        <div css={css`
+          margin-bottom: 8px;
+
+          display: ${(displayed) ? "flex" : "none"};
+          align-items: end;
+          flex-direction: column;
+        `} onTransitionEnd={() => setDisplayed(props.shown)}>
 
             <animationContext.Provider value={isClosing}>
                 {props.children}

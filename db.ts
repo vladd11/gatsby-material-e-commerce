@@ -15,7 +15,7 @@ export default class Database {
     private driver: Driver;
 
     async readProducts(): Promise<Array<Product>> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.driver.tableClient.withSession(async (session) => {
                 resolve(this._readProducts(session))
             })
@@ -23,7 +23,7 @@ export default class Database {
     }
 
     private async _readProducts(session: Session): Promise<Array<Product>> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             await session.streamReadTable("products", (result1) => {
                     const products: Array<Product> = []
 
@@ -32,7 +32,7 @@ export default class Database {
                         if (typeof price === "number") {
                             price = price / 100
                         } else {
-                            price = price.divide(100).toNumber()
+                            price = price.toNumber() / 100
                             if (price >= Number.MAX_SAFE_INTEGER) {
                                 throw new PriceIsTooBigException(price)
                             }

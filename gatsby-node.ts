@@ -4,9 +4,6 @@ const transliteration = require('transliteration');
 
 import Database from "./db";
 
-// @ts-ignore
-const fetch = require("node-fetch");
-
 exports.createPages = async ({graphql, actions}) => {
     let result = await graphql(`
 {
@@ -35,9 +32,22 @@ exports.createPages = async ({graphql, actions}) => {
         category.push(product)
     }
 
+    const categoriesDir = "./public/categories"
+    if(!fs.existsSync(categoriesDir)) {
+        fs.mkdirSync(categoriesDir)
+    }
+
     categories.forEach((value, key) => {
-        fs.writeFileSync(path.join("./public", `${key.toString()}.json`), JSON.stringify(value))
+        fs.writeFileSync(path.join(categoriesDir, `${key.toString()}.json`), JSON.stringify(value))
     })
+
+    fs.writeFileSync(path.join(categoriesDir, "titles.json"), JSON.stringify(
+        Array.from(categories.keys()).map(value => {
+            return {
+                title: value,
+            }
+        })
+    ))
 }
 
 exports.sourceNodes = async (

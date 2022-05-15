@@ -4,6 +4,7 @@ import {css} from "@emotion/react";
 export const animationContext = createContext(false);
 
 type SpeedDialProps = BaseProps & {
+    ariaLabel: string,
     main, // Main action button, that will cause another buttons to open
     shown?: boolean
 }
@@ -26,7 +27,7 @@ export default function SpeedDial(props: SpeedDialProps) {
         }
     }, [displayed])
 
-    return <div className={props.className} css={css`
+    return <div aria-label={props.ariaLabel} className={props.className} css={css`
       z-index: 2;
 
       display: flex;

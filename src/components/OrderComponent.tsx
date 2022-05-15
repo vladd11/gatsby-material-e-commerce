@@ -7,6 +7,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
+import Fab from "@mui/material/Fab";
+
+import SpeedDialButton from "./ui/SpeedDialButton";
 
 import SpeedDial from "./ui/SpeedDial";
 
@@ -23,14 +26,21 @@ import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+// @ts-ignore
 import mapboxgl from '!mapbox-gl';
-import Fab from "@mui/material/Fab";
-import SpeedDialButton from "./ui/SpeedDialButton";
+
+import Api from "../api/api";
+import Product from "../interfaces/Product";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
+interface OrderComponentProps {
+    api: Api,
+    cartProducts: Array<Product>
+}
 
-const OrderComponent = ({api, cartProducts}) => {
+const OrderComponent = (props: OrderComponentProps) => {
     const [isAddressFormManual, setAddressFormType] = useStickyState(false, 'manualAddressChoice')
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('+7', 'phone')
@@ -75,7 +85,7 @@ const OrderComponent = ({api, cartProducts}) => {
 
         if (isPhoneValid && isAddressValid) {
             try {
-                const result = await api.order(cartProducts, phone, address, paymentMethod)
+                const result = await props.api.order(props.cartProducts, phone, address, paymentMethod)
                 if (result) {
                     window.location.replace(result);
                 } else {
@@ -85,7 +95,7 @@ const OrderComponent = ({api, cartProducts}) => {
                 if (e.code === 1005) {
                     await navigate("/confirm/", {
                         state: {
-                            cartProducts: cartProducts,
+                            cartProducts: props.cartProducts,
                             address: address,
                             paymentMethod: paymentMethod,
                             phone: phone
@@ -112,15 +122,17 @@ const OrderComponent = ({api, cartProducts}) => {
             maxHeight: 200,
             overflow: 'auto'
         }}>
-            {(cartProducts) ? cartProducts.map(cartProduct => {
-                return <CartProduct product={cartProduct}/>
+            {(props.cartProducts) ? props.cartProducts.map(cartProduct => {
+                return <CartProduct product={cartProduct}>
+
+                </CartProduct>
             }) : null}
         </List>
 
         <Typography sx={{marginLeft: "12px"}}>
             Итого:
             <Typography component="span" sx={{paddingLeft: "4px", fontWeight: "bold"}}>
-                {(cartProducts) ? cartProducts.reduce((n, cartProduct) => {
+                {(props.cartProducts) ? props.cartProducts.reduce((n, cartProduct) => {
                     return n + cartProduct.Price;
                 }, 0) : null} рублей
             </Typography>
@@ -140,13 +152,13 @@ const OrderComponent = ({api, cartProducts}) => {
             error={!isPhoneValid}>
 
             <InputLabel htmlFor="phone">Номер телефона</InputLabel>
-            <Input inputmode="tel" id="phone" aria-describedby="tel" sx={{pl: 1}} value={phone} onChange={event => {
+            <Input inputMode="tel" id="phone" aria-describedby="tel" sx={{pl: 1}} value={phone} onChange={event => {
                 setPhone(event.target.value)
             }}/>
         </FormControl>
 
         <div className={orderStyles.addressInput}>
-            <Button variant="small" sx={{width: "100%", textTransform: "initial"}} onClick={() => {
+            <Button sx={{width: "100%", textTransform: "initial"}} onClick={() => {
                 setAddressFormType(!isAddressFormManual)
             }}>
                 {(isAddressFormManual) ? "Указать позицию на карте" : "Указать адрес вручную"}

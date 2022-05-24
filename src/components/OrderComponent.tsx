@@ -31,7 +31,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
 
 import Api from "../api/api";
-import Product from "../interfaces/Product";
+import Product from "../interfaces/product";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 

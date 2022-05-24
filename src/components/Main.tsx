@@ -11,11 +11,11 @@ import Badge from "./ui/Badge";
 import '../styles/body-fix.sass';
 
 import MenuIcon from "@mui/icons-material/Menu";
-import SiteInfo from "../interfaces/SiteInfo";
+import SiteInfo from "../interfaces/site-info";
 import {css} from "@emotion/react";
 
 import queries from "../queries";
-import Product from "../interfaces/Product";
+import Product from "../interfaces/product";
 
 const menuWidth = 330;
 
@@ -65,8 +65,6 @@ const Main = (props: MainProps) => {
             isCartEmpty={props.cartProducts.length === 0}
 
             orderLinkState={{cartProducts: props.cartProducts}}
-
-            sx={{width: menuWidth}}
             shouldNotExpand={isMobile}>
 
             {

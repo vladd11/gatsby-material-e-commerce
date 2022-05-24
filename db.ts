@@ -1,5 +1,5 @@
 import {Driver, Session} from "ydb-sdk";
-import Product from "./src/interfaces/Product";
+import Product from "./src/interfaces/product";
 
 const ydb = require('ydb-sdk')
 

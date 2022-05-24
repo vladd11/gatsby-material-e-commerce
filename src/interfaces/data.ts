@@ -1,6 +1,6 @@
 // Interface that describes GraphQL output
 import {ImageDataLike} from "gatsby-plugin-image"
-import Product from "./Product"
+import Product from "./product"
 
 export default interface Data {
     allProducts: {
@@ -11,6 +11,7 @@ export default interface Data {
     }
     site: {
         siteMetadata: {
+            categories: Array<{id: number, name: string}>,
             title: string,
             description: string,
             phone: string,

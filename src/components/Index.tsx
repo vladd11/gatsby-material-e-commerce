@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet";
 import {css, Global} from "@emotion/react";
 
@@ -12,7 +12,7 @@ import queries from "../queries"
 import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
 
-import Data from "../interfaces/Data";
+import Data from "../interfaces/data";
 
 import theme from "../theme"
 
@@ -20,12 +20,14 @@ interface IndexProps {
     data: Data
 }
 
-const Index = (props: IndexProps) => {
+function Index(props: IndexProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 
-    const products = props.data.allProducts.nodes.map((product, index) => {
-        if (currentCategory === 0) {
+    const [products, setProducts] = useState(props.data.allProducts.nodes)
+
+    function renderProducts() {
+        return products.map((product, index) => {
             product.Image = getImage(props.data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
 
             return <Product
@@ -37,12 +39,10 @@ const Index = (props: IndexProps) => {
                     product.count = 1;
                     setCartProducts([...cartProducts, product])
                 }}
-                loading={(index > 5) ? "lazy" : "eager"}
+                loading={(index > 3) ? "lazy" : "eager"}
             />
-        } else {
-            return <div/>;
-        }
-    });
+        });
+    }
 
     return (<div>
         <Global styles={css`
@@ -68,14 +68,14 @@ const Index = (props: IndexProps) => {
             }}>
 
             <div css={css`
-                  padding: 16px 16px 0;
-                `}>
+              padding: 16px 16px 0;
+            `}>
                 {
-                    ["Пиццы", "Роллы"].map(value =>
+                    props.data.site.siteMetadata.categories.map((value) =>
                         <Chip css={css`
-                              margin: 0 4px;
-                            `} label={value} clickable onClick={() => {
-                            setCurrentCategory(0)
+                          margin: 0 4px;
+                        `} label={value.name} clickable onClick={() => {
+                            setCurrentCategory(value.id)
                         }}/>)
                 }
             </div>
@@ -88,7 +88,7 @@ const Index = (props: IndexProps) => {
                 justify-content: center
               }
             `}>
-                {products}
+                {renderProducts()}
             </div>
         </Main>
     </div>);

@@ -1,6 +1,6 @@
 import {graphql, useStaticQuery} from "gatsby";
 
-import "../interfaces/Product"
+import "../interfaces/product"
 
 import Index from "../components/Index"
 
@@ -35,6 +35,11 @@ export default function IndexPage() {
       
       address
       addressLink
+      
+      categories {
+        id
+        name
+      }
     }
   }
 }`)

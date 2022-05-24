@@ -13,7 +13,7 @@ import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
 
-import SiteInfo from "../interfaces/SiteInfo";
+import SiteInfo from "../interfaces/site-info";
 
 const Menu = (props: MenuProps) => {
     return (<Drawer
@@ -22,7 +22,7 @@ const Menu = (props: MenuProps) => {
         shouldNotExpand={props.shouldNotExpand}>
         <div css={css`
           height: 100%;
-          
+
           display: flex;
           flex-direction: column;
         `}>
@@ -91,8 +91,7 @@ interface MenuProps {
     isCartEmpty: boolean,
 
     shouldNotExpand: boolean,
-    children,
-    sx
+    children
 }
 
 export default Menu;

@@ -30,8 +30,8 @@ function Index(props: IndexProps) {
         if(currentCategory === 0) {
             setProducts(props.data.allProducts.nodes)
         } else {
-            fetch(`categories/${currentCategory}.json`).then(r => {
-                console.log(r)
+            fetch(`categories/${currentCategory}.json`).then(async r => {
+                setProducts(await r.json())
             })
         }
     }, [currentCategory])

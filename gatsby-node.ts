@@ -40,14 +40,6 @@ exports.createPages = async ({graphql, actions}) => {
     categories.forEach((value, key) => {
         fs.writeFileSync(path.join(categoriesDir, `${key.toString()}.json`), JSON.stringify(value))
     })
-
-    fs.writeFileSync(path.join(categoriesDir, "titles.json"), JSON.stringify(
-        Array.from(categories.keys()).map(value => {
-            return {
-                title: value,
-            }
-        })
-    ))
 }
 
 exports.sourceNodes = async (

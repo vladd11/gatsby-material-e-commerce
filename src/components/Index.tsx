@@ -26,6 +26,16 @@ function Index(props: IndexProps) {
 
     const [products, setProducts] = useState(props.data.allProducts.nodes)
 
+    useEffect(() => {
+        if(currentCategory === 0) {
+            setProducts(props.data.allProducts.nodes)
+        } else {
+            fetch(`categories/${currentCategory}.json`).then(r => {
+                console.log(r)
+            })
+        }
+    }, [currentCategory])
+
     function renderProducts() {
         return products.map((product, index) => {
             product.Image = getImage(props.data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
@@ -72,9 +82,10 @@ function Index(props: IndexProps) {
             `}>
                 {
                     props.data.site.siteMetadata.categories.map((value) =>
-                        <Chip css={css`
-                          margin: 0 4px;
-                        `} label={value.name} clickable onClick={() => {
+                        <Chip
+                            disabled={currentCategory === value.id}
+                            sx={{margin: "0 4px"}}
+                            label={value.name} clickable onClick={() => {
                             setCurrentCategory(value.id)
                         }}/>)
                 }

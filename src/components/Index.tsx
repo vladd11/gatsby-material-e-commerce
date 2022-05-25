@@ -27,7 +27,7 @@ function Index(props: IndexProps) {
     const [products, setProducts] = useState(props.data.allProducts.nodes)
 
     useEffect(() => {
-        if(currentCategory === 0) {
+        if (currentCategory === 0) {
             setProducts(props.data.allProducts.nodes)
         } else {
             fetch(`categories/${currentCategory}.json`).then(async r => {

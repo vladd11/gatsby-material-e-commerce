@@ -21,10 +21,13 @@ interface IndexProps {
     data: Data
 }
 
-const headers = new Headers();
-headers.append('cache-control', "public, max-age=31536000")
-
 function Index(props: IndexProps) {
+    let headers;
+    if (typeof Headers !== 'undefined') {
+        headers = new Headers()
+        headers.append('cache-control', "public, max-age=31536000")
+    }
+
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 

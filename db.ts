@@ -1,5 +1,6 @@
-import {Driver, Session} from "ydb-sdk";
-import Product from "./src/interfaces/product";
+import {Driver} from "ydb-sdk";
+import Product, {ProductPopularity} from "./src/interfaces/product";
+import Long from "long";
 
 const ydb = require('ydb-sdk')
 
@@ -15,46 +16,73 @@ export default class Database {
     private driver: Driver;
 
     async readProducts(): Promise<Array<Product>> {
-        return new Promise((resolve) => {
-            this.driver.tableClient.withSession(async (session) => {
-                resolve(this._readProducts(session))
+        return new Promise(async (resolve) => {
+            await this.driver.tableClient.withSession(async (session) => {
+                await session.streamReadTable("products", (result1) => {
+                        const products: Array<Product> = []
+
+                        for (const row of result1.resultSet.rows) {
+                            let price: (number | Long) = row.items[5].uint64Value!
+                            if (typeof price === "number") {
+                                price = price / 100
+                            } else {
+                                price = price.toNumber() / 100
+                                if (price >= Number.MAX_SAFE_INTEGER) {
+                                    throw new PriceIsTooBigException(price)
+                                }
+
+                            }
+
+                            products.push({
+                                // @ts-ignore
+                                ProductID: row.items[1].bytesValue.toString('hex'),
+                                Category: row.items[4].int32Value,
+
+                                Description: row.items[3].textValue,
+                                ImageURI: row.items[0].textValue,
+
+                                Price: price,
+                                Title: row.items[2].textValue,
+                            })
+                        }
+
+                        resolve(products)
+                    }
+                )
             })
         })
     }
 
-    private async _readProducts(session: Session): Promise<Array<Product>> {
-        return new Promise(async (resolve) => {
-            await session.streamReadTable("products", (result1) => {
-                    const products: Array<Product> = []
-
-                    for (const row of result1.resultSet.rows) {
-                        let price: (number | Long) = row.items[5].uint64Value!
-                        if (typeof price === "number") {
-                            price = price / 100
-                        } else {
-                            price = price.toNumber() / 100
-                            if (price >= Number.MAX_SAFE_INTEGER) {
-                                throw new PriceIsTooBigException(price)
-                            }
-                        }
-
-                        products.push({
-                            // @ts-ignore
-                            ProductID: row.items[1].bytesValue.toString('hex'),
-                            Category: row.items[4].int32Value,
-
-                            Description: row.items[3].textValue,
-                            ImageURI: row.items[0].textValue,
-
-                            Price: price,
-                            Title: row.items[2].textValue,
-                        })
-                    }
-
-                    resolve(products)
-                }
+    public async readPopularity(): Promise<Array<ProductPopularity>> {
+        return await this.driver.tableClient.withSession(async (session) => {
+            const resultQuery = await session.executeQuery(`
+            SELECT * FROM (
+                SELECT product_id, COUNT(product_id)
+                FROM order_items GROUP BY product_id
             )
-        });
+            ORDER BY column1 DESC;`)
+
+            const arr: Array<ProductPopularity> = []
+            for (const row of resultQuery.resultSets[0].rows) {
+                let popularity = row.items[0].uint64Value
+
+                if (popularity instanceof Long) popularity = popularity.toNumber()
+
+                const id = row.items[1].bytesValue
+                if(!id) {
+                    console.warn("ID of product is null!")
+                    continue;
+                }
+
+                arr.push({
+                    // It's Node.js code, toString("hex") is possible
+                    // @ts-ignore
+                    ProductID: id.toString("hex"),
+                    popularity: popularity
+                })
+            }
+            return arr;
+        })
     }
 
     async connect() {
@@ -77,9 +105,5 @@ export default class Database {
             console.error(`Driver has not become ready in ${timeout}ms!`);
             process.exit(1);
         }
-    }
-
-    async disconnect() {
-        await this.driver.destroy();
     }
 }

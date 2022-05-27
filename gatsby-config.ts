@@ -1,14 +1,22 @@
-const fs = require('fs')
+import type { GatsbyConfig } from "gatsby"
 
-module.exports = {
+const config: GatsbyConfig = {
     plugins: [
         'gatsby-plugin-react-helmet',
         {
             resolve: "gatsby-source-filesystem",
             options: {
-                path: `${__dirname}/static`,
+                path: `${__dirname}/static/images`,
                 name: "images",
             },
+        },
+        {
+            resolve: "gatsby-plugin-react-svg",
+            options: {
+                rule: {
+                    include: /icons/
+                }
+            }
         },
 
         {
@@ -69,8 +77,8 @@ module.exports = {
         phone: "79170324874",
 
         addressLink: "https://yandex.ru/maps/51/samara/house/novo_vokzalnaya_ulitsa_28/YUkYdANiTUEGQFtpfX5wd3lmYg==",
-        address: "Самара, Ново-Вокзальная улица, 18",
-
-        categories: JSON.parse(fs.readFileSync("categories.json").toString())
+        address: "Самара, Ново-Вокзальная улица, 18"
     },
 };
+
+export default config;

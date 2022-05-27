@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet";
 import {css, Global} from "@emotion/react";
 
-import Chip from "@mui/material/Chip";
+import Chip from "./ui/Chip";
 
 import Main from '../components/Main'
 import Product from '../components/Product'
@@ -13,12 +13,16 @@ import {getImage} from "gatsby-plugin-image";
 import useStickyState from "../stickyState";
 
 import Data from "../interfaces/data";
+import categories from "../../categories";
 
 import theme from "../theme"
 
 interface IndexProps {
     data: Data
 }
+
+const headers = new Headers();
+headers.append('cache-control', "public, max-age=31536000")
 
 function Index(props: IndexProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
@@ -30,9 +34,13 @@ function Index(props: IndexProps) {
         if (currentCategory === 0) {
             setProducts(props.data.allProducts.nodes)
         } else {
-            fetch(`categories/${currentCategory}.json`).then(async r => {
-                setProducts(await r.json())
-            })
+            fetch(`categories/${currentCategory}.json?time=${props.data.allSiteBuildMetadata.nodes[0].buildTime}`,
+                {
+                    headers: headers
+                })
+                .then(async r => {
+                    setProducts(await r.json())
+                })
         }
     }, [currentCategory])
 
@@ -52,6 +60,17 @@ function Index(props: IndexProps) {
                 loading={(index > 3) ? "lazy" : "eager"}
             />
         });
+    }
+
+    function renderCategories() {
+        return categories.map((category) => {
+            return <Chip
+                avatar={category.icon}
+                disabled={currentCategory === category.id}
+                label={category.name}
+                onClick={() => setCurrentCategory(category.id)}
+            />;
+        })
     }
 
     return (<div>
@@ -78,17 +97,13 @@ function Index(props: IndexProps) {
             }}>
 
             <div css={css`
-              padding: 16px 16px 0;
+              display: flex;
+              justify-content: space-around;
+              flex-wrap: wrap;
+
+              padding: 16px 0 0 0;
             `}>
-                {
-                    props.data.site.siteMetadata.categories.map((value) =>
-                        <Chip
-                            disabled={currentCategory === value.id}
-                            sx={{margin: "0 4px"}}
-                            label={value.name} clickable onClick={() => {
-                            setCurrentCategory(value.id)
-                        }}/>)
-                }
+                {renderCategories()}
             </div>
 
             <div css={css`

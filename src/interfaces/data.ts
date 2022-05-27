@@ -3,6 +3,9 @@ import {ImageDataLike} from "gatsby-plugin-image"
 import Product from "./product"
 
 export default interface Data {
+    allSiteBuildMetadata: {
+        nodes: Array<{ buildTime: string }>
+    }
     allProducts: {
         nodes: Array<Product>
     },
@@ -11,7 +14,7 @@ export default interface Data {
     }
     site: {
         siteMetadata: {
-            categories: Array<{id: number, name: string}>,
+            categories: Array<{ id: number, name: string }>,
             title: string,
             description: string,
             phone: string,

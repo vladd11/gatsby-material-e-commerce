@@ -1,13 +1,26 @@
+import Product, {ProductPopularity} from "./src/interfaces/product";
+import type {GatsbyNode} from "gatsby"
+
 const path = require("path")
 const fs = require("fs")
-const transliteration = require('transliteration');
 
 import Database from "./db";
 
-exports.createPages = async ({graphql, actions}) => {
-    let result = await graphql(`
+
+exports.createPages = async ({graphql}) => {
+    let result: {
+        data: {
+            allProducts: {
+                nodes: Array<Product>
+            },
+            allPopularity: {
+                nodes: Array<ProductPopularity>
+            }
+        },
+
+    } = await graphql(`
 {
-    allProducts {
+    allProducts(sort: {fields: Popularity}) {
         nodes {
             Category
             Description
@@ -15,13 +28,15 @@ exports.createPages = async ({graphql, actions}) => {
             ProductID
             Title
             ImageURI
+            Popularity
         }
     }
 }`)
-    result = result.data.allProducts.nodes
+
+    const products = result.data.allProducts.nodes;
 
     const categories = new Map()
-    for (const product of result) {
+    products.forEach((product) => {
         let category = categories.get(product.Category)
 
         if (!category) {
@@ -30,10 +45,10 @@ exports.createPages = async ({graphql, actions}) => {
         }
 
         category.push(product)
-    }
+    })
 
     const categoriesDir = "./public/categories"
-    if(!fs.existsSync(categoriesDir)) {
+    if (!fs.existsSync(categoriesDir)) {
         fs.mkdirSync(categoriesDir)
     }
 
@@ -42,7 +57,7 @@ exports.createPages = async ({graphql, actions}) => {
     })
 }
 
-exports.sourceNodes = async (
+export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     {
         actions,
         createContentDigest,
@@ -54,7 +69,14 @@ exports.sourceNodes = async (
     const db = new Database()
 
     await db.connect();
+
+    const popularity: Array<ProductPopularity> = await db.readPopularity();
+
     (await db.readProducts()).forEach((product) => {
+        product.Popularity = popularity
+            .find((value: ProductPopularity) => value.ProductID === product.ProductID)!
+            .popularity
+
         product.Price = Math.round(product.Price * 100) / 100
         createNode({
             ...product,
@@ -66,14 +88,5 @@ exports.sourceNodes = async (
                 contentDigest: createContentDigest(product),
             }
         })
-    })
-}
-
-interface Product {
-    Category: string,
-    Description: string,
-    ProductID: string,
-    ImageURI: string,
-    Price: number,
-    Title: string
+    });
 }

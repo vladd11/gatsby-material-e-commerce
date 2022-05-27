@@ -7,7 +7,12 @@ import Index from "../components/Index"
 export default function IndexPage() {
     const data = useStaticQuery(graphql`
 {
-  allProducts(limit: 12) {
+  allSiteBuildMetadata {
+    nodes {
+      buildTime
+    }
+  }
+  allProducts(limit: 12, sort: {fields: Popularity}) {
     nodes {
       Category
       Description
@@ -35,11 +40,6 @@ export default function IndexPage() {
       
       address
       addressLink
-      
-      categories {
-        id
-        name
-      }
     }
   }
 }`)

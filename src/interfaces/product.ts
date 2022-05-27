@@ -1,4 +1,5 @@
 export default interface Product {
+    Popularity?: number;
     ProductID: string,
     Title: string,
     Description: string,
@@ -10,4 +11,9 @@ export default interface Product {
     Image?, // Gatsby Image type
 
     count?: number
+}
+
+export interface ProductPopularity {
+    ProductID: String,
+    popularity: number
 }

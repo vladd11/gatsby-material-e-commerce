@@ -11,18 +11,22 @@ import Badge from "./ui/Badge";
 import '../styles/body-fix.sass';
 
 import MenuIcon from "@mui/icons-material/Menu";
-import SiteInfo from "../interfaces/site-info";
+
 import {css} from "@emotion/react";
 
 import queries from "../queries";
+
 import Product from "../interfaces/product";
+import {SiteInfo} from "../interfaces/data";
 
 const menuWidth = 330;
 
 interface MainProps {
     info: SiteInfo,
+
     cartProducts: Array<Product>,
-    onDelete: (index: number) => void,
+    setCartProducts: (value: any) => void,
+
     children
 }
 
@@ -33,6 +37,17 @@ const Main = (props: MainProps) => {
     useEffect(() => {
         setDrawerOpened(!isMobile)
     }, [isMobile])
+
+    function renderCartProducts() {
+        return props.cartProducts.map((cartProduct, index) => {
+            return <CartMenuProduct product={cartProduct}
+                                    onDelete={() => {
+                                        props.setCartProducts(props.cartProducts.filter((value, arrIndex) => {
+                                            return index !== arrIndex;
+                                        }));
+                                    }}/>
+        })
+    }
 
     return (<>
         <Appbar css={css`
@@ -67,14 +82,7 @@ const Main = (props: MainProps) => {
             orderLinkState={{cartProducts: props.cartProducts}}
             shouldNotExpand={isMobile}>
 
-            {
-                props.cartProducts.map((cartProduct, index) => {
-                    return <CartMenuProduct product={cartProduct}
-                                            onDelete={() => {
-                                                props.onDelete(index)
-                                            }}/>
-                })
-            }
+            {renderCartProducts()}
         </Menu>
 
         <div css={css`
@@ -89,6 +97,6 @@ const Main = (props: MainProps) => {
         </div>
 
     </>)
-}
+};
 
 export default Main;

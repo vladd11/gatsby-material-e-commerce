@@ -93,11 +93,7 @@ function Index(props: IndexProps) {
         <Main
             info={props.data.site.siteMetadata}
             cartProducts={cartProducts}
-            onDelete={(index: number) => {
-                setCartProducts(cartProducts.filter((value, arrIndex) => {
-                    return index !== arrIndex;
-                }))
-            }}>
+            setCartProducts={setCartProducts}>
 
             <div css={css`
               display: flex;

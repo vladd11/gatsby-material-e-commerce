@@ -1,6 +1,6 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
 
-class Api {
+export default class Api {
     jwtToken?: string;
     private client: JSONRPCClient;
 
@@ -8,7 +8,11 @@ class Api {
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 
-    async sendCodeAndOrder(cartProducts: Array<any>, address: string, paymentMethod: string, phone: string, code: string): Promise<{ redirect?: string }> {
+    async sendCodeAndOrder(cartProducts: Array<any>,
+                           address: string,
+                           paymentMethod: string,
+                           phone: string,
+                           code: string): Promise<OrderResponse> {
         const result = await this.client.call([
             Api._sendCode(phone, parseInt(code)),
             Api._order(cartProducts, paymentMethod, address)
@@ -33,7 +37,10 @@ class Api {
         ])
     }
 
-    async order(cartProducts: Array<any>, phone: string, address: string, paymentMethod: string): Promise<{ redirect?: string }> {
+    async order(cartProducts: Array<any>,
+                phone: string,
+                address: string,
+                paymentMethod: string): Promise<OrderResponse> {
         const result = await this.client.call([
             this._login(phone),
             Api._order(cartProducts, paymentMethod, address)
@@ -77,7 +84,9 @@ class Api {
         }
     }
 
-    private static _order(cartProducts: Array<any>, paymentMethod: string, address: string): JSONRPCRequest {
+    private static _order(cartProducts: Array<any>,
+                          paymentMethod: string,
+                          address: string): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
             id: "1",
@@ -121,6 +130,11 @@ class Api {
     }
 }
 
+export type OrderResponse = {
+    redirect?: string,
+    id: string
+};
+
 export class JSONRPCError extends Error {
     public code: number;
 
@@ -130,5 +144,3 @@ export class JSONRPCError extends Error {
         this.code = code;
     }
 }
-
-export default Api;

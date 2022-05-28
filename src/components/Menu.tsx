@@ -12,8 +12,7 @@ import React from "react";
 import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
-
-import SiteInfo from "../interfaces/site-info";
+import {SiteInfo} from "../interfaces/data";
 
 const Menu = (props: MenuProps) => {
     return (<Drawer

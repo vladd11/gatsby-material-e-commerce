@@ -1,7 +1,4 @@
-import ThemeProvider from "@mui/material/styles/ThemeProvider"
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -14,19 +11,18 @@ import React from "react"
 
 import theme from "../theme";
 import Helmet from "react-helmet";
-import {graphql, useStaticQuery} from "gatsby";
 import {css, Global} from "@emotion/react";
+import Main from "../components/Main";
+import Data from "../interfaces/data";
+import useStickyState from "../stickyState";
 
-const OrderComplete = () => {
-    const data = useStaticQuery(graphql`
-{
-  site {
-    siteMetadata {
-      title
-      description
-    }
-  }
-}`)
+interface OrderCompleteProps {
+    data: Data
+}
+
+export default function OrderCompleteComponent(props: OrderCompleteProps) {
+    const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+
     return <>
         <Global styles={css`
           body {
@@ -36,19 +32,12 @@ const OrderComplete = () => {
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
-            <title>{data.site.siteMetadata.title} | Заказ оформлен</title>
-            <meta name="description" content={data.site.siteMetadata.description}/>
-            <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>
+            <title>{props.data.site.siteMetadata.title} | Заказ оформлен</title>
+            <meta name="description" content={props.data.site.siteMetadata.description}/>
+            <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/order-complete"/>
         </Helmet>
-        <ThemeProvider theme={theme}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" component="span">
-                        Заказ оформлен
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-
+        <Main info={props.data.site.siteMetadata}
+              cartProducts={cartProducts} setCartProducts={setCartProducts}>
             <List>
                 <ListItem>
                     <ListItemIcon>
@@ -76,8 +65,6 @@ const OrderComplete = () => {
                     </ListItemText>
                 </ListItem>
             </List>
-        </ThemeProvider>
+        </Main>
     </>
 }
-
-export default OrderComplete;

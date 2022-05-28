@@ -32,6 +32,7 @@ import mapboxgl from '!mapbox-gl';
 
 import Api from "../api/api";
 import Product from "../interfaces/product";
+import redirect from "../redirect";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -48,7 +49,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
 
-    const [orderButtonLock, setOrderButtonLock] = useState(true)
+    const [orderButtonLock, setOrderButtonLock] = useState(false)
     const [isDialSelected, setDialSelected] = useState(false)
 
     const mapContainer = useRef(null);
@@ -88,12 +89,7 @@ const OrderComponent = (props: OrderComponentProps) => {
 
         if (isPhoneValid && isAddressValid) {
             try {
-                const result = await props.api.order(props.cartProducts, phone, address, paymentMethod)
-                if (result.redirect) {
-                    window.location.replace(result.redirect);
-                } else {
-                    console.error(result)
-                }
+                await redirect(await props.api.order(props.cartProducts, phone, address, paymentMethod))
             } catch (e) {
                 if (e.code === 1005) {
                     await navigate("/confirm/", {

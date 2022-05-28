@@ -5,7 +5,14 @@ import theme from "../theme";
 import {css} from "@emotion/react";
 import queries from "../queries";
 
-const Product = ({product, whenAddedToCart, disabled, loading = "lazy"}) => {
+interface ProductProps {
+    product,
+    whenAddedToCart,
+    disabled,
+    loading? : "lazy" | "eager"
+}
+
+const Product = (props: ProductProps) => {
     return <div css={css`
       width: 280px;
       margin: 20px;
@@ -17,7 +24,7 @@ const Product = ({product, whenAddedToCart, disabled, loading = "lazy"}) => {
           padding: 16px;
           font-size: 1.5rem;
         `}>
-            {product.Title}
+            {props.product.Title}
         </div>
 
         <div css={css`
@@ -31,23 +38,21 @@ const Product = ({product, whenAddedToCart, disabled, loading = "lazy"}) => {
           letter-spacing: 0.00938em;
         `}>
             <span>
-                {product.Description}
+                {props.product.Description}
             </span>
             <span>
-                {product.Price} рублей
+                {props.product.Price} рублей
             </span>
         </div>
 
         <GatsbyImage css={css`
           min-width: 100%
-        `} loading={loading} alt={product.Title} image={product.Image}/>
+        `} loading={props.loading} alt={props.product.Title} image={props.product.Image}/>
 
         <button css={css`
           width: 100%;
           padding: 8px;
-
-          cursor: pointer;
-
+          
           border: none;
           outline: none;
 
@@ -64,11 +69,12 @@ const Product = ({product, whenAddedToCart, disabled, loading = "lazy"}) => {
           ${queries.mobile} {
             max-width: 100%;
           }
+          
+          cursor: ${(props.disabled) ? "auto" : "pointer"}
         `}
-                onClick={whenAddedToCart}
-                disabled={disabled}
-                style={(disabled) ? {cursor: "auto"} : null}>
-            {(disabled) ? "Добавлено" : "Добавить в корзину"}
+                onClick={props.whenAddedToCart}
+                disabled={props.disabled}>
+            {(props.disabled) ? "Добавлено" : "Добавить в корзину"}
         </button>
     </div>
 }

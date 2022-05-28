@@ -24,7 +24,7 @@ export default function SpeedDialButton(props: SpeedDialProps) {
       outline: none;
       border: none;
 
-      background: ${(props.disabled) ? "#ffffff" : "#e0e0e0"};
+      background: ${(props.disabled) ? "#D8D8D8" : "#ffffff"};
 
       width: 40px;
       height: 40px;
@@ -42,7 +42,10 @@ export default function SpeedDialButton(props: SpeedDialProps) {
       }
     `}
                    className={props.className}
-                   style={{transform: (context) ? "scale(0)" : "scale(1)"}} onClick={props.onClick}>
+                   style={{transform: (context) ? "scale(0)" : "scale(1)"}}
+                   onClick={(event) => {
+                       if (!props.disabled) props.onClick(event);
+                   }}>
         <span css={css`
           font-size: 0.6875rem;
 

@@ -13,16 +13,18 @@ export default interface Data {
         edges: Array<ImageFile>
     }
     site: {
-        siteMetadata: {
-            categories: Array<{ id: number, name: string }>,
-            title: string,
-            description: string,
-            phone: string,
-
-            address: string,
-            addressLink: string
-        }
+        siteMetadata: SiteInfo
     }
+}
+
+export interface SiteInfo {
+    categories: Array<{ id: number, name: string }>,
+    title: string,
+    description: string,
+    phone: string,
+
+    address: string,
+    addressLink: string
 }
 
 interface ImageFile {

@@ -86,8 +86,8 @@ const OrderComponent = (props: OrderComponentProps) => {
         if (isPhoneValid && isAddressValid) {
             try {
                 const result = await props.api.order(props.cartProducts, phone, address, paymentMethod)
-                if (result) {
-                    window.location.replace(result);
+                if (result.redirect) {
+                    window.location.replace(result.redirect);
                 } else {
                     console.error(result)
                 }

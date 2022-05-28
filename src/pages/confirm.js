@@ -114,7 +114,6 @@ const Confirm = ({location}) => {
                                                        prev)
 
                                                    if (result.redirect) {
-                                                       console.log(result.redirect)
                                                        window.location.replace(result.redirect)
                                                    }
                                                } catch (e) {

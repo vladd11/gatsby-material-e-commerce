@@ -113,8 +113,8 @@ const Confirm = ({location}) => {
                                                        phone,
                                                        prev)
 
-                                                   if (result) {
-                                                       window.location.replace(result)
+                                                   if (result.redirect) {
+                                                       window.location.replace(result.redirect)
                                                    }
                                                } catch (e) {
                                                    if (e.code === 1001) {

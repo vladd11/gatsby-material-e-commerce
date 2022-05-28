@@ -8,7 +8,7 @@ class Api {
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 
-    async sendCodeAndOrder(cartProducts: Array<any>, address: string, paymentMethod: string, phone: string, code: string): Promise<string> {
+    async sendCodeAndOrder(cartProducts: Array<any>, address: string, paymentMethod: string, phone: string, code: string): Promise<{ redirect?: string }> {
         const result = await this.client.call([
             Api._sendCode(phone, parseInt(code)),
             Api._order(cartProducts, paymentMethod, address)
@@ -27,10 +27,10 @@ class Api {
         }
     }
 
-    async resendCode(phone: string) : Promise<void> {
-         await this.client.call([
-             Api._resendCode(phone)
-         ])
+    async resendCode(phone: string): Promise<void> {
+        await this.client.call([
+            Api._resendCode(phone)
+        ])
     }
 
     async order(cartProducts: Array<any>, phone: string, address: string, paymentMethod: string): Promise<string> {
@@ -97,7 +97,7 @@ class Api {
         }
     }
 
-    private static _sendCode(phone: string, code: number) : JSONRPCRequest {
+    private static _sendCode(phone: string, code: number): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: 0,
@@ -109,7 +109,7 @@ class Api {
         }
     }
 
-    private static _resendCode(phone: string) : JSONRPCRequest {
+    private static _resendCode(phone: string): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: 0,

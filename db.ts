@@ -17,7 +17,7 @@ export default class Database {
 
     async readProducts(): Promise<Array<Product>> {
         return new Promise(async (resolve) => {
-            await this.driver.tableClient.withSession(async (session) => {
+            await this.driver.tableClient.withSessionRetry(async (session) => {
                 await session.streamReadTable("products", (result1) => {
                         const products: Array<Product> = []
 
@@ -54,7 +54,7 @@ export default class Database {
     }
 
     public async readPopularity(): Promise<Array<ProductPopularity>> {
-        return await this.driver.tableClient.withSession(async (session) => {
+        return await this.driver.tableClient.withSessionRetry(async (session) => {
             const resultQuery = await session.executeQuery(`
             SELECT * FROM (
                 SELECT product_id, COUNT(product_id)

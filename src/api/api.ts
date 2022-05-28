@@ -36,7 +36,7 @@ class Api {
     async order(cartProducts: Array<any>, phone: string, address: string, paymentMethod: string): Promise<{ redirect?: string }> {
         const result = await this.client.call([
             this._login(phone),
-            Api._order(cartProducts, address, paymentMethod)
+            Api._order(cartProducts, paymentMethod, address)
         ])
 
         const responses = result.responses

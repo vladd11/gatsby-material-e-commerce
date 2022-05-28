@@ -89,7 +89,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 if (result) {
                     window.location.replace(result);
                 } else {
-
+                    console.error(result)
                 }
             } catch (e) {
                 if (e.code === 1005) {

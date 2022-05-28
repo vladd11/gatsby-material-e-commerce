@@ -85,7 +85,7 @@ const Confirm = ({location}) => {
                             ml: "8px",
                             fontWeight: "bold"
                         }} component="span">
-                            +79170324874
+                            {phone}
                         </Typography>
                     </div>
 

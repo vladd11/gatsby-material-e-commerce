@@ -4,7 +4,8 @@ import {css} from "@emotion/react";
 
 type SpeedDialProps = BaseProps & {
     tooltipText?,
-    onClick?
+    onClick?,
+    disabled?: boolean
 }
 
 const speedDialShadow = "rgb(0 0 0 / 20%) 0 3px 5px -1px, rgb(0 0 0 / 14%) 0 6px 10px 0, rgb(0 0 0 / 12%) 0 1px 18px 0";
@@ -23,7 +24,7 @@ export default function SpeedDialButton(props: SpeedDialProps) {
       outline: none;
       border: none;
 
-      background: #fff;
+      background: ${(props.disabled) ? "#ffffff" : "#e0e0e0"};
 
       width: 40px;
       height: 40px;

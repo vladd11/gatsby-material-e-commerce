@@ -48,6 +48,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
 
+    const [orderButtonLock, setOrderButtonLock] = useState(true)
     const [isDialSelected, setDialSelected] = useState(false)
 
     const mapContainer = useRef(null);
@@ -75,6 +76,8 @@ const OrderComponent = (props: OrderComponentProps) => {
     }, [isAddressFormManual]);
 
     async function validateAndOrder(paymentMethod) {
+        setOrderButtonLock(true);
+
         if (isEmptyOrSpaces(phone)) {
             setPhoneValid(false);
         }
@@ -104,6 +107,8 @@ const OrderComponent = (props: OrderComponentProps) => {
                 }
             }
         }
+
+        setOrderButtonLock(false)
     }
 
     return <div className={orderStyles.order}>
@@ -205,11 +210,15 @@ const OrderComponent = (props: OrderComponentProps) => {
                 </span>
             </Fab>
         } shown={isDialSelected} ariaLabel="Заказать">
-            <SpeedDialButton tooltipText="Предоплата картой" onClick={() => validateAndOrder("card")}>
+            <SpeedDialButton disabled={orderButtonLock}
+                             tooltipText="Предоплата картой"
+                             onClick={() => validateAndOrder("card")}>
                 <CreditCardIcon/>
             </SpeedDialButton>
 
-            <SpeedDialButton tooltipText="Наличными при получении" onClick={() => validateAndOrder("cash")}>
+            <SpeedDialButton disabled={orderButtonLock}
+                             tooltipText="Наличными при получении"
+                             onClick={() => validateAndOrder("cash")}>
                 <MoneyIcon/>
             </SpeedDialButton>
         </SpeedDial>

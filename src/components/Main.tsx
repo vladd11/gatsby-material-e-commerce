@@ -62,7 +62,7 @@ const Main = (props: MainProps) => {
                     onClick={() => {
                         setDrawerOpened(true)
                     }}>
-                    <Badge marker={(props.cartProducts.length === 0) ? null : props.cartProducts.length}>
+                    <Badge marker={(props.cartProducts?.length === 0) ? null : props.cartProducts.length}>
                         <MenuIcon/>
                     </Badge>
                 </IconButton> : null}

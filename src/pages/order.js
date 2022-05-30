@@ -1,7 +1,7 @@
 import OrderComponent from '../components/OrderComponent'
 import Api from '../api/api'
 
-import React, {useEffect} from 'react'
+import React from 'react'
 import Helmet from "react-helmet/es/Helmet";
 
 import theme from "../theme";
@@ -35,9 +35,6 @@ export default function Order({location}) {
 }`)
 
     const api = new Api()
-    useEffect(() => {
-        api.jwtToken = localStorage.getItem("jwt_token")
-    }, [])
 
     const {state = {}} = location
     if(!state) {

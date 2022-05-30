@@ -8,7 +8,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {css} from "@emotion/react";
 import {graphql, useStaticQuery} from "gatsby";
 
@@ -31,9 +31,6 @@ const Confirm = ({location}) => {
     } = state
 
     const api = new Api()
-    useEffect(() => {
-        api.jwtToken = localStorage.getItem("jwt_token")
-    }, [])
 
     const data = useStaticQuery(graphql`
 {

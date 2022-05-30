@@ -73,8 +73,8 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     const popularity: Array<ProductPopularity> = await db.readPopularity();
 
     (await db.readProducts()).forEach((product) => {
-        product.Popularity = popularity
-            .find((value: ProductPopularity) => value.ProductID === product.ProductID)!
+        product.Popularity = (popularity
+            .find((value: ProductPopularity) => value.ProductID === product.ProductID) ?? {popularity: 0})
             .popularity
 
         product.Price = Math.round(product.Price * 100) / 100

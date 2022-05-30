@@ -5,6 +5,10 @@ export default class Api {
     private client: JSONRPCClient;
 
     constructor() {
+        if(typeof localStorage !== 'undefined') {
+            this.jwtToken = localStorage.getItem("jwt_token")
+        }
+
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 

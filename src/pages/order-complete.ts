@@ -46,10 +46,8 @@ const OrderComplete = ({location}) => {
 
     const [orderResponse, setOrderResponse] = useState<OrderResponse>(location.state as OrderResponse);
 
+    const api = new Api();
     useEffect(() => {
-        const api = new Api();
-        api.jwtToken = localStorage.getItem("jwt_token")
-
         if (!orderResponse) {
             const params = new URLSearchParams(location.search);
             const orderID = params.get("orderID");

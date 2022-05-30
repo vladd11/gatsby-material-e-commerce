@@ -30,7 +30,6 @@ export default class Database {
                                 if (price >= Number.MAX_SAFE_INTEGER) {
                                     throw new PriceIsTooBigException(price)
                                 }
-
                             }
 
                             products.push({

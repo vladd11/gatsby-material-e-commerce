@@ -1,8 +1,10 @@
 import {graphql, useStaticQuery} from "gatsby";
+import {useEffect, useState} from "react";
+import Api, {OrderResponse} from "../api/api";
 import OrderCompleteComponent from "../components/OrderCompleteComponent";
 import Data from "../interfaces/data";
 
-const OrderComplete = () => {
+const OrderComplete = ({location}) => {
     const data: Data = useStaticQuery(graphql`
 {
   allSiteBuildMetadata {
@@ -41,6 +43,22 @@ const OrderComplete = () => {
     }
   }
 }`)
+
+    const [orderResponse, setOrderResponse] = useState<OrderResponse>(location.state as OrderResponse);
+
+    useEffect(() => {
+        const api = new Api();
+        api.jwtToken = localStorage.getItem("jwt_token")
+
+        if (!orderResponse) {
+            const params = new URLSearchParams(location.search);
+            const orderID = params.get("orderID");
+
+            api.getOrder(orderID).then((result) => {
+                setOrderResponse(result)
+            })
+        }
+    }, [])
 
     return OrderCompleteComponent({data: data})
 }

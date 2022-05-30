@@ -33,7 +33,7 @@ const Confirm = ({location}) => {
     const api = new Api()
     useEffect(() => {
         api.jwtToken = localStorage.getItem("jwt_token")
-    })
+    }, [])
 
     const data = useStaticQuery(graphql`
 {

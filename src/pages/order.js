@@ -37,10 +37,10 @@ export default function Order({location}) {
     const api = new Api()
     useEffect(() => {
         api.jwtToken = localStorage.getItem("jwt_token")
-    })
+    }, [])
 
     const {state = {}} = location
-    if(state === null) {
+    if(!state) {
         navigate("/")
         return
     }

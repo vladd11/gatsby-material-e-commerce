@@ -6,9 +6,7 @@ export default async function redirect(response: OrderResponse) {
         window.location.replace(response.redirect)
     } else {
         await navigate("/order-complete", {
-            state: {
-                id: response.id
-            }
+            state: response
         })
     }
 }

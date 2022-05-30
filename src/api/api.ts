@@ -8,6 +8,37 @@ export default class Api {
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 
+    async getOrder(orderID: string): Promise<OrderResponse> {
+        const result = await this.client.call([
+            this._verify(),
+            this._getOrder(1)
+        ])
+
+        const responses = result.responses
+        const errors = result.errors
+
+        if (errors !== null && errors.length === 0) {
+            return {
+                id: orderID,
+                price: (responses[1].price as number),
+                phone: responses[0].phone
+            }
+        } else { // This throws only one exception because method add_order depends on registration
+            throw new JSONRPCError(errors[0].code, errors[0].message)
+        }
+    }
+
+    _getOrder(id?: number): JSONRPCRequest {
+        return {
+            jsonrpc: "2.0",
+            id: id,
+            method: "get_order",
+            params: {
+                id: id
+            }
+        }
+    }
+
     async sendCodeAndOrder(cartProducts: Array<any>,
                            address: string,
                            paymentMethod: string,
@@ -61,6 +92,17 @@ export default class Api {
         }
     }
 
+    private _verify(): JSONRPCRequest {
+        return {
+            jsonrpc: '2.0',
+            id: '0',
+            method: 'verify',
+            params: {
+                token: this.jwtToken
+            }
+        }
+    }
+
     private _login(phone: string): JSONRPCRequest {
         if (this.jwtToken === null) {
             return {
@@ -73,14 +115,7 @@ export default class Api {
                 },
             }
         } else {
-            return {
-                jsonrpc: '2.0',
-                id: '0',
-                method: 'verify',
-                params: {
-                    token: this.jwtToken
-                }
-            }
+            return this._verify();
         }
     }
 
@@ -132,7 +167,10 @@ export default class Api {
 
 export type OrderResponse = {
     redirect?: string,
-    id: string
+    id?: string,
+
+    phone: string,
+    price: number
 };
 
 export class JSONRPCError extends Error {

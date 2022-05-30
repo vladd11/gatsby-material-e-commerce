@@ -1,9 +1,6 @@
 import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
-import List from "@mui/material/List";
-import Toolbar from "@mui/material/Toolbar";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
@@ -22,6 +19,8 @@ import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
 
+import {defaultFontFamily} from "../theme"
+
 import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
@@ -33,6 +32,8 @@ import mapboxgl from '!mapbox-gl';
 import Api from "../api/api";
 import Product from "../interfaces/product";
 import redirect from "../redirect";
+import Appbar from "./ui/Appbar";
+import {css} from "@emotion/react";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -44,7 +45,7 @@ interface OrderComponentProps {
 const OrderComponent = (props: OrderComponentProps) => {
     const [isAddressFormManual, setAddressFormType] = useStickyState(false, 'manualAddressChoice')
     const [address, setAddress] = useStickyState('', 'address')
-    const [phone, setPhone] = useStickyState('+7', 'phone')
+    const [phone, setPhone] = useStickyState('', 'phone')
 
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
@@ -108,31 +109,26 @@ const OrderComponent = (props: OrderComponentProps) => {
     }
 
     return <div className={orderStyles.order}>
-        <AppBar position="static">
-            <Toolbar>
-                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    Оформление заказа
-                </Typography>
-            </Toolbar>
-        </AppBar>
+        <Appbar title="Оформление заказа"/>
 
-        <List sx={{
-            display: "flex",
-            flexDirection: "row",
+        <div css={css`
+          display: flex;
+          flex-direction: row;
 
-            maxHeight: 200,
-            overflow: 'auto'
-        }}>
+          max-height: 200px;
+          overflow: auto;
+        `}>
             {(props.cartProducts) ? props.cartProducts.map(cartProduct => {
-                return <CartProduct product={cartProduct}>
-
-                </CartProduct>
+                return <CartProduct product={cartProduct}/>
             }) : null}
-        </List>
+        </div>
 
         <Typography sx={{marginLeft: "12px"}}>
             Итого:
-            <Typography component="span" sx={{paddingLeft: "4px", fontWeight: "bold"}}>
+            <Typography component="span" sx={{
+                paddingLeft: "4px",
+                fontWeight: "bold"
+            }}>
                 {(props.cartProducts) ? props.cartProducts.reduce((n, cartProduct) => {
                     return n + cartProduct.Price;
                 }, 0) : null} рублей
@@ -152,10 +148,27 @@ const OrderComponent = (props: OrderComponentProps) => {
             required={true}
             error={!isPhoneValid}>
 
+            <span css={css`
+              position: absolute;
+              bottom: 5px;
+              left: 8px;
+
+              ${defaultFontFamily};
+              font-weight: 400;
+              font-size: 1rem;
+              line-height: 1.4375em;
+            `}>
+                +7
+            </span>
             <InputLabel htmlFor="phone">Номер телефона</InputLabel>
-            <Input inputMode="tel" id="phone" aria-describedby="tel" sx={{pl: 1}} value={phone} onChange={event => {
-                setPhone(event.target.value)
-            }}/>
+            <Input inputMode="tel"
+                   id="phone"
+                   aria-describedby="tel"
+                   sx={{pl: 4}}
+                   value={phone}
+                   onChange={event => {
+                       setPhone(event.target.value)
+                   }}/>
         </FormControl>
 
         <div className={orderStyles.addressInput}>

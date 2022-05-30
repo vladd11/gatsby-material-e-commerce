@@ -1,16 +1,11 @@
 import {Driver} from "ydb-sdk";
 import Product, {ProductPopularity} from "./src/interfaces/product";
 import Long from "long";
+import priceToNumber from "../priceToNumber";
 
 const ydb = require('ydb-sdk')
 
 const fetch = require("node-fetch")
-
-class PriceIsTooBigException extends Error {
-    constructor(number) {
-        super(`Product price (${number}) is bigger than MAX_SAFE_INTEGER. This may cause bugs on some users`);
-    }
-}
 
 export default class Database {
     private driver: Driver;
@@ -22,15 +17,7 @@ export default class Database {
                         const products: Array<Product> = []
 
                         for (const row of result1.resultSet.rows) {
-                            let price: (number | Long) = row.items[5].uint64Value!
-                            if (typeof price === "number") {
-                                price = price / 100
-                            } else {
-                                price = price.toNumber() / 100
-                                if (price >= Number.MAX_SAFE_INTEGER) {
-                                    throw new PriceIsTooBigException(price)
-                                }
-                            }
+                            let price: number = priceToNumber(row.items[5].uint64Value)
 
                             products.push({
                                 // @ts-ignore

@@ -4,8 +4,14 @@ import {GatsbyImage} from "gatsby-plugin-image";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import {css} from "@emotion/react";
+import Product from "../interfaces/product";
 
-const CartProduct = ({product, children}) => {
+interface CartProductProps {
+    product: Product,
+    children?
+}
+
+const CartProduct = (props: CartProductProps) => {
     return <Card sx={{
         minWidth: "200px",
         margin: "12px"
@@ -15,11 +21,11 @@ const CartProduct = ({product, children}) => {
           justify-content: space-between;
           align-items: center;
         `}>
-            <CardHeader title={product.Title} subheader={`${product.Price} рублей`}/>
-            {children}
+            <CardHeader title={props.product.Title} subheader={`${props.product.Price} рублей`}/>
+            {props.children}
         </div>
 
-        <GatsbyImage css={css`min-width: 100%`} alt={product.Title} image={product.Image}/>
+        <GatsbyImage css={css`min-width: 100%`} alt={props.product.Title} image={props.product.Image}/>
     </Card>
 }
 

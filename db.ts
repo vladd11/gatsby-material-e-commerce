@@ -96,7 +96,7 @@ export default class Database {
         const authService = ydb.getCredentialsFromEnv();
 
         this.driver = new ydb.Driver({
-            endpoint: process.env.ENDPOINT || "grpcs://ydb.serverless.yandexcloud.net:2135",
+            endpoint: process.env.ENDPOINT ?? "grpcs://ydb.serverless.yandexcloud.net:2135",
             database: process.env.DATABASE,
             authService
         });

@@ -80,17 +80,22 @@ const OrderComponent = (props: OrderComponentProps) => {
     async function validateAndOrder(paymentMethod) {
         setOrderButtonLock(true);
 
-        if (isEmptyOrSpaces(phone)) {
+        let valid = true;
+
+        let clearPhone = replaceSpaces(phone)
+        if (isEmptyOrSpaces(clearPhone) || clearPhone.length !== 10) {
             setPhoneValid(false);
+            valid = false;
         }
 
         if (isEmptyOrSpaces(address) && isAddressFormManual) {
             setAddressValid(false);
+            valid = false;
         }
 
-        if (isPhoneValid && isAddressValid) {
+        if (valid) {
             try {
-                await redirect(await props.api.order(props.cartProducts, phone, address, paymentMethod))
+                await redirect(await props.api.order(props.cartProducts, clearPhone, address, paymentMethod))
             } catch (e) {
                 if (e.code === 1005) {
                     await navigate("/confirm/", {
@@ -147,28 +152,18 @@ const OrderComponent = (props: OrderComponentProps) => {
             }}
             required={true}
             error={!isPhoneValid}>
-
-            <span css={css`
-              position: absolute;
-              bottom: 5px;
-              left: 8px;
-
-              ${defaultFontFamily};
-              font-weight: 400;
-              font-size: 1rem;
-              line-height: 1.4375em;
-            `}>
-                +7
-            </span>
             <InputLabel htmlFor="phone">Номер телефона</InputLabel>
             <Input inputMode="tel"
                    id="phone"
                    aria-describedby="tel"
-                   sx={{pl: 4}}
+                   sx={{pl: 1}}
                    value={phone}
                    onChange={event => {
                        setPhone(event.target.value)
-                   }}/>
+                       if(!isPhoneValid) setPhoneValid(true);
+                   }}
+                   startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
+            />
         </FormControl>
 
         <div className={orderStyles.addressInput}>
@@ -189,6 +184,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                            value={address}
                            onChange={event => {
                                setAddress(event.target.value)
+                               if(!isAddressValid) setAddressValid(true);
                            }}/>
                 </FormControl>
                 : null}
@@ -236,6 +232,10 @@ const OrderComponent = (props: OrderComponentProps) => {
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;
+}
+
+function replaceSpaces(str) {
+    return str.replace(/[- ()]/, '')
 }
 
 export default OrderComponent;

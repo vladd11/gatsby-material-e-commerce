@@ -20,6 +20,7 @@ import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
 
 import {defaultFontFamily} from "../theme"
+import getCurrentDateTime, {parseDateTime, addTime} from "../currentDateTime"
 
 import CartProduct from "./CartProduct";
 
@@ -43,12 +44,22 @@ interface OrderComponentProps {
 }
 
 const OrderComponent = (props: OrderComponentProps) => {
+    const {defaultTime, defaultDate} = getCurrentDateTime();
+
     const [isAddressFormManual, setAddressFormType] = useStickyState(false, 'manualAddressChoice')
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('', 'phone')
+    const [time, setTime] = useStickyState(defaultTime, 'time')
+    const [date, setDate] = useStickyState(defaultDate, 'date')
+
+    const maxTime = addTime(parseDateTime(date, time), 3600 * 2);
+    const maxTimeMinutes = maxTime.getMinutes().toString().padStart(2, "0")
+    const maxTimeHours = maxTime.getHours().toString().padStart(2, "0")
 
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
+    const [isTimeValid, setTimeValid] = useState(true)
+    const [isDateValid, setDateValid] = useState(true)
 
     const [orderButtonLock, setOrderButtonLock] = useState(false)
     const [isDialSelected, setDialSelected] = useState(false)
@@ -160,11 +171,85 @@ const OrderComponent = (props: OrderComponentProps) => {
                    value={phone}
                    onChange={event => {
                        setPhone(event.target.value)
-                       if(!isPhoneValid) setPhoneValid(true);
+                       if (!isPhoneValid) setPhoneValid(true);
                    }}
                    startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
             />
         </FormControl>
+
+        <div css={css`
+          display: flex;
+          flex-direction: row;
+
+          align-items: center;
+        `}>
+            <FormControl
+                sx={{
+                    mt: '16px',
+                    width: "100%",
+                    flex: 4
+                }}
+                required={true}
+                error={!isDateValid}>
+                <Input type="date"
+                       id="time"
+                       aria-describedby="date"
+                       sx={{pl: 1}}
+                       value={date}
+                       onChange={event => {
+                           setDate(event.target.value)
+                           if (!isDateValid) setDateValid(true);
+                       }}
+                />
+            </FormControl>
+
+            <span css={css`
+              padding-left: 16px;
+              padding-right: 16px;
+              margin-top: 16px;
+            `}>
+                с
+            </span>
+
+            <FormControl
+                sx={{
+                    flex: 2,
+                    mt: '16px',
+                    width: "100%"
+                }}
+                required={true}
+                error={!isTimeValid}>
+                <Input type="time"
+                       id="time"
+                       aria-describedby="time"
+                       sx={{pl: 1}}
+                       value={time}
+                       onChange={event => {
+                           setTime(event.target.value)
+                           if (!isTimeValid) setTimeValid(true);
+                       }}
+                />
+            </FormControl>
+
+            <span css={css`
+              display: flex;
+              justify-content: space-between;
+
+              flex: 1;
+
+              padding-left: 16px;
+              padding-right: 16px;
+              margin-top: 16px;
+            `}>
+                до
+                <span css={css`
+                  padding-left: 8px;
+                  font-weight: bold;
+                `}>
+                    {maxTimeHours}:{maxTimeMinutes}
+                </span>
+            </span>
+        </div>
 
         <div className={orderStyles.addressInput}>
             <Button sx={{width: "100%", textTransform: "initial"}} onClick={() => {
@@ -184,7 +269,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                            value={address}
                            onChange={event => {
                                setAddress(event.target.value)
-                               if(!isAddressValid) setAddressValid(true);
+                               if (!isAddressValid) setAddressValid(true);
                            }}/>
                 </FormControl>
                 : null}

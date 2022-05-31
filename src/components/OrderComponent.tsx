@@ -187,6 +187,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 sx={{
                     mt: '16px',
                     width: "100%",
+                    minWidth: "112px",
                     flex: 4
                 }}
                 required={true}
@@ -215,7 +216,8 @@ const OrderComponent = (props: OrderComponentProps) => {
                 sx={{
                     flex: 2,
                     mt: '16px',
-                    width: "100%"
+                    width: "100%",
+                    minWidth: "81px"
                 }}
                 required={true}
                 error={!isTimeValid}>

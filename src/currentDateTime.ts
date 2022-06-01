@@ -14,6 +14,27 @@ export default function getCurrentDateTime() {
     }
 }
 
+export function toHumanReadable(date: Date) {
+    return isToday(date)
+        ? `cегодня ${timeInterval(date)}`
+        : `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getFullYear().toString()} ${timeInterval(date)}`
+}
+
+function timeInterval(date: Date) {
+    return `c ${toHours(date)} до ${toHours(addTime(date,3600 * 2))}`
+}
+
+function toHours(date: Date) {
+    return `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
+}
+
+export function isToday(date: Date) {
+    const today = new Date()
+    return date.getDate() == today.getDate() &&
+        date.getMonth() == today.getMonth() &&
+        date.getFullYear() == today.getFullYear()
+}
+
 export function parseDateTime(date: string, time: string) {
     const dateArr = date.split("-");
     const year = parseInt(dateArr[0]);

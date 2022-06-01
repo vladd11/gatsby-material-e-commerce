@@ -17,6 +17,7 @@ import {ImageFile, SiteInfo} from "../interfaces/data";
 import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
 import Order from "../interfaces/order";
+import {toHumanReadable} from "../currentDateTime";
 
 interface OrderCompleteProps {
     order: Order;
@@ -73,7 +74,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                         <AccessTimeIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        Привезём сегодня в {props.order.time}
+                        Привезём {(props.order) ? toHumanReadable(new Date(props.order.time * 1000)) : "..."}
                     </ListItemText>
                 </ListItem>
 

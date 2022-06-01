@@ -32,5 +32,6 @@ export interface ImageFile {
 }
 
 type Node = ImageDataLike & {
-    relativePath: string
+    relativePath: string,
+    [key: string]: any
 }

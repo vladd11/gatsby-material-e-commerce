@@ -23,7 +23,6 @@ export default class Api {
         const errors = result.errors
 
         if (errors !== null && errors.length === 0) {
-            console.log(responses);
             return responses[1];
         } else { // This throws only one exception because method add_order depends on registration
             throw new JSONRPCError(errors[0].code, errors[0].message)

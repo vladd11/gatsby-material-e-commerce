@@ -25,7 +25,7 @@ const CartProduct = (props: CartProductProps) => {
             {props.children}
         </div>
 
-        <GatsbyImage css={css`min-width: 100%`} alt={props.product.Title} image={props.product.Image}/>
+        <GatsbyImage css={css`min-width: 100%`} alt={props.product?.Title} image={props.product?.Image}/>
     </Card>
 }
 

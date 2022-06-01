@@ -31,11 +31,10 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
     function renderProducts() {
         if (props.order) {
-            console.log(props.order)
             return props.order.products.map(cartProduct => {
                 if (!cartProduct.Image) {
-                    console.log(cartProduct.ImageURI)
                     cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)
+                        .node.childImageSharp.gatsbyImageData
                 }
 
                 return <CartProduct product={cartProduct}/>

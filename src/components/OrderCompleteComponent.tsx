@@ -73,7 +73,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                         <AccessTimeIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        Привезём сегодня в 18:00
+                        Привезём сегодня в {props.order.time}
                     </ListItemText>
                 </ListItem>
 
@@ -89,7 +89,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                             fontWeight: "bold",
                             pl: '4px'
                         }}>
-                            100 рублей
+                            {props.order?.price} рублей
                         </Typography>
                     </ListItemText>
                 </ListItem>

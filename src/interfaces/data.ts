@@ -27,7 +27,7 @@ export interface SiteInfo {
     addressLink: string
 }
 
-interface ImageFile {
+export interface ImageFile {
     node: Node
 }
 

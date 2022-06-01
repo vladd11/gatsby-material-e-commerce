@@ -19,7 +19,10 @@ import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
 import useStickyState from "../stickyState";
 
+// I don't know why it's marked as unused while I use it in Emotion F-string
+// noinspection ES6UnusedImports
 import {defaultFontFamily} from "../theme"
+
 import getCurrentDateTime, {parseDateTime, addTime} from "../currentDateTime"
 
 import CartProduct from "./CartProduct";
@@ -61,7 +64,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     const [isTimeValid, setTimeValid] = useState(true)
     const [isDateValid, setDateValid] = useState(true)
 
-    const [orderButtonLock, setOrderButtonLock] = useState(false)
+    const [lock, setLock] = useState(false)
     const [isDialSelected, setDialSelected] = useState(false)
 
     const mapContainer = useRef(null);
@@ -89,7 +92,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     }, [isAddressFormManual]);
 
     async function validateAndOrder(paymentMethod) {
-        setOrderButtonLock(true);
+        setLock(true);
 
         let valid = true;
 
@@ -121,7 +124,7 @@ const OrderComponent = (props: OrderComponentProps) => {
             }
         }
 
-        setOrderButtonLock(false)
+        setLock(false)
     }
 
     return <div className={orderStyles.order}>
@@ -164,16 +167,18 @@ const OrderComponent = (props: OrderComponentProps) => {
             required={true}
             error={!isPhoneValid}>
             <InputLabel htmlFor="phone">Номер телефона</InputLabel>
-            <Input inputMode="tel"
-                   id="phone"
-                   aria-describedby="tel"
-                   sx={{pl: 1}}
-                   value={phone}
-                   onChange={event => {
-                       setPhone(event.target.value)
-                       if (!isPhoneValid) setPhoneValid(true);
-                   }}
-                   startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
+            <Input
+                readOnly={lock}
+                inputMode="tel"
+                id="phone"
+                aria-describedby="tel"
+                sx={{pl: 1}}
+                value={phone}
+                onChange={event => {
+                    setPhone(event.target.value)
+                    if (!isPhoneValid) setPhoneValid(true);
+                }}
+                startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
             />
         </FormControl>
 
@@ -192,15 +197,17 @@ const OrderComponent = (props: OrderComponentProps) => {
                 }}
                 required={true}
                 error={!isDateValid}>
-                <Input type="date"
-                       id="time"
-                       aria-describedby="date"
-                       sx={{pl: 1}}
-                       value={date}
-                       onChange={event => {
-                           setDate(event.target.value)
-                           if (!isDateValid) setDateValid(true);
-                       }}
+                <Input
+                    readOnly={lock}
+                    type="date"
+                    id="time"
+                    aria-describedby="date"
+                    sx={{pl: 1}}
+                    value={date}
+                    onChange={event => {
+                        setDate(event.target.value)
+                        if (!isDateValid) setDateValid(true);
+                    }}
                 />
             </FormControl>
 
@@ -221,15 +228,17 @@ const OrderComponent = (props: OrderComponentProps) => {
                 }}
                 required={true}
                 error={!isTimeValid}>
-                <Input type="time"
-                       id="time"
-                       aria-describedby="time"
-                       sx={{pl: 1}}
-                       value={time}
-                       onChange={event => {
-                           setTime(event.target.value)
-                           if (!isTimeValid) setTimeValid(true);
-                       }}
+                <Input
+                    readOnly={lock}
+                    type="time"
+                    id="time"
+                    aria-describedby="time"
+                    sx={{pl: 1}}
+                    value={time}
+                    onChange={event => {
+                        setTime(event.target.value)
+                        if (!isTimeValid) setTimeValid(true);
+                    }}
                 />
             </FormControl>
 
@@ -265,14 +274,16 @@ const OrderComponent = (props: OrderComponentProps) => {
                                required={true}
                                error={!isAddressValid}>
                     <InputLabel htmlFor="address">Адрес доставки</InputLabel>
-                    <Input id="address"
-                           aria-describedby="address"
-                           sx={{pl: 1}}
-                           value={address}
-                           onChange={event => {
-                               setAddress(event.target.value)
-                               if (!isAddressValid) setAddressValid(true);
-                           }}/>
+                    <Input
+                        readOnly={lock}
+                        id="address"
+                        aria-describedby="address"
+                        sx={{pl: 1}}
+                        value={address}
+                        onChange={event => {
+                            setAddress(event.target.value)
+                            if (!isAddressValid) setAddressValid(true);
+                        }}/>
                 </FormControl>
                 : null}
 
@@ -302,13 +313,13 @@ const OrderComponent = (props: OrderComponentProps) => {
                 </span>
             </Fab>
         } shown={isDialSelected} ariaLabel="Заказать">
-            <SpeedDialButton disabled={orderButtonLock}
+            <SpeedDialButton disabled={lock}
                              tooltipText="Предоплата картой"
                              onClick={() => validateAndOrder("card")}>
                 <CreditCardIcon/>
             </SpeedDialButton>
 
-            <SpeedDialButton disabled={orderButtonLock}
+            <SpeedDialButton disabled={lock}
                              tooltipText="Наличными при получении"
                              onClick={() => validateAndOrder("cash")}>
                 <MoneyIcon/>

@@ -1,44 +1,42 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
+import Order from "../interfaces/order";
 
 export default class Api {
     jwtToken?: string;
     private client: JSONRPCClient;
 
     constructor() {
-        if(typeof localStorage !== 'undefined') {
+        if (typeof localStorage !== 'undefined') {
             this.jwtToken = localStorage.getItem("jwt_token")
         }
 
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 
-    async getOrder(orderID: string): Promise<OrderResponse> {
+    async getOrder(orderID: string): Promise<Order> {
         const result = await this.client.call([
-            this._verify(),
-            this._getOrder(1)
+            this._verify(0),
+            this._getOrder(orderID, 1)
         ])
 
         const responses = result.responses
         const errors = result.errors
 
         if (errors !== null && errors.length === 0) {
-            return {
-                id: orderID,
-                price: (responses[1].price as number),
-                phone: responses[0].phone
-            }
+            console.log(responses);
+            return responses[1];
         } else { // This throws only one exception because method add_order depends on registration
             throw new JSONRPCError(errors[0].code, errors[0].message)
         }
     }
 
-    _getOrder(id?: number): JSONRPCRequest {
+    _getOrder(orderID: string, id?): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
             method: "get_order",
             params: {
-                id: id
+                orderID: orderID
             }
         }
     }
@@ -77,7 +75,7 @@ export default class Api {
                 address: string,
                 paymentMethod: string): Promise<OrderResponse> {
         const result = await this.client.call([
-            this._login(phone),
+            this._login(phone, 0),
             Api._order(cartProducts, paymentMethod, address)
         ])
 
@@ -96,10 +94,10 @@ export default class Api {
         }
     }
 
-    private _verify(): JSONRPCRequest {
+    private _verify(id?): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
-            id: '0',
+            id: id,
             method: 'verify',
             params: {
                 token: this.jwtToken
@@ -107,11 +105,11 @@ export default class Api {
         }
     }
 
-    private _login(phone: string): JSONRPCRequest {
+    private _login(phone: string, id?): JSONRPCRequest {
         if (this.jwtToken === null) {
             return {
                 jsonrpc: '2.0',
-                id: "0",
+                id: id,
                 method: 'login',
                 params: {
                     phone: phone,
@@ -125,10 +123,11 @@ export default class Api {
 
     private static _order(cartProducts: Array<any>,
                           paymentMethod: string,
-                          address: string): JSONRPCRequest {
+                          address: string,
+                          id?): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
-            id: "1",
+            id: id,
             method: 'add_order',
             params: {
                 products: cartProducts.map(
@@ -145,10 +144,10 @@ export default class Api {
         }
     }
 
-    private static _sendCode(phone: string, code: number): JSONRPCRequest {
+    private static _sendCode(phone: string, code: number, id?): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
-            id: 0,
+            id: id,
             method: "check_code",
             params: {
                 phone: phone,
@@ -157,10 +156,10 @@ export default class Api {
         }
     }
 
-    private static _resendCode(phone: string): JSONRPCRequest {
+    private static _resendCode(phone: string, id?): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
-            id: 0,
+            id: id,
             method: "send_code",
             params: {
                 phone: phone

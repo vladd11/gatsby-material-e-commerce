@@ -1,8 +1,9 @@
 import {graphql, useStaticQuery} from "gatsby";
 import {useEffect, useState} from "react";
-import Api, {OrderResponse} from "../api/api";
+import Api from "../api/api";
 import OrderCompleteComponent from "../components/OrderCompleteComponent";
 import Data from "../interfaces/data";
+import Order from "../interfaces/order";
 
 const OrderComplete = ({location}) => {
     const data: Data = useStaticQuery(graphql`
@@ -44,7 +45,7 @@ const OrderComplete = ({location}) => {
   }
 }`)
 
-    const [orderResponse, setOrderResponse] = useState<OrderResponse>(location.state as OrderResponse);
+    const [orderResponse, setOrderResponse] = useState<Order>(location.state as Order);
 
     const api = new Api();
     useEffect(() => {
@@ -58,7 +59,11 @@ const OrderComplete = ({location}) => {
         }
     }, [])
 
-    return OrderCompleteComponent({data: data})
+    return OrderCompleteComponent({
+        info: data.site.siteMetadata,
+        order: orderResponse,
+        allFile: data.allFile
+    })
 }
 
 export default OrderComplete;

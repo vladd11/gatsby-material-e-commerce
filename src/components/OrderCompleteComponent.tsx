@@ -13,15 +13,35 @@ import theme from "../theme";
 import Helmet from "react-helmet";
 import {css, Global} from "@emotion/react";
 import Main from "../components/Main";
-import Data from "../interfaces/data";
+import {ImageFile, SiteInfo} from "../interfaces/data";
 import useStickyState from "../stickyState";
+import CartProduct from "./CartProduct";
+import Order from "../interfaces/order";
 
 interface OrderCompleteProps {
-    data: Data
+    order: Order;
+    info: SiteInfo;
+    allFile: {
+        edges: Array<ImageFile>
+    }
 }
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+
+    function renderProducts() {
+        if (props.order) {
+            console.log(props.order)
+            return props.order.products.map(cartProduct => {
+                if (!cartProduct.Image) {
+                    console.log(cartProduct.ImageURI)
+                    cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)
+                }
+
+                return <CartProduct product={cartProduct}/>
+            });
+        } else return <div/>
+    }
 
     return <>
         <Global styles={css`
@@ -32,13 +52,23 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
-            <title>{props.data.site.siteMetadata.title} | Заказ оформлен</title>
-            <meta name="description" content={props.data.site.siteMetadata.description}/>
+            <title>{props.info.title} | Заказ оформлен</title>
+            <meta name="description" content={props.info.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/order-complete"/>
         </Helmet>
-        <Main info={props.data.site.siteMetadata}
+        <Main info={props.info}
               cartProducts={cartProducts} setCartProducts={setCartProducts}>
             <List>
+                <div css={css`
+                  display: flex;
+                  flex-direction: row;
+
+                  max-height: 200px;
+                  overflow: auto;
+                `}>
+                    {renderProducts()}
+                </div>
+
                 <ListItem>
                     <ListItemIcon>
                         <AccessTimeIcon/>

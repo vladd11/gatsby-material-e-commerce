@@ -3,14 +3,9 @@ export default function getCurrentDateTime() {
     const offset = date.getTimezoneOffset() * 1000 * 60;
     date = new Date(date.getTime() - offset)
 
-    let month = (date.getMonth() + 1).toString()
-    if (month.length === 1) { // if month is 1-digit
-        month = "0" + month
-    }
-
     return {
-        defaultDate: `${date.getFullYear()}-${month}-${date.getDate()}`,
-        defaultTime: `${date.getHours()}:${date.getMinutes()}`
+        defaultDate: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`,
+        defaultTime: `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
     }
 }
 

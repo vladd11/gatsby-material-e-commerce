@@ -46,8 +46,8 @@ export default class Api {
                            phone: string,
                            code: string): Promise<OrderResponse> {
         const result = await this.client.call([
-            Api._sendCode(phone, parseInt(code)),
-            Api._order(cartProducts, paymentMethod, address)
+            Api._sendCode(phone, parseInt(code), 0),
+            Api._order(cartProducts, paymentMethod, address, phone, 1)
         ])
 
         const responses = result.responses
@@ -75,7 +75,7 @@ export default class Api {
                 paymentMethod: string): Promise<OrderResponse> {
         const result = await this.client.call([
             this._login(phone, 0),
-            Api._order(cartProducts, paymentMethod, address)
+            Api._order(cartProducts, paymentMethod, address, phone, 1)
         ])
 
         const responses = result.responses
@@ -123,6 +123,7 @@ export default class Api {
     private static _order(cartProducts: Array<any>,
                           paymentMethod: string,
                           address: string,
+                          phone: string,
                           id?): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
@@ -138,7 +139,8 @@ export default class Api {
                     }
                 ),
                 paymentMethod: paymentMethod,
-                address: address
+                address: address,
+                phone: phone
             }
         }
     }

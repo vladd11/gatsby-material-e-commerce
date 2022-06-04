@@ -39,7 +39,7 @@ const Main = (props: MainProps) => {
     }, [isMobile])
 
     function renderCartProducts() {
-        return props.cartProducts.map((cartProduct, index) => {
+        return props.cartProducts?.map((cartProduct, index) => {
             return <CartMenuProduct product={cartProduct}
                                     onDelete={() => {
                                         props.setCartProducts(props.cartProducts.filter((value, arrIndex) => {
@@ -62,7 +62,7 @@ const Main = (props: MainProps) => {
                     onClick={() => {
                         setDrawerOpened(true)
                     }}>
-                    <Badge marker={(props.cartProducts?.length === 0) ? null : props.cartProducts.length}>
+                    <Badge marker={props.cartProducts?.length}>
                         <MenuIcon/>
                     </Badge>
                 </IconButton> : null}
@@ -77,7 +77,7 @@ const Main = (props: MainProps) => {
             onClose={() => {
                 setDrawerOpened(false)
             }}
-            isCartEmpty={props.cartProducts.length === 0}
+            isCartEmpty={props.cartProducts?.length === 0}
 
             orderLinkState={{cartProducts: props.cartProducts}}
             shouldNotExpand={isMobile}>

@@ -1,6 +1,8 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
 import OrderResponse from "../interfaces/order";
 
+const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
+
 export default class Api {
     jwtToken?: string;
     private client: JSONRPCClient;
@@ -41,13 +43,14 @@ export default class Api {
     }
 
     async sendCodeAndOrder(cartProducts: Array<any>,
+                           phone: string,
                            address: string,
                            paymentMethod: string,
-                           phone: string,
+                           time: Date,
                            code: string): Promise<OrderResponse> {
         const result = await this.client.call([
             Api._sendCode(phone, parseInt(code), 0),
-            Api._order(cartProducts, paymentMethod, address, phone, 1)
+            Api._order(cartProducts, paymentMethod, address, phone, toUnixTime(time), 1)
         ])
 
         const responses = result.responses
@@ -76,7 +79,7 @@ export default class Api {
                 time: Date): Promise<OrderResponse> {
         const result = await this.client.call([
             this._login(phone, 0),
-            Api._order(cartProducts, paymentMethod, address, phone, Math.floor(time.getTime() / 1000), 1)
+            Api._order(cartProducts, paymentMethod, address, phone, toUnixTime(time), 1)
         ])
 
         const responses = result.responses

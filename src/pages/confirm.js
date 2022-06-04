@@ -17,6 +17,7 @@ import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
 import OrderFrame from "../components/frames/OrderFrame";
+import redirect from "../redirect";
 
 const Confirm = ({location}) => {
     const {state = {}} = location
@@ -25,6 +26,7 @@ const Confirm = ({location}) => {
         address,
         paymentMethod,
         phone,
+        time
     } = state
 
     const api = new Api()
@@ -91,16 +93,13 @@ const Confirm = ({location}) => {
                                    setTimeout(async () => {
                                        if (event.target.value === prev) {
                                            try {
-                                               const result = await api.sendCodeAndOrder(
+                                               await redirect(await api.sendCodeAndOrder(
                                                    cartProducts,
+                                                   phone,
                                                    address,
                                                    paymentMethod,
-                                                   phone,
-                                                   prev)
-
-                                               if (result.redirect) {
-                                                   window.location.replace(result.redirect)
-                                               }
+                                                   time,
+                                                   prev))
                                            } catch (e) {
                                                if (e.code === 1001) {
                                                    setCodeError("Неверный SMS-код");

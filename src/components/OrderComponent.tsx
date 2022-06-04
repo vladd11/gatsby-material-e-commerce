@@ -132,7 +132,8 @@ const OrderComponent = (props: OrderComponentProps) => {
                             cartProducts: props.cartProducts,
                             address: address,
                             paymentMethod: paymentMethod,
-                            phone: clearPhone
+                            phone: clearPhone,
+                            time: parseDateTime(date, time)
                         }
                     })
                 }

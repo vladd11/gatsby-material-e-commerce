@@ -16,7 +16,6 @@ import Api from "../api/api";
 import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
-import convertPhoneToE164 from "../convertPhoneToE164";
 import OrderFrame from "../components/frames/OrderFrame";
 
 const Confirm = ({location}) => {

@@ -15,12 +15,12 @@ import Main from "../components/Main";
 import {ImageFile, SiteInfo} from "../interfaces/data";
 import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
-import Order from "../interfaces/order";
 import {toHumanReadable} from "../currentDateTime";
 import UseFont from "./frames/UseFont";
+import OrderResponse from "../interfaces/order";
 
 interface OrderCompleteProps {
-    order: Order;
+    order: OrderResponse;
     info: SiteInfo;
     allFile: {
         edges: Array<ImageFile>

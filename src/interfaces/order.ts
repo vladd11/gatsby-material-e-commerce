@@ -1,7 +1,11 @@
 import Product from "./product";
 
-export default interface Order {
-    products: Array<Product>,
+export default interface OrderResponse {
+    redirect?: string,
+    id?: string,
+
+    phone: string,
     price: number,
-    time: number
-}
+    time: number,
+    products: Array<Product>
+};

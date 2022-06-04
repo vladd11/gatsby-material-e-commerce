@@ -1,5 +1,5 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
-import Order from "../interfaces/order";
+import OrderResponse from "../interfaces/order";
 
 export default class Api {
     jwtToken?: string;
@@ -13,7 +13,7 @@ export default class Api {
         this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
     }
 
-    async getOrder(orderID: string): Promise<Order> {
+    async getOrder(orderID: string): Promise<OrderResponse> {
         const result = await this.client.call([
             this._verify(0),
             this._getOrder(orderID, 1)
@@ -171,14 +171,6 @@ export default class Api {
         }
     }
 }
-
-export type OrderResponse = {
-    redirect?: string,
-    id?: string,
-
-    phone: string,
-    price: number
-};
 
 export class JSONRPCError extends Error {
     public code: number;

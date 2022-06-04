@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import Api from "../api/api";
 import OrderCompleteComponent from "../components/OrderCompleteComponent";
 import Data from "../interfaces/data";
-import Order from "../interfaces/order";
+import OrderResponse from "../interfaces/order";
 
 const OrderComplete = ({location}) => {
     const data: Data = useStaticQuery(graphql`
@@ -45,9 +45,10 @@ const OrderComplete = ({location}) => {
   }
 }`)
 
-    const [orderResponse, setOrderResponse] = useState(null);
+    const [orderResponse, setOrderResponse] = useState<OrderResponse>(location.state);
 
     const api = new Api();
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const orderID = params.get("orderID");

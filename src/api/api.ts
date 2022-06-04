@@ -72,10 +72,11 @@ export default class Api {
     async order(cartProducts: Array<any>,
                 phone: string,
                 address: string,
-                paymentMethod: string): Promise<OrderResponse> {
+                paymentMethod: string,
+                time: Date): Promise<OrderResponse> {
         const result = await this.client.call([
             this._login(phone, 0),
-            Api._order(cartProducts, paymentMethod, address, phone, 1)
+            Api._order(cartProducts, paymentMethod, address, phone, Math.floor(time.getTime() / 1000), 1)
         ])
 
         const responses = result.responses
@@ -124,6 +125,7 @@ export default class Api {
                           paymentMethod: string,
                           address: string,
                           phone: string,
+                          time: number,
                           id?): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
@@ -140,7 +142,8 @@ export default class Api {
                 ),
                 paymentMethod: paymentMethod,
                 address: address,
-                phone: phone
+                phone: phone,
+                time: time
             }
         }
     }

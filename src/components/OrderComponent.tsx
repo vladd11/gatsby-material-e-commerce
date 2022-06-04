@@ -117,7 +117,13 @@ const OrderComponent = (props: OrderComponentProps) => {
 
         if (valid) {
             try {
-                await redirect(await props.api.order(props.cartProducts, clearPhone, address, paymentMethod))
+                await redirect(
+                    await props.api.order(props.cartProducts,
+                        clearPhone,
+                        address,
+                        paymentMethod,
+                        parseDateTime(date, time))
+                )
             } catch (e) {
                 if (e.code === 1005) {
                     await navigate("/confirm/", {

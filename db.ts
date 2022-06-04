@@ -1,7 +1,7 @@
 import {Driver} from "ydb-sdk";
 import Product, {ProductPopularity} from "./src/interfaces/product";
 import Long from "long";
-import priceToNumber from "../priceToNumber";
+import priceToNumber from "./priceToNumber";
 
 const ydb = require('ydb-sdk')
 

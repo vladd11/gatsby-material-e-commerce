@@ -107,7 +107,7 @@ const Confirm = ({location}) => {
                                                        cartProducts,
                                                        address,
                                                        paymentMethod,
-                                                       phone,
+                                                       replaceSpaces(phone),
                                                        prev)
 
                                                    if (result.redirect) {
@@ -149,6 +149,10 @@ const Confirm = ({location}) => {
             </div>
         </ThemeProvider>
     </>
+}
+
+function replaceSpaces(str) {
+    return str.replace(/[- ()]/, '')
 }
 
 export default Confirm;

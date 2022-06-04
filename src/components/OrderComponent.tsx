@@ -7,8 +7,8 @@ import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 
 import SpeedDialButton from "./ui/SpeedDialButton";
-
 import SpeedDial from "./ui/SpeedDial";
+import Appbar from "./ui/Appbar";
 
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -36,8 +36,10 @@ import mapboxgl from '!mapbox-gl';
 import Api from "../api/api";
 import Product from "../interfaces/product";
 import redirect from "../redirect";
-import Appbar from "./ui/Appbar";
+
 import {css} from "@emotion/react";
+
+import convertPhoneToE164 from "../convertPhoneToE164";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -96,7 +98,7 @@ const OrderComponent = (props: OrderComponentProps) => {
 
         let valid = true;
 
-        let clearPhone = replaceSpaces(phone)
+        let clearPhone = convertPhoneToE164(phone)
         if (isEmptyOrSpaces(clearPhone) || clearPhone.length !== 10) {
             setPhoneValid(false);
             valid = false;
@@ -330,10 +332,6 @@ const OrderComponent = (props: OrderComponentProps) => {
 
 function isEmptyOrSpaces(str) {
     return str === null || str.match(/^ *$/) !== null;
-}
-
-function replaceSpaces(str) {
-    return str.replace(/[- ()]/, '')
 }
 
 export default OrderComponent;

@@ -21,6 +21,8 @@ import Api from "../api/api";
 import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
+import convertPhoneToE164 from "../convertPhoneToE164";
+
 const Confirm = ({location}) => {
     const {state = {}} = location
     const {
@@ -107,7 +109,7 @@ const Confirm = ({location}) => {
                                                        cartProducts,
                                                        address,
                                                        paymentMethod,
-                                                       replaceSpaces(phone),
+                                                       convertPhoneToE164(phone),
                                                        prev)
 
                                                    if (result.redirect) {
@@ -149,10 +151,6 @@ const Confirm = ({location}) => {
             </div>
         </ThemeProvider>
     </>
-}
-
-function replaceSpaces(str) {
-    return str.replace(/[- ()]/, '')
 }
 
 export default Confirm;

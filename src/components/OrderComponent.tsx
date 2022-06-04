@@ -29,8 +29,6 @@ import CartProduct from "./CartProduct";
 import * as orderStyles from "../styles/components/order.module.sass"
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// @ts-ignore
-import mapboxgl from '!mapbox-gl';
 
 import Api from "../api/api";
 import Product from "../interfaces/product";
@@ -40,6 +38,9 @@ import {css} from "@emotion/react";
 
 import convertPhoneToE164 from "../convertPhoneToE164";
 import OrderFrame from "./frames/OrderFrame";
+
+// @ts-ignore
+import mapboxgl from '!mapbox-gl';
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 

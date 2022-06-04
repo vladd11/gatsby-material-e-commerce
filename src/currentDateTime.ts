@@ -40,7 +40,7 @@ export function parseDateTime(date: string, time: string) {
     const hour = parseInt(timeArr[0]);
     const minute = parseInt(timeArr[1]);
 
-    return new Date(year, month, day, hour, minute)
+    return new Date(year, month - 1, day, hour, minute)
 }
 
 export function addTime(date, seconds: number) {

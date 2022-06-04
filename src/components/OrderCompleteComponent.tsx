@@ -17,6 +17,7 @@ import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
 import Order from "../interfaces/order";
 import {toHumanReadable} from "../currentDateTime";
+import UseFont from "./frames/UseFont";
 
 interface OrderCompleteProps {
     order: Order;
@@ -31,7 +32,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
     function renderProducts() {
         if (props.order) {
-            return props.order.products.map(cartProduct => {
+            return props.order?.products?.map(cartProduct => {
                 if (!cartProduct.Image) {
                     cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)
                         .node.childImageSharp.gatsbyImageData
@@ -43,6 +44,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     }
 
     return <>
+        <UseFont/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

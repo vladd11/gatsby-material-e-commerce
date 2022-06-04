@@ -45,18 +45,16 @@ const OrderComplete = ({location}) => {
   }
 }`)
 
-    const [orderResponse, setOrderResponse] = useState<Order>(location.state as Order);
+    const [orderResponse, setOrderResponse] = useState(null);
 
     const api = new Api();
     useEffect(() => {
-        if (!orderResponse) {
-            const params = new URLSearchParams(location.search);
-            const orderID = params.get("orderID");
+        const params = new URLSearchParams(location.search);
+        const orderID = params.get("orderID");
 
-            api.getOrder(orderID).then((result) => {
-                setOrderResponse(result)
-            })
-        }
+        api.getOrder(orderID).then((result) => {
+            setOrderResponse(result)
+        })
     }, [])
 
     return OrderCompleteComponent({

@@ -9,9 +9,8 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 import React from "react"
 
-import theme from "../theme";
 import Helmet from "react-helmet";
-import {css, Global} from "@emotion/react";
+import {css} from "@emotion/react";
 import Main from "../components/Main";
 import {ImageFile, SiteInfo} from "../interfaces/data";
 import useStickyState from "../stickyState";
@@ -44,11 +43,6 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     }
 
     return <>
-        <Global styles={css`
-          body {
-            font-family: ${theme.typography.fontFamily};
-          }
-        `}/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

@@ -8,7 +8,6 @@ import Fab from "@mui/material/Fab";
 
 import SpeedDialButton from "./ui/SpeedDialButton";
 import SpeedDial from "./ui/SpeedDial";
-import Appbar from "./ui/Appbar";
 
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -40,6 +39,7 @@ import redirect from "../redirect";
 import {css} from "@emotion/react";
 
 import convertPhoneToE164 from "../convertPhoneToE164";
+import OrderFrame from "./frames/OrderFrame";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -93,13 +93,19 @@ const OrderComponent = (props: OrderComponentProps) => {
         }));
     }, [isAddressFormManual]);
 
+    useEffect(() => {
+        if (!isPhoneValid) setPhoneValid(true);
+    }, [phone])
+
     async function validateAndOrder(paymentMethod) {
         setLock(true);
 
         let valid = true;
 
-        let clearPhone = convertPhoneToE164(phone)
-        if (isEmptyOrSpaces(clearPhone) || clearPhone.length !== 10) {
+        let clearPhone;
+        try {
+            clearPhone = convertPhoneToE164(phone, "+7")
+        } catch (e) {
             setPhoneValid(false);
             valid = false;
         }
@@ -119,7 +125,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                             cartProducts: props.cartProducts,
                             address: address,
                             paymentMethod: paymentMethod,
-                            phone: phone
+                            phone: clearPhone
                         }
                     })
                 }
@@ -129,9 +135,7 @@ const OrderComponent = (props: OrderComponentProps) => {
         setLock(false)
     }
 
-    return <div className={orderStyles.order}>
-        <Appbar title="Оформление заказа"/>
-
+    return <OrderFrame title="Оформление заказа">
         <div css={css`
           display: flex;
           flex-direction: row;
@@ -176,10 +180,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 aria-describedby="tel"
                 sx={{pl: 1}}
                 value={phone}
-                onChange={event => {
-                    setPhone(event.target.value)
-                    if (!isPhoneValid) setPhoneValid(true);
-                }}
+                onChange={event => setPhone(event.target.value)}
                 startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
             />
         </FormControl>
@@ -327,7 +328,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 <MoneyIcon/>
             </SpeedDialButton>
         </SpeedDial>
-    </div>
+    </OrderFrame>
 }
 
 function isEmptyOrSpaces(str) {

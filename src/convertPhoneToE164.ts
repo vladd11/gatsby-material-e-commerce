@@ -1,15 +1,15 @@
 /**
  * Converts phone to E.264 number format and validates it.
  */
-export default function convertPhoneToE164(str: string) {
+export default function convertPhoneToE164(str: string, countryCode: string) {
     const result = str.replace(/[- ()]/, '')
-    if(result.length > 15) throw new InvalidNumberError(str)
+    if (result.length > 15) throw new InvalidPhoneError(str)
 
-    return result
+    return `${countryCode}${result}`
 }
 
-export class InvalidNumberError extends Error {
+export class InvalidPhoneError extends Error {
     constructor(phone: string) {
-        super(`Phone number ${phone} length is bigger than ${phone.length}`);
+        super(`Phone number ${phone} length is invalid`);
     }
 }

@@ -1,5 +1,3 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
@@ -12,9 +10,6 @@ import React, {useState} from "react";
 import {css} from "@emotion/react";
 import {graphql, useStaticQuery} from "gatsby";
 
-import * as orderStyles from "../styles/components/order.module.sass";
-import * as orderPageStyles from "../styles/components/order-page.module.sass";
-
 import theme from "../theme";
 
 import Api from "../api/api";
@@ -22,6 +17,7 @@ import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
 import convertPhoneToE164 from "../convertPhoneToE164";
+import OrderFrame from "../components/frames/OrderFrame";
 
 const Confirm = ({location}) => {
     const {state = {}} = location
@@ -63,92 +59,81 @@ const Confirm = ({location}) => {
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>
         </Helmet>
         <ThemeProvider theme={theme}>
-            <div className={orderPageStyles.root}>
-                <div className={orderStyles.order}>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                                Подтвердите номер телефона
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
-
-                    <div css={css`
+            <OrderFrame title="Подтвердите номер телефона">
+                <div css={css`
                       margin-top: 8px;
                       margin-left: 12px;
                     `}>
-                        <Typography component="span">
-                            Ваш номер телефона:
-                        </Typography>
-                        <Typography sx={{
-                            ml: "8px",
-                            fontWeight: "bold"
-                        }} component="span">
-                            {phone}
-                        </Typography>
-                    </div>
+                    <Typography component="span">
+                        Ваш номер телефона:
+                    </Typography>
+                    <Typography sx={{
+                        ml: "8px",
+                        fontWeight: "bold"
+                    }} component="span">
+                        {phone}
+                    </Typography>
+                </div>
 
-                    <FormControl
-                        required={true}
-                        style={{width: "100%"}}
-                        error={codeError !== ""}
-                        sx={{mt: '8px', mb: '8px'}}>
+                <FormControl
+                    required={true}
+                    style={{width: "100%"}}
+                    error={codeError !== ""}
+                    sx={{mt: '8px', mb: '8px'}}>
 
-                        <InputLabel htmlFor="phone">Код</InputLabel>
-                        <Input inputmode="numeric" id="phone" aria-describedby="code" sx={{pl: 1}} value={code}
-                               onChange={event => {
-                                   const prev = event.target.value;
-                                   setCode(event.target.value)
-                                   setCodeError("")
+                    <InputLabel htmlFor="phone">Код</InputLabel>
+                    <Input inputmode="numeric" id="phone" aria-describedby="code" sx={{pl: 1}} value={code}
+                           onChange={event => {
+                               const prev = event.target.value;
+                               setCode(event.target.value)
+                               setCodeError("")
 
-                                   if (event.target.value.length === 6) {
-                                       setTimeout(async () => {
-                                           if (event.target.value === prev) {
-                                               try {
-                                                   const result = await api.sendCodeAndOrder(
-                                                       cartProducts,
-                                                       address,
-                                                       paymentMethod,
-                                                       convertPhoneToE164(phone),
-                                                       prev)
+                               if (event.target.value.length === 6) {
+                                   setTimeout(async () => {
+                                       if (event.target.value === prev) {
+                                           try {
+                                               const result = await api.sendCodeAndOrder(
+                                                   cartProducts,
+                                                   address,
+                                                   paymentMethod,
+                                                   phone,
+                                                   prev)
 
-                                                   if (result.redirect) {
-                                                       window.location.replace(result.redirect)
-                                                   }
-                                               } catch (e) {
-                                                   if (e.code === 1001) {
-                                                       setCodeError("Неверный SMS-код");
-                                                   } else if (e.code === 1004) {
-                                                       setCodeError("Срок действия кода истёк");
-                                                   }
+                                               if (result.redirect) {
+                                                   window.location.replace(result.redirect)
+                                               }
+                                           } catch (e) {
+                                               if (e.code === 1001) {
+                                                   setCodeError("Неверный SMS-код");
+                                               } else if (e.code === 1004) {
+                                                   setCodeError("Срок действия кода истёк");
                                                }
                                            }
-                                       }, 1000)
-
-                                   }
-                               }}/>
-                        <FormHelperText>
-                            {(codeError === "") ? "Код будет проверен автоматически." : codeError}
-                        </FormHelperText>
-                    </FormControl>
-                    <Button sx={{
-                        width: '100%',
-                        justifyContent: (timeToResend === 0) ? "center" : "space-between",
-                    }}
-                            disabled={timeToResend !== 0}
-                            onClick={async () => {
-                                await api.resendCode(JSON.parse(localStorage.getItem("phone")))
-                                setTimeToResend(60);
-                            }}>
-                        Отправить СМС заново
-                        {
-                            (timeToResend === 0)
-                                ? null
-                                : <Typography>{timeToResend}</Typography>
-                        }
-                    </Button>
-                </div>
-            </div>
+                                       }
+                                   }, 1000)
+                               }
+                           }}/>
+                    <FormHelperText>
+                        {(codeError === "") ? "Код будет проверен автоматически." : codeError}
+                    </FormHelperText>
+                </FormControl>
+                <Button sx={{
+                    width: '100%',
+                    justifyContent: (timeToResend === 0) ? "center" : "space-between",
+                }}
+                        disabled={timeToResend !== 0}
+                        onClick={async () => {
+                            await api.resendCode(JSON.parse(localStorage.getItem("phone")))
+                            setTimeToResend(60);
+                        }}>
+                    Отправить СМС заново
+                    {
+                        (timeToResend === 0)
+                            ? null
+                            : <Typography>{timeToResend}</Typography>
+                    }
+                </Button>
+            </OrderFrame>
         </ThemeProvider>
     </>
 }

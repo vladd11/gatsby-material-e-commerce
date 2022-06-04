@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet";
-import {css, Global} from "@emotion/react";
+import {css} from "@emotion/react";
 
 import Chip from "./ui/Chip";
 
@@ -15,7 +15,7 @@ import useStickyState from "../stickyState";
 import Data from "../interfaces/data";
 import categories from "../../categories";
 
-import theme from "../theme"
+import UseFont from "./frames/UseFont";
 
 interface IndexProps {
     data: Data
@@ -76,12 +76,8 @@ function Index(props: IndexProps) {
         })
     }
 
-    return (<div>
-        <Global styles={css`
-          body {
-            font-family: ${theme.typography.fontFamily};
-          }
-        `}/>
+    return (<>
+        <UseFont />
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -116,7 +112,7 @@ function Index(props: IndexProps) {
                 {renderProducts()}
             </div>
         </Main>
-    </div>);
+    </>);
 }
 
 export default Index

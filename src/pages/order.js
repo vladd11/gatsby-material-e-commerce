@@ -10,8 +10,7 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import {graphql, navigate, useStaticQuery} from "gatsby";
 
-import * as orderPageStyles from "../styles/components/order-page.module.sass"
-import {css, Global} from "@emotion/react";
+import UseFont from "../components/frames/UseFont";
 
 export default function Order({location}) {
     const data = useStaticQuery(graphql`
@@ -38,6 +37,8 @@ export default function Order({location}) {
 
     const {state = {}} = location
     if(!state) {
+        // It's redirect and then() function never call.
+        // noinspection JSIgnoredPromiseFromCall
         navigate("/")
         return
     }
@@ -45,11 +46,7 @@ export default function Order({location}) {
     const {cartProducts} = state
 
     return <>
-        <Global styles={css`
-          body {
-            font-family: ${theme.typography.fontFamily};
-          }
-        `}/>
+        <UseFont />
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -58,9 +55,7 @@ export default function Order({location}) {
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
         <ThemeProvider theme={theme}>
-            <div className={orderPageStyles.root}>
-                <OrderComponent api={api} cartProducts={cartProducts}/>
-            </div>
+            <OrderComponent api={api} cartProducts={cartProducts}/>
         </ThemeProvider>
     </>
 }

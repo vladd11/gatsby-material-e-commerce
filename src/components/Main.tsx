@@ -77,7 +77,7 @@ const Main = (props: MainProps) => {
             onClose={() => {
                 setDrawerOpened(false)
             }}
-            isCartEmpty={props.cartProducts?.length === 0}
+            isCartEmpty={!(props.cartProducts?.length)}
 
             orderLinkState={{cartProducts: props.cartProducts}}
             shouldNotExpand={isMobile}>

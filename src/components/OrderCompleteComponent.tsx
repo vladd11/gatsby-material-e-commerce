@@ -18,6 +18,7 @@ import CartProduct from "./CartProduct";
 import {toHumanReadable} from "../currentDateTime";
 import UseFont from "./frames/UseFont";
 import OrderResponse from "../interfaces/order";
+import paymentMethods from "../../paymentMethods"
 
 interface OrderCompleteProps {
     order: OrderResponse;
@@ -29,6 +30,7 @@ interface OrderCompleteProps {
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+    const paymentMethod = paymentMethods[props.order.paymentMethod]
 
     function renderProducts() {
         if (props.order) {

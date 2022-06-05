@@ -52,7 +52,7 @@ function Index(props: IndexProps) {
             product.Image = getImage(props.data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
 
             return <Product
-                disabled={cartProducts.some(cartProduct =>
+                disabled={cartProducts?.some(cartProduct =>
                     cartProduct.ProductID === product.ProductID
                 )}
                 product={product}

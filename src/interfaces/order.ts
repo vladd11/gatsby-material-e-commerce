@@ -7,5 +7,6 @@ export default interface OrderResponse {
     phone: string,
     price: number,
     time: number,
+    paymentMethod: string,
     products: Array<Product>
 };

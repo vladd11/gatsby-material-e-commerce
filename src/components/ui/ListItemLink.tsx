@@ -15,14 +15,17 @@ const Wrapper = (props: WrapperProps) => {
           text-decoration: none;
           color: #000;
 
-          ${(disabled) ? "pointer-events: none;" : ""}
+          ${(disabled) ? `
+          pointer-events: none;
+          opacity: 0.38;
+          cursor: not-allowed;` : ""}
+          
           &:hover {
             background: rgba(0, 0, 0, 0.04)
           }
         `}
                          className={className}
                          state={state}
-                         style={(props.disabled) ? {opacity: '0.38', cursor: "not-allowed"} : null}
                          {...rest}>
             {props.children}
         </props.component>

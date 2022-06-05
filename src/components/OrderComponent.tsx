@@ -13,7 +13,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
-import useStickyState from "../stickyState";
+import useStickyState from "../localStorageState";
 
 // I don't know why it's marked as unused while I use it in Emotion F-string
 // noinspection ES6UnusedImports
@@ -33,7 +33,7 @@ import {css} from "@emotion/react";
 
 import convertPhoneToE164 from "../convertPhoneToE164";
 
-import OrderFrame from "./frames/OrderFrame";
+import FormFrame from "./frames/FormFrame";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 // @ts-ignore
@@ -152,7 +152,7 @@ const OrderComponent = (props: OrderComponentProps) => {
         });
     }
 
-    return <OrderFrame title="Оформление заказа">
+    return <FormFrame title="Оформление заказа">
         <div css={css`
           display: flex;
           flex-direction: row;
@@ -330,7 +330,7 @@ const OrderComponent = (props: OrderComponentProps) => {
         } shown={isDialSelected} ariaLabel="Заказать">
             {renderButtons()}
         </SpeedDial>
-    </OrderFrame>
+    </FormFrame>
 }
 
 function isEmptyOrSpaces(str) {

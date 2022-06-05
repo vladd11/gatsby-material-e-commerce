@@ -13,7 +13,7 @@ import {css} from "@emotion/react";
 import paymentMethods from "../../paymentMethods"
 
 import Main from "../components/Main";
-import useStickyState from "../stickyState";
+import useStickyState from "../localStorageState";
 import CartProduct from "./CartProduct";
 import {toHumanReadable} from "../currentDateTime";
 
@@ -96,7 +96,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                         <PhoneIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        <span>Ваш телефон:</span>
+                        <span>Телефон для связи:</span>
                         <OrderCompleteBoldData>{props.order?.phone}</OrderCompleteBoldData>
                     </ListItemText>
                 </ListItem>

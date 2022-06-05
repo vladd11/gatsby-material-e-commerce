@@ -1,18 +1,38 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
 import OrderResponse from "../interfaces/order";
+import User from "../interfaces/User";
+import {optionalLocalStorage} from "../localStorageState";
 
 const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
 
+const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)
+const getPhone = (): string => optionalLocalStorage(() => localStorage.getItem("user.phone"))
+
+export function getCachedUser(): User {
+    return {
+        phone: getPhone()
+    }
+}
+
 export default class Api {
-    jwtToken?: string;
+    jwtToken?: string | null;
     private client: JSONRPCClient;
 
     constructor() {
-        if (typeof localStorage !== 'undefined') {
-            this.jwtToken = localStorage.getItem("jwt_token")
-        }
+        optionalLocalStorage(() => this.jwtToken = localStorage.getItem("jwt_token"))
 
-        this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL);
+        this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL!);
+    }
+
+    handleVerifyResult(errors: Array<JSONRPCError>, response: any) {
+        if (errors?.[0]?.code !== 1005) {
+            setPhone(response.phone)
+        }
+    }
+
+    setJWTToken(token: string) {
+        localStorage.setItem("jwt_token", token);
+        this.jwtToken = token;
     }
 
     async getOrder(orderID: string): Promise<OrderResponse> {
@@ -24,6 +44,8 @@ export default class Api {
         const responses = result.responses
         const errors = result.errors
 
+        this.handleVerifyResult(errors, responses[0])
+
         if (errors !== null && errors.length === 0) {
             return responses[1];
         } else { // This throws only one exception because method add_order depends on registration
@@ -31,7 +53,7 @@ export default class Api {
         }
     }
 
-    _getOrder(orderID: string, id?): JSONRPCRequest {
+    _getOrder(orderID: string, id?: any): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
@@ -56,9 +78,9 @@ export default class Api {
         const responses = result.responses
         const errors = result.errors
 
-        if (errors !== null && errors.length === 0) {
-            localStorage.setItem("jwt_token", responses[0].token)
-            this.jwtToken = responses[0].token
+        if (errors.length === 0) {
+            this.setJWTToken(responses[0].token)
+            setPhone(phone)
 
             return responses[1]
         } else {
@@ -85,19 +107,20 @@ export default class Api {
         const responses = result.responses
         const errors = result.errors
 
-        if (errors !== null && errors.length === 0) {
-            if (this.jwtToken === null) {
-                localStorage.setItem("jwt_token", responses[0].token)
-                this.jwtToken = responses[0].token
-            }
+        console.log(errors?.[0]?.code !== 1005 && !(this.jwtToken))
+        if (errors?.[0]?.code !== 1005 && !(this.jwtToken)) {
+            setPhone(phone)
+            this.setJWTToken(responses[0].token)
+        } else this.handleVerifyResult(errors, responses[0])
 
+        if (errors.length === 0) {
             return responses[1]
         } else { // This throws only one exception because method add_order depends on registration
             throw new JSONRPCError(errors[0].code, errors[0].message)
         }
     }
 
-    private _verify(id?): JSONRPCRequest {
+    private _verify(id?: any): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
             id: id,
@@ -108,7 +131,7 @@ export default class Api {
         }
     }
 
-    private _login(phone: string, id?): JSONRPCRequest {
+    private _login(phone: string, id?: any): JSONRPCRequest {
         if (this.jwtToken === null) {
             return {
                 jsonrpc: '2.0',
@@ -129,7 +152,7 @@ export default class Api {
                           address: string,
                           phone: string,
                           time: number,
-                          id?): JSONRPCRequest {
+                          id?: any): JSONRPCRequest {
         return {
             jsonrpc: '2.0',
             id: id,
@@ -151,7 +174,7 @@ export default class Api {
         }
     }
 
-    private static _sendCode(phone: string, code: number, id?): JSONRPCRequest {
+    private static _sendCode(phone: string, code: number, id?: any): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
@@ -163,7 +186,7 @@ export default class Api {
         }
     }
 
-    private static _resendCode(phone: string, id?): JSONRPCRequest {
+    private static _resendCode(phone: string, id?: any): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
@@ -178,7 +201,7 @@ export default class Api {
 export class JSONRPCError extends Error {
     public code: number;
 
-    constructor(code, message) {
+    constructor(code: number, message: string) {
         super(message);
 
         this.code = code;

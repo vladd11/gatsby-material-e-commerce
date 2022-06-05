@@ -18,7 +18,7 @@ export class JSONRPCClient {
         const responses: Array<any> = []
 
         for (const response of responseJSON) {
-            if (response.error !== undefined) {
+            if (response.error) {
                 errors.push(response.error)
             } else {
                 responses.push(response.result)

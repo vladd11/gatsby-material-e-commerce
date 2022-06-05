@@ -12,7 +12,9 @@ import React from "react";
 import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
+
 import {SiteInfo} from "../interfaces/data";
+import User from "../interfaces/User";
 
 const Menu = (props: MenuProps) => {
     return (<Drawer
@@ -45,7 +47,7 @@ const Menu = (props: MenuProps) => {
                 <AccountCircleOutlinedIcon/>
             </ListItemIcon>
             <ListItemText>
-                Войти
+                {props.user?.phone ?? "Войти"}
             </ListItemText>
         </ListItemLink>
 
@@ -82,6 +84,8 @@ interface MenuProps {
     info: SiteInfo,
 
     isDrawerOpened: boolean,
+    shouldNotExpand: boolean,
+
     onOpen,
     onClose,
 
@@ -89,7 +93,8 @@ interface MenuProps {
 
     isCartEmpty: boolean,
 
-    shouldNotExpand: boolean,
+    user: User,
+
     children
 }
 

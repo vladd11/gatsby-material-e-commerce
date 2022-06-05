@@ -9,7 +9,7 @@ interface OrderFrameProps {
     children?
 }
 
-export default function OrderFrame(props: OrderFrameProps) {
+export default function FormFrame(props: OrderFrameProps) {
     return <>
         <UseFont />
         <Global styles={css`body {

@@ -16,7 +16,7 @@ import Api from "../api/api";
 import Button from "@mui/material/Button";
 import Helmet from "react-helmet";
 
-import OrderFrame from "../components/frames/OrderFrame";
+import FormFrame from "../components/frames/FormFrame";
 import redirect from "../redirect";
 
 const Confirm = ({location}) => {
@@ -60,7 +60,7 @@ const Confirm = ({location}) => {
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>
         </Helmet>
         <ThemeProvider theme={theme}>
-            <OrderFrame title="Подтвердите номер телефона">
+            <FormFrame title="Подтвердите номер телефона">
                 <div css={css`
                       margin-top: 8px;
                       margin-left: 12px;
@@ -131,7 +131,7 @@ const Confirm = ({location}) => {
                             : <Typography>{timeToResend}</Typography>
                     }
                 </Button>
-            </OrderFrame>
+            </FormFrame>
         </ThemeProvider>
     </>
 }

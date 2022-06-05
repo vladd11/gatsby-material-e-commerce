@@ -19,6 +19,8 @@ import queries from "../queries";
 import Product from "../interfaces/product";
 import {SiteInfo} from "../interfaces/data";
 
+import {getCachedUser} from "../api/api";
+
 const menuWidth = 330;
 
 interface MainProps {
@@ -30,7 +32,7 @@ interface MainProps {
     children
 }
 
-const Main = (props: MainProps) => {
+export default function Main(props: MainProps) {
     const isMobile = IsMobile();
     const [isDrawerOpened, setDrawerOpened] = React.useState(!isMobile)
 
@@ -80,7 +82,9 @@ const Main = (props: MainProps) => {
             isCartEmpty={!(props.cartProducts?.length)}
 
             orderLinkState={{cartProducts: props.cartProducts}}
-            shouldNotExpand={isMobile}>
+            shouldNotExpand={isMobile}
+
+            user={getCachedUser()}>
 
             {renderCartProducts()}
         </Menu>
@@ -97,6 +101,4 @@ const Main = (props: MainProps) => {
         </div>
 
     </>)
-};
-
-export default Main;
+}

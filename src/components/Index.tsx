@@ -10,7 +10,7 @@ import Product from '../components/Product'
 import queries from "../queries"
 
 import {getImage} from "gatsby-plugin-image";
-import useStickyState from "../stickyState";
+import useStickyState from "../localStorageState";
 
 import Data from "../interfaces/data";
 import categories from "../../categories";
@@ -77,7 +77,7 @@ function Index(props: IndexProps) {
     }
 
     return (<>
-        <UseFont />
+        <UseFont/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

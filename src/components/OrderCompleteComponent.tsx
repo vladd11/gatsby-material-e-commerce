@@ -1,24 +1,27 @@
-import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CreditCardIcon from "@mui/icons-material/CreditCard";
+import PhoneIcon from "@mui/icons-material/Phone";
 
 import React from "react"
-
 import Helmet from "react-helmet";
 import {css} from "@emotion/react";
+
+import paymentMethods from "../../paymentMethods"
+
 import Main from "../components/Main";
-import {ImageFile, SiteInfo} from "../interfaces/data";
 import useStickyState from "../stickyState";
 import CartProduct from "./CartProduct";
 import {toHumanReadable} from "../currentDateTime";
+
 import UseFont from "./frames/UseFont";
+import OrderCompleteBoldData from "./frames/OrderCompleteBoldData"
+
+import {ImageFile, SiteInfo} from "../interfaces/data";
 import OrderResponse from "../interfaces/order";
-import paymentMethods from "../../paymentMethods"
 
 interface OrderCompleteProps {
     order: OrderResponse;
@@ -30,7 +33,7 @@ interface OrderCompleteProps {
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
-    const paymentMethod = paymentMethods[props.order.paymentMethod]
+    const paymentMethod = paymentMethods[props.order?.paymentMethod]
 
     function renderProducts() {
         if (props.order) {
@@ -78,18 +81,23 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
                 <ListItem>
                     <ListItemIcon>
-                        <CreditCardIcon/>
+                        {paymentMethod?.icon}
                     </ListItemIcon>
                     <ListItemText>
-                        <Typography component="span">
-                            Вы оплатили заказ картой, итого:
-                        </Typography>
-                        <Typography component="span" sx={{
-                            fontWeight: "bold",
-                            pl: '4px'
-                        }}>
+                        <span>Вы оплатили заказ {paymentMethod?.instrumentalCaseName}, итого:</span>
+                        <OrderCompleteBoldData>
                             {props.order?.price} рублей
-                        </Typography>
+                        </OrderCompleteBoldData>
+                    </ListItemText>
+                </ListItem>
+
+                <ListItem>
+                    <ListItemIcon>
+                        <PhoneIcon/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        <span>Ваш телефон:</span>
+                        <OrderCompleteBoldData>{props.order?.phone}</OrderCompleteBoldData>
                     </ListItemText>
                 </ListItem>
             </List>

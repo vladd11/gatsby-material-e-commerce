@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,8 +10,6 @@ import SpeedDial from "./ui/SpeedDial";
 
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import MoneyIcon from "@mui/icons-material/Money";
 
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
@@ -27,18 +24,18 @@ import getCurrentDateTime, {parseDateTime, addTime} from "../currentDateTime"
 import CartProduct from "./CartProduct";
 
 import * as orderStyles from "../styles/components/order.module.sass"
-import 'mapbox-gl/dist/mapbox-gl.css';
-
+import paymentMethods from "../../paymentMethods"
 
 import Api from "../api/api";
 import Product from "../interfaces/product";
 import redirect from "../redirect";
-
 import {css} from "@emotion/react";
 
 import convertPhoneToE164 from "../convertPhoneToE164";
+
 import OrderFrame from "./frames/OrderFrame";
 
+import 'mapbox-gl/dist/mapbox-gl.css';
 // @ts-ignore
 import mapboxgl from '!mapbox-gl';
 
@@ -143,6 +140,18 @@ const OrderComponent = (props: OrderComponentProps) => {
         setLock(false)
     }
 
+    function renderButtons() {
+        return Object.keys(paymentMethods).map((index) => {
+            const method = paymentMethods[index];
+            return <SpeedDialButton disabled={lock}
+                                    tooltipText={method.buttonName}
+                                    onClick={() => validateAndOrder(index)}>
+                {method.icon}
+            </SpeedDialButton>
+
+        });
+    }
+
     return <OrderFrame title="Оформление заказа">
         <div css={css`
           display: flex;
@@ -156,7 +165,7 @@ const OrderComponent = (props: OrderComponentProps) => {
             }) : null}
         </div>
 
-        <Typography sx={{marginLeft: "12px"}}>
+        <Typography sx={{marginLeft: "12px", paddingBottom: "4px"}}>
             Итого:
             <Typography component="span" sx={{
                 paddingLeft: "4px",
@@ -167,11 +176,6 @@ const OrderComponent = (props: OrderComponentProps) => {
                 }, 0) : null} рублей
             </Typography>
         </Typography>
-
-        <Divider sx={{
-            borderBottomWidth: "medium",
-            marginTop: '4px'
-        }}/>
 
         <FormControl
             sx={{
@@ -324,17 +328,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 </span>
             </Fab>
         } shown={isDialSelected} ariaLabel="Заказать">
-            <SpeedDialButton disabled={lock}
-                             tooltipText="Предоплата картой"
-                             onClick={() => validateAndOrder("card")}>
-                <CreditCardIcon/>
-            </SpeedDialButton>
-
-            <SpeedDialButton disabled={lock}
-                             tooltipText="Наличными при получении"
-                             onClick={() => validateAndOrder("cash")}>
-                <MoneyIcon/>
-            </SpeedDialButton>
+            {renderButtons()}
         </SpeedDial>
     </OrderFrame>
 }

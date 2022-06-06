@@ -107,7 +107,6 @@ export default class Api {
         const responses = result.responses
         const errors = result.errors
 
-        console.log(errors?.[0]?.code !== 1005 && !(this.jwtToken))
         if (errors?.[0]?.code !== 1005 && !(this.jwtToken)) {
             setPhone(phone)
             this.setJWTToken(responses[0].token)

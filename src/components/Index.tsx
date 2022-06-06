@@ -7,6 +7,8 @@ import Chip from "./ui/Chip";
 import Main from '../components/Main'
 import Product from '../components/Product'
 
+import ProductType from "../interfaces/product"
+
 import queries from "../queries"
 
 import {getImage} from "gatsby-plugin-image";
@@ -52,9 +54,7 @@ function Index(props: IndexProps) {
             product.Image = getImage(props.data.allFile!.edges!.find(value => value.node.relativePath === product.ImageURI)!.node)
 
             return <Product
-                disabled={cartProducts?.some((cartProduct: any) => // TODO: normal type
-                    cartProduct.ProductID === product.ProductID
-                )}
+                disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}
                 product={product}
                 whenAddedToCart={() => {
                     product.count = 1;

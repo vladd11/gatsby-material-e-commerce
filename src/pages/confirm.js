@@ -45,6 +45,8 @@ const Confirm = ({location}) => {
     const [timeToResend, setTimeToResend] = useState(60);
     const [codeError, setCodeError] = useState("")
 
+    let timerLock = false;
+
     setTimeout(() => {
         if (timeToResend !== 0) {
             setTimeToResend(timeToResend - 1)
@@ -89,7 +91,8 @@ const Confirm = ({location}) => {
                                setCode(event.target.value)
                                setCodeError("")
 
-                               if (event.target.value.length === 6) {
+                               if (event.target.value.length === 6 && !timerLock) {
+                                   timerLock = true;
                                    setTimeout(async () => {
                                        if (event.target.value === prev) {
                                            try {
@@ -108,6 +111,7 @@ const Confirm = ({location}) => {
                                                }
                                            }
                                        }
+                                       timerLock = false;
                                    }, 1000)
                                }
                            }}/>

@@ -1,4 +1,4 @@
-import OrderComponent from '../components/OrderComponent'
+import OrderComponent from '../components/order/OrderComponent'
 import Api from '../api/api'
 
 import React from 'react'
@@ -9,8 +9,6 @@ import theme from "../theme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 
 import {graphql, navigate, useStaticQuery} from "gatsby";
-
-import UseFont from "../components/frames/UseFont";
 
 export default function Order({location}) {
     const data = useStaticQuery(graphql`
@@ -36,7 +34,7 @@ export default function Order({location}) {
     const api = new Api()
 
     const {state = {}} = location
-    if(!state) {
+    if (!state) {
         // It's redirect and then() function never call.
         // noinspection JSIgnoredPromiseFromCall
         navigate("/")
@@ -46,7 +44,6 @@ export default function Order({location}) {
     const {cartProducts} = state
 
     return <>
-        <UseFont />
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>

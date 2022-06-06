@@ -5,31 +5,31 @@ import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 
-import SpeedDialButton from "./ui/SpeedDialButton";
-import SpeedDial from "./ui/SpeedDial";
+import SpeedDialButton from "../ui/SpeedDialButton";
+import SpeedDial from "../ui/SpeedDial";
 
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
-import useStickyState from "../localStorageState";
+import useStickyState from "../../localStorageState";
 
-import getCurrentDateTime, {parseDateTime, addTime} from "../currentDateTime"
+import getCurrentDateTime, {parseDateTime, addTime} from "../../currentDateTime"
 
-import CartProduct from "./CartProduct";
+import CartProduct from "../cart/CartProduct";
 
-import * as orderStyles from "../styles/components/order.module.sass"
-import paymentMethods from "../../paymentMethods"
+import * as orderStyles from "../../styles/components/order.module.sass"
+import paymentMethods from "../../../paymentMethods"
 
-import Api, {JSONRPCError} from "../api/api";
-import Product from "../interfaces/product";
-import redirect from "../redirect";
+import Api, {JSONRPCError} from "../../api/api";
+import Product from "../../interfaces/product";
+import redirect from "../../redirect";
 import {css} from "@emotion/react";
 
-import convertPhoneToE164 from "../convertPhoneToE164";
+import convertPhoneToE164 from "../../convertPhoneToE164";
 
-import FormFrame from "./frames/FormFrame";
+import FormFrame from "../frames/FormFrame";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 // @ts-ignore

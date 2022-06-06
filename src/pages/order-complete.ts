@@ -2,7 +2,7 @@ import {graphql, navigate, PageProps, useStaticQuery} from "gatsby";
 import {useEffect, useState} from "react";
 import Api from "../api/api";
 
-import OrderCompleteComponent from "../components/OrderCompleteComponent";
+import OrderCompleteComponent from "../components/order/OrderCompleteComponent";
 
 import Data from "../interfaces/data";
 import OrderResponse from "../interfaces/order";

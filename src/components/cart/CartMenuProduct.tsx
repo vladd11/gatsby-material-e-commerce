@@ -9,7 +9,7 @@ import Fab from "@mui/material/Fab"
 import React, {useState} from "react";
 import {css} from "@emotion/react";
 
-import Product from "../interfaces/product";
+import Product from "../../interfaces/product";
 
 
 interface CartMenuProductProps {

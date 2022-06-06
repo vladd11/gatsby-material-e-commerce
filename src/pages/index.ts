@@ -2,7 +2,7 @@ import {graphql, useStaticQuery} from "gatsby";
 
 import "../interfaces/product"
 
-import Index from "../components/Index"
+import IndexComponent from "../components/index/IndexComponent"
 
 export default function IndexPage() {
     const data = useStaticQuery(graphql`
@@ -44,5 +44,5 @@ export default function IndexPage() {
   }
 }`)
 
-    return Index({data: data});
+    return IndexComponent({data: data});
 }

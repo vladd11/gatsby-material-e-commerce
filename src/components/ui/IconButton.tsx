@@ -1,33 +1,19 @@
 import React from "react";
-import {css} from "@emotion/react";
+import styled from "@emotion/styled";
 
 import {BaseProps} from "./BaseProps";
 
-type IconButtonProps = BaseProps & {
-    onClick?: React.MouseEventHandler<HTMLButtonElement>,
-    [x: string]: any
-}
+const IconButton = styled.button`
+  border: none;
+  padding: 12px;
+  margin: 0 16px 0 0;
 
-const IconButton = (props: IconButtonProps) => {
-    const {children, className, onClick, ...rest} = props;
+  color: #fff;
+  background: transparent;
 
-    return <button
-        css={css`
-          border: none;
-          padding: 12px;
-          margin: 0 16px 0 0;
+  display: inline-flex;
 
-          color: #fff;
-          background: transparent;
-
-          display: inline-flex;
-
-          cursor: pointer;`}
-        className={className}
-        onClick={onClick}
-        {...rest}>
-        {children}
-    </button>
-}
+  cursor: pointer;
+`
 
 export default IconButton

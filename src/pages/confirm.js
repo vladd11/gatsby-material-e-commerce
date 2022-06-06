@@ -4,13 +4,9 @@ import Input from "@mui/material/Input";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
-
 import React, {useState} from "react";
 import {css} from "@emotion/react";
 import {graphql, useStaticQuery} from "gatsby";
-
-import theme from "../theme";
 
 import Api from "../api/api";
 import Button from "@mui/material/Button";
@@ -61,82 +57,80 @@ const Confirm = ({location}) => {
             <meta name="description" content={data.site.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>
         </Helmet>
-        <ThemeProvider theme={theme}>
-            <FormFrame title="Подтвердите номер телефона">
-                <div css={css`
+        <FormFrame title="Подтвердите номер телефона">
+            <div css={css`
                       margin-top: 8px;
                       margin-left: 12px;
                     `}>
-                    <Typography component="span">
-                        Ваш номер телефона:
-                    </Typography>
-                    <Typography sx={{
-                        ml: "8px",
-                        fontWeight: "bold"
-                    }} component="span">
-                        {phone}
-                    </Typography>
-                </div>
+                <Typography component="span">
+                    Ваш номер телефона:
+                </Typography>
+                <Typography sx={{
+                    ml: "8px",
+                    fontWeight: "bold"
+                }} component="span">
+                    {phone}
+                </Typography>
+            </div>
 
-                <FormControl
-                    required={true}
-                    style={{width: "100%"}}
-                    error={codeError !== ""}
-                    sx={{mt: '8px', mb: '8px'}}>
+            <FormControl
+                required={true}
+                style={{width: "100%"}}
+                error={codeError !== ""}
+                sx={{mt: '8px', mb: '8px'}}>
 
-                    <InputLabel htmlFor="phone">Код</InputLabel>
-                    <Input inputmode="numeric" id="phone" aria-describedby="code" sx={{pl: 1}} value={code}
-                           onChange={event => {
-                               const prev = event.target.value;
-                               setCode(event.target.value)
-                               setCodeError("")
+                <InputLabel htmlFor="phone">Код</InputLabel>
+                <Input inputmode="numeric" id="phone" aria-describedby="code" sx={{pl: 1}} value={code}
+                       onChange={event => {
+                           const prev = event.target.value;
+                           setCode(event.target.value)
+                           setCodeError("")
 
-                               if (event.target.value.length === 6 && !timerLock) {
-                                   timerLock = true;
-                                   setTimeout(async () => {
-                                       if (event.target.value === prev) {
-                                           try {
-                                               await redirect(await api.sendCodeAndOrder(
-                                                   cartProducts,
-                                                   phone,
-                                                   address,
-                                                   paymentMethod,
-                                                   time,
-                                                   prev))
-                                           } catch (e) {
-                                               if (e.code === 1001) {
-                                                   setCodeError("Неверный SMS-код");
-                                               } else if (e.code === 1004) {
-                                                   setCodeError("Срок действия кода истёк");
-                                               }
+                           if (event.target.value.length === 6 && !timerLock) {
+                               timerLock = true;
+                               setTimeout(async () => {
+                                   if (event.target.value === prev) {
+                                       try {
+                                           await redirect(await api.sendCodeAndOrder(
+                                               cartProducts,
+                                               phone,
+                                               address,
+                                               paymentMethod,
+                                               time,
+                                               prev))
+                                       } catch (e) {
+                                           if (e.code === 1001) {
+                                               setCodeError("Неверный SMS-код");
+                                           } else if (e.code === 1004) {
+                                               setCodeError("Срок действия кода истёк");
                                            }
                                        }
-                                       timerLock = false;
-                                   }, 1000)
-                               }
-                           }}/>
-                    <FormHelperText>
-                        {(codeError === "") ? "Код будет проверен автоматически." : codeError}
-                    </FormHelperText>
-                </FormControl>
-                <Button sx={{
-                    width: '100%',
-                    justifyContent: (timeToResend === 0) ? "center" : "space-between",
-                }}
-                        disabled={timeToResend !== 0}
-                        onClick={async () => {
-                            await api.resendCode(JSON.parse(localStorage.getItem("phone")))
-                            setTimeToResend(60);
-                        }}>
-                    Отправить СМС заново
-                    {
-                        (timeToResend === 0)
-                            ? null
-                            : <Typography>{timeToResend}</Typography>
-                    }
-                </Button>
-            </FormFrame>
-        </ThemeProvider>
+                                   }
+                                   timerLock = false;
+                               }, 1000)
+                           }
+                       }}/>
+                <FormHelperText>
+                    {(codeError === "") ? "Код будет проверен автоматически." : codeError}
+                </FormHelperText>
+            </FormControl>
+            <Button sx={{
+                width: '100%',
+                justifyContent: (timeToResend === 0) ? "center" : "space-between",
+            }}
+                    disabled={timeToResend !== 0}
+                    onClick={async () => {
+                        await api.resendCode(JSON.parse(localStorage.getItem("phone")))
+                        setTimeToResend(60);
+                    }}>
+                Отправить СМС заново
+                {
+                    (timeToResend === 0)
+                        ? null
+                        : <Typography>{timeToResend}</Typography>
+                }
+            </Button>
+        </FormFrame>
     </>
 }
 

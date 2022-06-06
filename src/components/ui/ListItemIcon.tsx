@@ -1,22 +1,14 @@
 import React from "react"
-import {css} from "@emotion/react";
+import styled from "@emotion/styled";
 
-import {BaseProps} from "./BaseProps";
+const ListItemIcon = styled.div`
+  min-width: 56px;
+  height: 24px;
 
-type ListItemIconProps = BaseProps
+  display: flex;
+  align-items: center;
 
-const ListItemIcon = (props: ListItemIconProps) => {
-    return <div className={props.className} css={css`
-      min-width: 56px;
-      height: 24px;
-
-      display: flex;
-      align-items: center;
-
-      color: rgba(0, 0, 0, 0.54);
-    `}>
-        {props.children}
-    </div>
-}
+  color: rgba(0, 0, 0, 0.54);
+`;
 
 export default ListItemIcon

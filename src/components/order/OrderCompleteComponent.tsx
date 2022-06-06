@@ -8,20 +8,18 @@ import PhoneIcon from "@mui/icons-material/Phone";
 
 import React from "react"
 import Helmet from "react-helmet";
-import {css} from "@emotion/react";
 
-import paymentMethods, {PaymentMethod} from "../../paymentMethods"
+import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
 
-import Main from "../components/Main";
-import useStickyState from "../localStorageState";
-import CartProduct from "./CartProduct";
-import {toHumanReadable} from "../currentDateTime";
+import Main from "../Main";
+import useStickyState from "../../localStorageState";
+import CartProduct from "../cart/CartProduct";
+import {toHumanReadable} from "../../currentDateTime";
 
-import UseFont from "./frames/UseFont";
-import OrderCompleteBoldData from "./frames/OrderCompleteBoldData"
+import {OrderCompleteBoldData, Products} from "./OrderStyles";
 
-import {ImageFile, SiteInfo} from "../interfaces/data";
-import OrderResponse from "../interfaces/order";
+import {ImageFile, SiteInfo} from "../../interfaces/data";
+import OrderResponse from "../../interfaces/order";
 
 interface OrderCompleteProps {
     order?: OrderResponse;
@@ -49,7 +47,6 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     }
 
     return <>
-        <UseFont/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -60,15 +57,9 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
         <Main info={props.info}
               cartProducts={cartProducts} setCartProducts={setCartProducts}>
             <List>
-                <div css={css`
-                  display: flex;
-                  flex-direction: row;
-
-                  max-height: 200px;
-                  overflow: auto;
-                `}>
+                <Products>
                     {renderProducts()}
-                </div>
+                </Products>
 
                 <ListItem>
                     <ListItemIcon>

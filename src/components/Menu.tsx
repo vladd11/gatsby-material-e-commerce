@@ -42,12 +42,12 @@ const Menu = (props: MenuProps) => {
             </ListItemText>
         </ListItemLink>
 
-        <ListItemLink to={"login"}>
+        <ListItemLink to={(props.user.phone) ? "/logout" : "/login"}>
             <ListItemIcon>
                 <AccountCircleOutlinedIcon/>
             </ListItemIcon>
-            <ListItemText>
-                {props.user?.phone ?? "Войти"}
+            <ListItemText secondary={props.user.phone}>
+                {(props.user.phone) ? "Выйти" :"Войти"}
             </ListItemText>
         </ListItemLink>
 
@@ -69,7 +69,7 @@ const Menu = (props: MenuProps) => {
             </ListItemText>
         </ListItemLink>
 
-        <ListItemLink to={"about"}>
+        <ListItemLink to={"/about"}>
             <ListItemIcon>
                 <InfoOutlinedIcon/>
             </ListItemIcon>

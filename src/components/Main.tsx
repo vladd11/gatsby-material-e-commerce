@@ -3,12 +3,10 @@ import React, {ReactNode, useEffect} from 'react'
 import IsMobile from '../isMobile'
 
 import Menu from "./Menu";
-import CartMenuProduct from "./CartMenuProduct";
+import CartMenuProduct from "./cart/CartMenuProduct";
 import Appbar from "./ui/Appbar";
 import IconButton from "./ui/IconButton";
 import Badge from "./ui/Badge";
-
-import '../styles/body-fix.sass';
 
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -90,6 +88,7 @@ export default function Main(props: MainProps) {
         <div css={css`
           display: flex;
           flex-direction: column;
+          flex: 1 1 auto;
 
           ${queries.large} {
             margin-left: ${menuWidth}px

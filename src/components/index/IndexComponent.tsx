@@ -1,29 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet";
-import {css} from "@emotion/react";
 
-import Chip from "./ui/Chip";
+import Chip from "../ui/Chip";
 
-import Main from '../components/Main'
-import Product from '../components/Product'
+import Main from '../Main'
+import Product from '../Product'
 
-import ProductType from "../interfaces/product"
-
-import queries from "../queries"
+import ProductType from "../../interfaces/product"
 
 import {getImage} from "gatsby-plugin-image";
-import useStickyState from "../localStorageState";
+import useStickyState from "../../localStorageState";
 
-import Data from "../interfaces/data";
-import categories from "../../categories";
+import Data from "../../interfaces/data";
+import categories from "../../../categories";
 
-import UseFont from "./frames/UseFont";
+import {Categories, Products} from "./IndexStyles"
 
 interface IndexProps {
     data: Data
 }
 
-function Index(props: IndexProps) {
+function IndexComponent(props: IndexProps) {
     let headers: Headers;
     if (typeof Headers !== 'undefined') {
         headers = new Headers()
@@ -77,7 +74,6 @@ function Index(props: IndexProps) {
     }
 
     return (<>
-        <UseFont/>
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
@@ -91,28 +87,15 @@ function Index(props: IndexProps) {
             cartProducts={cartProducts}
             setCartProducts={setCartProducts}>
 
-            <div css={css`
-              display: flex;
-              justify-content: space-around;
-              flex-wrap: wrap;
-
-              padding: 16px 0 0 0;
-            `}>
+            <Categories>
                 {renderCategories()}
-            </div>
+            </Categories>
 
-            <div css={css`
-              display: flex;
-              flex-wrap: wrap;
-
-              @media ${queries.mobile} {
-                justify-content: center
-              }
-            `}>
+            <Products>
                 {renderProducts()}
-            </div>
+            </Products>
         </Main>
     </>);
 }
 
-export default Index
+export default IndexComponent

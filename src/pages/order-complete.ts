@@ -1,11 +1,20 @@
-import {graphql, useStaticQuery} from "gatsby";
+import {graphql, navigate, PageProps, useStaticQuery} from "gatsby";
 import {useEffect, useState} from "react";
 import Api from "../api/api";
+
 import OrderCompleteComponent from "../components/OrderCompleteComponent";
+
 import Data from "../interfaces/data";
 import OrderResponse from "../interfaces/order";
 
-const OrderComplete = ({location}) => {
+type OrderCompleteProps = PageProps & {
+    location: {
+        state: OrderResponse
+    }
+}
+
+// noinspection JSUnusedGlobalSymbols
+export default function OrderComplete(props: OrderCompleteProps) {
     const data: Data = useStaticQuery(graphql`
 {
   allSiteBuildMetadata {
@@ -45,7 +54,7 @@ const OrderComplete = ({location}) => {
   }
 }`)
 
-    const [orderResponse, setOrderResponse] = useState<OrderResponse>(location.state);
+    const [orderResponse, setOrderResponse] = useState<OrderResponse>(props.location.state);
 
     const api = new Api();
     useEffect(() => {
@@ -53,9 +62,15 @@ const OrderComplete = ({location}) => {
             const params = new URLSearchParams(location.search);
             const orderID = params.get("orderID");
 
-            api.getOrder(orderID).then((result) => {
-                setOrderResponse(result)
-            })
+            if (!orderID) {
+                // It's redirect
+                // noinspection JSIgnoredPromiseFromCall
+                navigate("/404")
+            } else {
+                api.getOrder(orderID).then((result) => {
+                    setOrderResponse(result)
+                })
+            }
         }
     }, [])
 
@@ -65,5 +80,3 @@ const OrderComplete = ({location}) => {
         allFile: data.allFile
     })
 }
-
-export default OrderComplete;

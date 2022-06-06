@@ -30,7 +30,8 @@ export class JSONRPCClient {
 }
 
 export interface JSONRPCError {
-
+    code: number,
+    message: string
 }
 
 export interface JSONRPCRequest {

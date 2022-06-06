@@ -14,7 +14,7 @@ import Product from "../interfaces/product";
 
 interface CartMenuProductProps {
     product: Product,
-    onDelete?
+    onDelete?: () => void
 }
 
 export default function CartMenuProduct(props: CartMenuProductProps) {
@@ -30,9 +30,9 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
                  aria-label={`Уменьшить количество ${props.product.Title}`}
                  onClick={() => {
                      if (count === 1) {
-                         props.onDelete()
+                         props.onDelete?.()
                      } else {
-                         props.product.count--;
+                         props.product.count!--;
                          setCount(props.product.count)
                      }
                  }}
@@ -50,7 +50,7 @@ export default function CartMenuProduct(props: CartMenuProductProps) {
                  color="success"
                  aria-label={`Увеличить количество ${props.product.Title}`}
                  onClick={() => {
-                     props.product.count++;
+                     props.product.count!++;
                      setCount(props.product.count)
                  }}
                  sx={{

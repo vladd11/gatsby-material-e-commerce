@@ -43,6 +43,6 @@ export function parseDateTime(date: string, time: string) {
     return new Date(year, month - 1, day, hour, minute)
 }
 
-export function addTime(date, seconds: number) {
+export function addTime(date: Date, seconds: number) {
     return new Date(date.getTime() + seconds * 1000);
 }

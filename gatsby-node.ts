@@ -1,24 +1,24 @@
 import Product, {ProductPopularity} from "./src/interfaces/product";
-import type {GatsbyNode} from "gatsby"
 
 const path = require("path")
 const fs = require("fs")
 
 import Database from "./db";
+import {CreatePagesArgs, GatsbyNode} from "gatsby";
 
-
-exports.createPages = async ({graphql}) => {
+// It's used by Gatsby
+// noinspection JSUnusedGlobalSymbols
+export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesArgs) => {
     let result: {
-        data: {
-            allProducts: {
-                nodes: Array<Product>
+        data?: {
+            allProducts?: {
+                nodes?: Array<Product>
             },
-            allPopularity: {
-                nodes: Array<ProductPopularity>
+            allPopularity?: {
+                nodes?: Array<ProductPopularity>
             }
         },
-
-    } = await graphql(`
+    } = await props.graphql(`
 {
     allProducts(sort: {fields: Popularity}) {
         nodes {
@@ -33,7 +33,7 @@ exports.createPages = async ({graphql}) => {
     }
 }`)
 
-    const products = result.data.allProducts.nodes;
+    const products = result.data!.allProducts!.nodes!;
 
     const categories = new Map()
     products.forEach((product) => {
@@ -57,6 +57,8 @@ exports.createPages = async ({graphql}) => {
     })
 }
 
+// It's used by Gatsby
+// noinspection JSUnusedGlobalSymbols
 export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     {
         actions,

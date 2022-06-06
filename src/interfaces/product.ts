@@ -1,3 +1,5 @@
+import {IGatsbyImageData} from "gatsby-plugin-image";
+
 export default interface Product {
     Popularity?: number;
     ProductID: string,
@@ -8,7 +10,7 @@ export default interface Product {
     Price: number,
 
     ImageURI: string,
-    Image?, // Gatsby Image type
+    Image?: IGatsbyImageData, // Gatsby Image type
 
     count?: number
 }

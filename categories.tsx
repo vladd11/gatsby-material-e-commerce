@@ -9,9 +9,9 @@ import React from "react"
 
 const categories = [
     {
-        "id": 0,
+        id: 0,
         icon: <Star/>,
-        "name": "Популярное"
+        name: "Популярное"
     },
     {
         "id": 1,

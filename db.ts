@@ -8,27 +8,27 @@ const ydb = require('ydb-sdk')
 const fetch = require("node-fetch")
 
 export default class Database {
-    private driver: Driver;
+    private driver?: Driver;
 
     async readProducts(): Promise<Array<Product>> {
         return new Promise(async (resolve) => {
-            await this.driver.tableClient.withSessionRetry(async (session) => {
+            await this.driver!.tableClient.withSessionRetry(async (session) => {
                 await session.streamReadTable("products", (result1) => {
                         const products: Array<Product> = []
 
-                        for (const row of result1.resultSet.rows) {
-                            let price: number = priceToNumber(row.items[5].uint64Value)
+                        for (const row of result1.resultSet!.rows!) {
+                            let price: number = priceToNumber(row.items![5].uint64Value!)
 
                             products.push({
                                 // @ts-ignore
                                 ProductID: row.items[1].bytesValue.toString('hex'),
-                                Category: row.items[4].int32Value,
+                                Category: row.items![4].int32Value!,
 
-                                Description: row.items[3].textValue,
-                                ImageURI: row.items[0].textValue,
+                                Description: row.items![3].textValue!,
+                                ImageURI: row.items![0].textValue!,
 
                                 Price: price,
-                                Title: row.items[2].textValue,
+                                Title: row.items![2].textValue!,
                             })
                         }
 
@@ -40,7 +40,7 @@ export default class Database {
     }
 
     public async readPopularity(): Promise<Array<ProductPopularity>> {
-        return await this.driver.tableClient.withSessionRetry(async (session) => {
+        return await this.driver!.tableClient.withSessionRetry(async (session) => {
             const resultQuery = await session.executeQuery(`
             SELECT * FROM (
                 SELECT product_id, COUNT(product_id)
@@ -49,12 +49,12 @@ export default class Database {
             ORDER BY column1 DESC;`)
 
             const arr: Array<ProductPopularity> = []
-            for (const row of resultQuery.resultSets[0].rows) {
-                let popularity = row.items[0].uint64Value
+            for (const row of resultQuery.resultSets[0].rows!) {
+                let popularity = row.items![0].uint64Value
 
                 if (popularity instanceof Long) popularity = popularity.toNumber()
 
-                const id = row.items[1].bytesValue
+                const id = row.items![1].bytesValue
                 if(!id) {
                     console.warn("ID of product is null!")
                     continue;
@@ -64,7 +64,7 @@ export default class Database {
                     // It's Node.js code, toString("hex") is possible
                     // @ts-ignore
                     ProductID: id.toString("hex"),
-                    popularity: popularity
+                    popularity: popularity!
                 })
             }
             return arr;
@@ -87,7 +87,7 @@ export default class Database {
             authService
         });
         const timeout = 10000;
-        if (!await this.driver.ready(timeout)) {
+        if (!await this.driver!.ready(timeout)) {
             console.error(`Driver has not become ready in ${timeout}ms!`);
             process.exit(1);
         }

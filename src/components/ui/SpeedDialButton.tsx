@@ -1,10 +1,13 @@
-import React from "react"
-import {animationContext} from "./SpeedDial";
+import React, {ReactNode, MouseEventHandler} from "react"
 import {css} from "@emotion/react";
 
+import {animationContext} from "./SpeedDial";
+
+import {BaseProps} from "./BaseProps";
+
 type SpeedDialProps = BaseProps & {
-    tooltipText?,
-    onClick?,
+    tooltipText?: ReactNode,
+    onClick?: MouseEventHandler<HTMLButtonElement>,
     disabled?: boolean
 }
 
@@ -44,7 +47,7 @@ export default function SpeedDialButton(props: SpeedDialProps) {
                    className={props.className}
                    style={{transform: (context) ? "scale(0)" : "scale(1)"}}
                    onClick={(event) => {
-                       if (!props.disabled) props.onClick(event);
+                       if (!props.disabled) props.onClick?.(event);
                    }}>
         <span css={css`
           font-size: 0.6875rem;

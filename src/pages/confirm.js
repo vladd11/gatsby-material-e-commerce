@@ -136,4 +136,6 @@ const Confirm = ({location}) => {
     </>
 }
 
+// Actually used by Gatsby
+// noinspection JSUnusedGlobalSymbols
 export default Confirm;

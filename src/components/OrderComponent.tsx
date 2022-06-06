@@ -15,10 +15,6 @@ import React, {useEffect, useRef, useState} from "react";
 import {navigate} from "gatsby";
 import useStickyState from "../localStorageState";
 
-// I don't know why it's marked as unused while I use it in Emotion F-string
-// noinspection ES6UnusedImports
-import {defaultFontFamily} from "../theme"
-
 import getCurrentDateTime, {parseDateTime, addTime} from "../currentDateTime"
 
 import CartProduct from "./CartProduct";
@@ -26,7 +22,7 @@ import CartProduct from "./CartProduct";
 import * as orderStyles from "../styles/components/order.module.sass"
 import paymentMethods from "../../paymentMethods"
 
-import Api from "../api/api";
+import Api, {JSONRPCError} from "../api/api";
 import Product from "../interfaces/product";
 import redirect from "../redirect";
 import {css} from "@emotion/react";
@@ -68,7 +64,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     const [isDialSelected, setDialSelected] = useState(false)
 
     const mapContainer = useRef(null);
-    const map = useRef(null);
+    const map = useRef<mapboxgl.Map>(null);
     const [lng] = useState(50.197174);
     const [lat] = useState(53.223690);
     const [zoom] = useState(10);
@@ -84,7 +80,7 @@ const OrderComponent = (props: OrderComponentProps) => {
             center: [lng, lat],
             zoom: zoom
         });
-        map.current.addControl(new mapboxgl.GeolocateControl({
+        map.current!.addControl(new mapboxgl.GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true
             }, trackUserLocation: true, showUserHeading: true
@@ -95,25 +91,21 @@ const OrderComponent = (props: OrderComponentProps) => {
         if (!isPhoneValid) setPhoneValid(true);
     }, [phone])
 
-    async function validateAndOrder(paymentMethod) {
+    async function validateAndOrder(paymentMethod: string) {
         setLock(true);
 
-        let valid = true;
-
-        let clearPhone;
-        try {
-            clearPhone = convertPhoneToE164(phone, "+7")
-        } catch (e) {
-            setPhoneValid(false);
-            valid = false;
-        }
-
+        let addressValid = true;
         if (isEmptyOrSpaces(address) && isAddressFormManual) {
             setAddressValid(false);
-            valid = false;
+            addressValid = false;
         }
 
-        if (valid) {
+        let clearPhone = convertPhoneToE164(phone, "+7");
+        if (!clearPhone) {
+            setPhoneValid(false);
+        }
+
+        if (addressValid && clearPhone) {
             try {
                 await redirect(
                     await props.api.order(props.cartProducts,
@@ -122,8 +114,8 @@ const OrderComponent = (props: OrderComponentProps) => {
                         paymentMethod,
                         parseDateTime(date, time))
                 )
-            } catch (e) {
-                if (e.code === 1005) {
+            } catch (e: any) {
+                if (e instanceof JSONRPCError && e.code === 1005) {
                     await navigate("/confirm/", {
                         state: {
                             cartProducts: props.cartProducts,
@@ -303,7 +295,7 @@ const OrderComponent = (props: OrderComponentProps) => {
                 : null}
 
             <div className={orderStyles.container}
-                 style={(isAddressFormManual) ? {display: 'none'} : null}>
+                 style={(isAddressFormManual) ? {display: 'none'} : undefined}>
 
                 <div ref={mapContainer} className={orderStyles.mapContainer}/>
                 <PlaceOutlinedIcon sx={{
@@ -333,7 +325,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     </FormFrame>
 }
 
-function isEmptyOrSpaces(str) {
+function isEmptyOrSpaces(str: string) {
     return str === null || str.match(/^ *$/) !== null;
 }
 

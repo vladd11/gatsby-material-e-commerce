@@ -1,11 +1,13 @@
 import React from "react"
-import {Link} from "gatsby";
 import {css} from "@emotion/react";
+import {Link} from "gatsby";
+
+import {BaseProps} from "./BaseProps";
 
 const Wrapper = (props: WrapperProps) => {
     const {component, state, selected, disabled, className, children, ...rest} = props;
 
-    return <div style={(props.selected) ? {background: "rgba(85, 108, 214, 0.08)"} : null}>
+    return <div style={(props.selected) ? {background: "rgba(85, 108, 214, 0.08)"} : undefined}>
         <props.component css={css`
           display: flex;
           align-items: center;
@@ -54,11 +56,11 @@ const ListItemLink = (props: ListItemLinkProps) => {
 }
 
 type WrapperProps = BaseProps & {
-    selected: boolean,
-    disabled: boolean,
+    selected?: boolean,
+    disabled?: boolean,
     state?: any,
 
-    component,
+    component: any,
     [x: string]: any
 }
 

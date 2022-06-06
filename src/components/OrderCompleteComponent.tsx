@@ -10,7 +10,7 @@ import React from "react"
 import Helmet from "react-helmet";
 import {css} from "@emotion/react";
 
-import paymentMethods from "../../paymentMethods"
+import paymentMethods, {PaymentMethod} from "../../paymentMethods"
 
 import Main from "../components/Main";
 import useStickyState from "../localStorageState";
@@ -24,7 +24,7 @@ import {ImageFile, SiteInfo} from "../interfaces/data";
 import OrderResponse from "../interfaces/order";
 
 interface OrderCompleteProps {
-    order: OrderResponse;
+    order?: OrderResponse;
     info: SiteInfo;
     allFile: {
         edges: Array<ImageFile>
@@ -33,13 +33,13 @@ interface OrderCompleteProps {
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
-    const paymentMethod = paymentMethods[props.order?.paymentMethod]
+    const paymentMethod: PaymentMethod | undefined = (props.order) ? paymentMethods[props.order.paymentMethod] : undefined
 
     function renderProducts() {
         if (props.order) {
             return props.order?.products?.map(cartProduct => {
                 if (!cartProduct.Image) {
-                    cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)
+                    cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)!
                         .node.childImageSharp.gatsbyImageData
                 }
 

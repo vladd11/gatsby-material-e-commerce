@@ -1,11 +1,14 @@
 import React from "react";
 import {css} from "@emotion/react";
 
-type BadgeProps = BaseProps & {
-    marker
+import {BaseProps} from "./BaseProps";
+
+type BadgeProps = Omit<BaseProps, "children"> & {
+    marker: any,
+    children: JSX.Element
 }
 
-export default function Badge(props: BadgeProps) {
+export default function Badge(props: BadgeProps): JSX.Element {
     if (!props.marker) return props.children;
 
     return <div className={props.className} css={css`
@@ -26,7 +29,7 @@ export default function Badge(props: BadgeProps) {
           align-items: center;
 
           border-radius: 50%;
-          
+
           font-size: 0.75rem;
 
           background: #ff1744;

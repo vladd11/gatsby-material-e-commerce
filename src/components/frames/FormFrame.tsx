@@ -1,12 +1,13 @@
+import React, {ReactNode} from "react";
+import {css, Global} from "@emotion/react";
+
 import * as orderStyles from "../../styles/components/order.module.sass";
 import Appbar from "../ui/Appbar";
-import React from "react";
-import {css, Global} from "@emotion/react";
 import UseFont from "./UseFont";
 
 interface OrderFrameProps {
-    title,
-    children?
+    title: ReactNode,
+    children?: ReactNode
 }
 
 export default function FormFrame(props: OrderFrameProps) {

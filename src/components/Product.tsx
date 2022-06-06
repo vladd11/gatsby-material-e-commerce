@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {MouseEventHandler} from 'react'
 import {GatsbyImage} from "gatsby-plugin-image";
+import {css} from "@emotion/react";
+
+import ProductType from "../interfaces/product";
 
 import theme from "../theme";
-import {css} from "@emotion/react";
 import queries from "../queries";
 
 interface ProductProps {
-    product,
-    whenAddedToCart,
-    disabled,
+    product: ProductType,
+    whenAddedToCart?: MouseEventHandler<HTMLButtonElement>,
+    disabled: boolean,
     loading? : "lazy" | "eager"
 }
 
@@ -47,7 +49,7 @@ const Product = (props: ProductProps) => {
 
         <GatsbyImage css={css`
           min-width: 100%
-        `} loading={props.loading} alt={props.product.Title} image={props.product.Image}/>
+        `} loading={props.loading} alt={props.product.Title} image={props.product.Image!}/>
 
         <button css={css`
           width: 100%;

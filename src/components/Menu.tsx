@@ -8,7 +8,7 @@ import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
-import React from "react";
+import React, {ReactNode} from "react";
 import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
@@ -86,16 +86,15 @@ interface MenuProps {
     isDrawerOpened: boolean,
     shouldNotExpand: boolean,
 
-    onOpen,
-    onClose,
+    onClose: () => void,
 
-    orderLinkState?,
+    orderLinkState?: any,
 
     isCartEmpty: boolean,
 
     user: User,
 
-    children
+    children: ReactNode
 }
 
 export default Menu;

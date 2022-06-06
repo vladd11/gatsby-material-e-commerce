@@ -22,7 +22,7 @@ interface IndexProps {
 }
 
 function Index(props: IndexProps) {
-    let headers;
+    let headers: Headers;
     if (typeof Headers !== 'undefined') {
         headers = new Headers()
         headers.append('cache-control', "public, max-age=31536000")
@@ -49,10 +49,10 @@ function Index(props: IndexProps) {
 
     function renderProducts() {
         return products.map((product, index) => {
-            product.Image = getImage(props.data.allFile.edges.find(value => value.node.relativePath === product.ImageURI).node)
+            product.Image = getImage(props.data.allFile!.edges!.find(value => value.node.relativePath === product.ImageURI)!.node)
 
             return <Product
-                disabled={cartProducts?.some(cartProduct =>
+                disabled={cartProducts?.some((cartProduct: any) => // TODO: normal type
                     cartProduct.ProductID === product.ProductID
                 )}
                 product={product}

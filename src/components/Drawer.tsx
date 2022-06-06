@@ -1,13 +1,14 @@
 import React from "react";
+import {Global, css} from "@emotion/react";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-import {Global, css} from "@emotion/react";
+import {BaseProps} from "./ui/BaseProps";
 
 type DrawerProps = BaseProps & {
-    isDrawerOpened?,
-    onClose?,
-    shouldNotExpand?
+    isDrawerOpened?: boolean,
+    shouldNotExpand?: boolean,
+    onClose?: () => void
 }
 
 const Drawer = (props: DrawerProps) => {
@@ -17,7 +18,7 @@ const Drawer = (props: DrawerProps) => {
               body {
                 overflow-y: clip;
               }
-            ` : null} />
+            ` : null}/>
             <div
                 css={css`
                   display: ${(props.isDrawerOpened) ? "block" : "none"};

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {css} from "@emotion/react";
 
+import {BaseProps} from "./BaseProps";
+
 type ListItemTextProps = BaseProps & {
-    secondary?
+    secondary?: ReactNode
 }
 
 export default function ListItemText(props: ListItemTextProps) {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {GatsbyImage} from "gatsby-plugin-image";
 
 import Card from "@mui/material/Card";
@@ -8,7 +8,7 @@ import Product from "../interfaces/product";
 
 interface CartProductProps {
     product: Product,
-    children?
+    children?: ReactNode
 }
 
 const CartProduct = (props: CartProductProps) => {
@@ -25,7 +25,7 @@ const CartProduct = (props: CartProductProps) => {
             {props.children}
         </div>
 
-        <GatsbyImage css={css`min-width: 100%`} alt={props.product?.Title} image={props.product?.Image}/>
+        <GatsbyImage css={css`min-width: 100%`} alt={props.product.Title} image={props.product.Image!}/>
     </Card>
 }
 

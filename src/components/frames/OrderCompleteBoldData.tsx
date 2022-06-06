@@ -1,8 +1,8 @@
 import {css} from "@emotion/react";
-import React from "react";
+import React, {ReactNode} from "react";
 
 interface OrderCompleteBoldDataProps {
-    children
+    children: ReactNode
 }
 
 export default function OrderCompleteBoldData(props: OrderCompleteBoldDataProps) {

@@ -1,6 +1,8 @@
 import React from "react"
 import {css} from "@emotion/react";
 
+import {BaseProps} from "./BaseProps";
+
 type ListItemIconProps = BaseProps
 
 const ListItemIcon = (props: ListItemIconProps) => {

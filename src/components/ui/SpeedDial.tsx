@@ -1,12 +1,14 @@
-import React, {createContext, useEffect, useState} from "react"
+import React, {createContext, ReactNode, useEffect, useState} from "react"
 import {css} from "@emotion/react";
+
+import {BaseProps} from "./BaseProps";
 
 export const animationContext = createContext(false);
 
 type SpeedDialProps = BaseProps & {
     ariaLabel: string,
-    main, // Main action button, that will cause another buttons to open
-    shown?: boolean
+    main: ReactNode, // Main action button, that will cause another buttons to open
+    shown: boolean
 }
 
 export default function SpeedDial(props: SpeedDialProps) {

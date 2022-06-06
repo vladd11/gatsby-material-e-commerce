@@ -1,11 +1,12 @@
-import React from "react";
+import React, {ReactNode} from "react";
 
 import {css} from "@emotion/react";
 
 import theme from "../../theme"
+import {BaseProps} from "./BaseProps";
 
 type AppbarProps = BaseProps & {
-    title: string
+    title: ReactNode
 }
 
 const Appbar = (props: AppbarProps) => {

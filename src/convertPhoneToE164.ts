@@ -6,14 +6,8 @@ const shouldNumberBeRussian = process.env.FORCE_RUSSIAN_PHONE ?? true;
 export default function convertPhoneToE164(str: string, countryCode: string) {
     const result = str.replace(/[- ()]/, '')
     if(shouldNumberBeRussian && str.length !== 10) {
-        throw new InvalidPhoneError(str)
-    } else if (result.length > 15) throw new InvalidPhoneError(str)
+        return null
+    } else if (result.length > 15) return null
 
     return `${countryCode}${result}`
-}
-
-export class InvalidPhoneError extends Error {
-    constructor(phone: string) {
-        super(`Phone number ${phone} length is invalid`);
-    }
 }

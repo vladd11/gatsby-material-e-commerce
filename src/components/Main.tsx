@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {ReactNode, useEffect} from 'react'
 
 import IsMobile from '../isMobile'
 
@@ -29,7 +29,7 @@ interface MainProps {
     cartProducts: Array<Product>,
     setCartProducts: (value: any) => void,
 
-    children
+    children: ReactNode
 }
 
 export default function Main(props: MainProps) {
@@ -74,8 +74,6 @@ export default function Main(props: MainProps) {
             info={props.info}
 
             isDrawerOpened={isDrawerOpened}
-            onOpen={() => {
-            }}
             onClose={() => {
                 setDrawerOpened(false)
             }}

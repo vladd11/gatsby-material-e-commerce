@@ -15,15 +15,8 @@ export default function priceToNumber(number: Long.Long | number) {
     return number / 100
 }
 
-export function longToNumber(number: Long.Long | number) {
-    if (typeof number !== "number") {
-        return number?.toNumber()
-    }
-    return number
-}
-
 class PriceIsTooBigException extends Error {
-    constructor(number) {
+    constructor(number: number) {
         super(`Number (${number}) is bigger than MAX_SAFE_INTEGER. This may cause bugs on some users`);
     }
 }

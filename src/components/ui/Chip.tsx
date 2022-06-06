@@ -1,10 +1,10 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {css} from "@emotion/react";
 
 type ChipProps = {
-    avatar?,
-    disabled?,
-    label,
+    avatar?: ReactNode,
+    disabled?: boolean,
+    label: ReactNode,
     onClick: () => void
 }
 

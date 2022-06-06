@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const OrderCompleteBoldData = styled.span`
+export const BoldData = styled.span`
   font-weight: bold;
   padding-left: 4px;
 `;
@@ -12,3 +12,20 @@ export const Products = styled.div`
   max-height: 200px;
   overflow: auto;
 `;
+
+export const TotalField = styled.span`
+  margin-left: 12px;
+  padding-bottom: 4px;
+`
+
+export const DatetimeForm = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+`
+
+export const formStyle = {
+    mt: '16px',
+    width: "100%"
+};

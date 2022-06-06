@@ -1,12 +1,17 @@
 import {JSONRPCClient, JSONRPCRequest} from "./client";
 import OrderResponse from "../interfaces/order";
 import User from "../interfaces/User";
-import {optionalLocalStorage} from "../localStorageState";
+import {optionalLocalStorage} from "../states/localStorageState";
 
 const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
 
-const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)
-const getPhone = (): string => optionalLocalStorage(() => localStorage.getItem("user.phone"))
+export const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)
+export const getPhone = (): string => optionalLocalStorage(() => localStorage.getItem("user.phone"))
+
+export function logout() {
+    localStorage.removeItem("jwt_token");
+    localStorage.removeItem("user.phone")
+}
 
 export function getCachedUser(): User {
     return {

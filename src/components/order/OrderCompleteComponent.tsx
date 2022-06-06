@@ -12,11 +12,11 @@ import Helmet from "react-helmet";
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
 
 import Main from "../Main";
-import useStickyState from "../../localStorageState";
+import useStickyState from "../../states/localStorageState";
 import CartProduct from "../cart/CartProduct";
 import {toHumanReadable} from "../../currentDateTime";
 
-import {OrderCompleteBoldData, Products} from "./OrderStyles";
+import {BoldData, Products} from "./OrderStyles";
 
 import {ImageFile, SiteInfo} from "../../interfaces/data";
 import OrderResponse from "../../interfaces/order";
@@ -76,9 +76,9 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                     </ListItemIcon>
                     <ListItemText>
                         <span>Вы оплатили заказ {paymentMethod?.instrumentalCaseName}, итого:</span>
-                        <OrderCompleteBoldData>
+                        <BoldData>
                             {props.order?.price} рублей
-                        </OrderCompleteBoldData>
+                        </BoldData>
                     </ListItemText>
                 </ListItem>
 
@@ -88,7 +88,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                     </ListItemIcon>
                     <ListItemText>
                         <span>Телефон для связи:</span>
-                        <OrderCompleteBoldData>{props.order?.phone}</OrderCompleteBoldData>
+                        <BoldData>{props.order?.phone}</BoldData>
                     </ListItemText>
                 </ListItem>
             </List>

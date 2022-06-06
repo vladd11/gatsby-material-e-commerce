@@ -3,8 +3,17 @@ import {graphql, useStaticQuery} from "gatsby";
 import "../interfaces/product"
 
 import IndexComponent from "../components/index/IndexComponent"
+import { logout } from "../api/api";
 
-export default function IndexPage() {
+interface IndexPageProps {
+    location: {
+        state: {
+            logout?: boolean
+        }
+    }
+}
+
+export default function IndexPage(props: IndexPageProps) {
     const data = useStaticQuery(graphql`
 {
   allSiteBuildMetadata {
@@ -43,6 +52,10 @@ export default function IndexPage() {
     }
   }
 }`)
+
+    if(props.location.state?.logout) {
+        logout();
+    }
 
     return IndexComponent({data: data});
 }

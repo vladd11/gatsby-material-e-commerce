@@ -1,7 +1,7 @@
+import LoginComponent from "../components/login/LoginComponent";
 import {graphql, useStaticQuery} from "gatsby";
-import LogoutComponent from "../components/LogoutComponent";
 
-export default function Logout() {
+export default function Login() {
     const data = useStaticQuery(graphql`
 {
   site {
@@ -16,5 +16,5 @@ export default function Logout() {
   }
 }`)
 
-    return LogoutComponent({siteMetadata: data.site.siteMetadata});
+    return LoginComponent({siteMetadata: data.site.siteMetadata})
 }

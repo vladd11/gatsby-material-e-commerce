@@ -2,7 +2,7 @@ export class JSONRPCClient {
     private functionURL: string;
 
     constructor(functionURL: string) {
-        this.functionURL = functionURL;
+        this.functionURL = `${functionURL}/v1`;
     }
 
     async call(request: any): Promise<any> {

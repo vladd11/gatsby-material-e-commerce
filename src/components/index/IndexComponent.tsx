@@ -9,7 +9,7 @@ import Product from '../Product'
 import ProductType from "../../interfaces/product"
 
 import {getImage} from "gatsby-plugin-image";
-import useStickyState from "../../localStorageState";
+import useStickyState from "../../states/localStorageState";
 
 import Data from "../../interfaces/data";
 import categories from "../../../categories";

@@ -76,7 +76,7 @@ export default class Api {
                            time: Date,
                            code: string): Promise<OrderResponse> {
         const result = await this.client.call([
-            Api._sendCode(phone, parseInt(code), 0),
+            Api._checkCode(phone, parseInt(code), 0),
             Api._order(cartProducts, paymentMethod, address, phone, toUnixTime(time), 1)
         ])
 
@@ -95,7 +95,7 @@ export default class Api {
 
     async resendCode(phone: string): Promise<void> {
         await this.client.call([
-            Api._resendCode(phone)
+            Api._sendCode(phone)
         ])
     }
 
@@ -178,7 +178,7 @@ export default class Api {
         }
     }
 
-    private static _sendCode(phone: string, code: number, id?: any): JSONRPCRequest {
+    private static _checkCode(phone: string, code: number, id?: any): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
@@ -190,7 +190,7 @@ export default class Api {
         }
     }
 
-    private static _resendCode(phone: string, id?: any): JSONRPCRequest {
+    private static _sendCode(phone: string, id?: any): JSONRPCRequest {
         return {
             jsonrpc: "2.0",
             id: id,
@@ -198,6 +198,18 @@ export default class Api {
             params: {
                 phone: phone
             }
+        }
+    }
+
+    async sendCode(phone: string) {
+        const result = await fetch(`${process.env.GATSBY_FUNCTION_URL}/send-code`, {
+            method: "POST",
+            body: JSON.stringify({
+                phone: phone
+            })
+        })
+        if(result.ok) {
+            return await result.json()
         }
     }
 }

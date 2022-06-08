@@ -1,4 +1,4 @@
-import {formStyle} from "../OrderStyles";
+import {formStyle} from "../order/OrderStyles";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import {css} from "@emotion/react";
@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 
 import React from "react";
 
-import FieldProps from "./FieldProps";
+import FieldProps from "../order/fields/FieldProps";
 
 export default function PhoneField(props: FieldProps) {
     return <FormControl
@@ -17,6 +17,7 @@ export default function PhoneField(props: FieldProps) {
         <Input
             readOnly={props.lock}
             inputMode="tel"
+
             id="phone"
             aria-describedby="tel"
             sx={{pl: 1}}

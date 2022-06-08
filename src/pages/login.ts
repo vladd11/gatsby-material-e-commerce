@@ -1,5 +1,7 @@
-import LoginComponent from "../components/login/LoginComponent";
 import {graphql, useStaticQuery} from "gatsby";
+
+import LoginComponent from "../components/login/LoginComponent";
+import Api from "../api/api";
 
 export default function Login() {
     const data = useStaticQuery(graphql`
@@ -16,5 +18,5 @@ export default function Login() {
   }
 }`)
 
-    return LoginComponent({siteMetadata: data.site.siteMetadata})
+    return LoginComponent({siteMetadata: data.site.siteMetadata, api: new Api()})
 }

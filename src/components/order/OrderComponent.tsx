@@ -25,7 +25,7 @@ import FormFrame from "../frames/FormFrame";
 
 import {Products, BoldData, TotalField, DatetimeForm} from "./OrderStyles";
 import AddressField from "./fields/AddressField";
-import PhoneField from "./fields/PhoneField";
+import PhoneField from "../fields/PhoneField";
 import DateField from "./fields/DateField";
 import TimeField from "./fields/TimeField";
 import {FromTime, ToTime} from "./fields/TimeComponents";
@@ -36,6 +36,9 @@ import Product from "../../interfaces/product";
 import 'mapbox-gl/dist/mapbox-gl.css';
 // @ts-ignore
 import mapboxgl from '!mapbox-gl';
+import {css} from "@emotion/react";
+import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";
+
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
 interface OrderComponentProps {
@@ -92,21 +95,25 @@ const OrderComponent = (props: OrderComponentProps) => {
     async function validateAndOrder(paymentMethod: string) {
         setLock(true);
 
-        if (isEmptyOrSpaces(address) && isAddressFormManual) {
-            setAddressValid(false);
+        let valid = true;
+        const notValid = (setState: (value: boolean) => void) => {
+            setState(false);
+            valid = false;
         }
 
+        if (isEmptyOrSpaces(address) && isAddressFormManual) notValid(setAddressValid);
+
         let clearPhone = convertPhoneToE164(phone, "+7");
-        if (!clearPhone) setPhoneValid(false);
+        if (!clearPhone) notValid(setPhoneValid);
 
-        if (!date) setDateValid(false)
-        if (!time) setTimeValid(false)
+        if (!date) notValid(setDateValid)
+        if (!time) notValid(setTimeValid)
 
-        if (isAddressValid && clearPhone && time && date) {
+        if (valid) {
             try {
                 await redirect(
                     await props.api.order(props.cartProducts,
-                        clearPhone,
+                        clearPhone!,
                         address,
                         paymentMethod,
                         parseDateTime(date, time))
@@ -182,12 +189,16 @@ const OrderComponent = (props: OrderComponentProps) => {
                 <div ref={mapContainer} className={orderStyles.mapContainer}/>
             </AddressField>
 
-            <SpeedDial className={orderStyles.speedDial} main={
+            <SpeedDial css={css`
+              position: absolute;
+              right: 0;
+              bottom: 0;
+            `} main={
                 <Fab variant="extended" onClick={() => setDialSelected(!isDialSelected)} color="primary">
-                    <LocalShippingIcon sx={{pr: 1}}/>
-                    <span className={orderStyles.text}>
-                    Заказать
-                </span>
+                    <LocalShippingIcon/>
+                    <ExpandedButtonLabel>
+                        Заказать
+                    </ExpandedButtonLabel>
                 </Fab>
             } shown={isDialSelected} ariaLabel="Заказать">
                 {renderButtons()}

@@ -21,16 +21,17 @@ interface LoginComponentProps {
 }
 
 export default function LoginComponent(props: LoginComponentProps) {
-    const [isLastLoginSuccessful, setLastLoginSuccessful] = useState(true);
-    const [login, setLogin] = useState("");
+    const [phone, setPhone] = useState("");
+    const [phoneError, setPhoneError] = useState("");
 
     const [code, setCode] = useState("");
+    let statelessCode = "";
     const [codeError, setCodeError] = useState("");
 
     const [step, setStep] = useState(0);
 
     useEffect(() => {
-        if (step === 1) {
+        if (step === 2) {
             // It's redirect, there's no reason to wait it
             // noinspection JSIgnoredPromiseFromCall
             navigate("/")
@@ -48,17 +49,36 @@ export default function LoginComponent(props: LoginComponentProps) {
 
         <FormFrame title="Вход в аккаунт">
             {(step === 0)
-                ? <PhoneField value={login} onChange={setLogin} lock={false} valid={isLastLoginSuccessful}/>
+                ? <>
+                    <PhoneField value={phone} onChange={setPhone} lock={false} valid={phoneError === ""}
+                                error={phoneError}/>
+                    <Fab variant="extended" color="primary" sx={FabStyles} onClick={async () => {
+                        try {
+                            await props.api.sendCode(phone);
+                            setStep(1);
+                        } catch (e: any) {
+                            if (e.code === 401) {
+                                setPhoneError("Этот телефон не зарегистрирован")
+                            }
+                        }
+                    }}>
+                        <LoginIcon/>
+                        <ExpandedButtonLabel>
+                            Войти
+                        </ExpandedButtonLabel>
+                    </Fab>
+                </>
                 : <CodeField error={codeError} valid={codeError === ""} lock={false}
                              value={code}
                              onChange={(code) => {
+                                 statelessCode = code;
                                  setCode(code)
                                  setCodeError("")
                              }}
                              onApply={oldValue => {
-                                 if (oldValue === code) {
+                                 if (oldValue === statelessCode) {
                                      try {
-                                         setStep(step + 1)
+                                         setStep(2)
                                      } catch (e: any) {
                                          if (e.code === 1001) {
                                              setCodeError("Неверный SMS-код");
@@ -69,17 +89,6 @@ export default function LoginComponent(props: LoginComponentProps) {
                                  }
                              }}/>
             }
-
-            <Fab variant="extended" color="primary" sx={FabStyles} onClick={async () => {
-                await props.api.sendCode(login);
-
-                setStep(step + 1);
-            }}>
-                <LoginIcon/>
-                <ExpandedButtonLabel>
-                    Войти
-                </ExpandedButtonLabel>
-            </Fab>
         </FormFrame>
     </>
 }

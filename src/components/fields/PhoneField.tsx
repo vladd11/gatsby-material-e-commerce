@@ -7,6 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import React from "react";
 
 import FieldProps from "../order/fields/FieldProps";
+import FormHelperText from "@mui/material/FormHelperText";
 
 export default function PhoneField(props: FieldProps) {
     return <FormControl
@@ -25,5 +26,11 @@ export default function PhoneField(props: FieldProps) {
             onChange={event => props.onChange(event.target.value)}
             startAdornment={<span css={css`padding-right: 8px`}>+7</span>}
         />
+        {(!props.valid && props.error)
+            ? <FormHelperText>
+                {props.error}
+            </FormHelperText>
+            : null
+        }
     </FormControl>
 }

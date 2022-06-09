@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React from "react";
 
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
@@ -7,7 +7,7 @@ import FormControl from "@mui/material/FormControl";
 
 import FieldProps from "./FieldProps";
 
-export default function CodeField(props: FieldProps & { error: ReactNode, onApply: (oldValue: string) => void }) {
+export default function CodeField(props: FieldProps & { onApply: (oldValue: string) => void }) {
     return <FormControl
         required={true}
         style={{width: "100%"}}
@@ -25,7 +25,7 @@ export default function CodeField(props: FieldProps & { error: ReactNode, onAppl
                    if (value.length === 6 && !timerLock) {
                        timerLock = true;
                        setTimeout(async () => {
-                            props.onApply(value)
+                           props.onApply(value)
                            timerLock = false;
                        }, 1000)
                    }

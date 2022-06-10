@@ -204,9 +204,9 @@ export default class Api {
     async sendCode(phone: string) {
         const result = await fetch(`${process.env.GATSBY_FUNCTION_URL}/send-code`, {
             method: "POST",
-            body: `+7${phone}`
+            body: JSON.stringify({phone: `+7${phone}`})
         })
-        if(result.status === 401) {
+        if (result.status === 401) {
             throw new UnauthorizedError();
         }
     }

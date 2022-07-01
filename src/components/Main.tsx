@@ -17,7 +17,7 @@ import queries from "../queries";
 import Product from "../interfaces/product";
 import {SiteInfo} from "../interfaces/data";
 
-import {getCachedUser} from "../api/api";
+import {getCachedUser} from "../api/utils";
 
 const menuWidth = 330;
 

@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import {navigate} from "gatsby";
 
 import {Helmet} from "react-helmet";
 import Fab from "@mui/material/Fab";
@@ -16,7 +15,7 @@ import CartProduct from "../cart/CartProduct";
 import * as orderStyles from "../../styles/components/order.module.sass"
 
 import paymentMethods from "../../../paymentMethods"
-import Api, {JSONRPCError} from "../../api/api";
+import Api from "../../api/api";
 
 import redirect from "../../redirect";
 import convertPhoneToE164 from "../../convertPhoneToE164";
@@ -38,6 +37,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from '!mapbox-gl';
 import {css} from "@emotion/react";
 import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";
+import {navigate} from "gatsby";
+import {toUnixTime} from "../../api/utils";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -101,7 +102,15 @@ const OrderComponent = (props: OrderComponentProps) => {
             valid = false;
         }
 
-        if (isEmptyOrSpaces(address) && isAddressFormManual) notValid(setAddressValid);
+        let clearAddress = address
+        if (isAddressFormManual) {
+            if (isEmptyOrSpaces(address)) {
+                notValid(setAddressValid)
+            }
+        } else {
+            const center = map.current.getCenter()
+            clearAddress = `${center.lat} ${center.lng}`
+        }
 
         let clearPhone = convertPhoneToE164(phone, "+7");
         if (!clearPhone) notValid(setPhoneValid);
@@ -111,19 +120,24 @@ const OrderComponent = (props: OrderComponentProps) => {
 
         if (valid) {
             try {
+                const datetime = toUnixTime(parseDateTime(date, time))
                 await redirect(
                     await props.api.order(props.cartProducts,
                         clearPhone!,
-                        address,
+                        clearAddress,
                         paymentMethod,
-                        parseDateTime(date, time))
+                        datetime),
+                    clearPhone!,
+                    clearAddress,
+                    datetime,
+                    paymentMethod
                 )
             } catch (e: any) {
-                if (e instanceof JSONRPCError && e.code === 1005) {
-                    await navigate("/confirm/", {
+                if (e.code === 401) {
+                    await navigate("/order/confirm/", {
                         state: {
                             cartProducts: props.cartProducts,
-                            address: address,
+                            address: clearAddress,
                             paymentMethod: paymentMethod,
                             phone: clearPhone,
                             time: parseDateTime(date, time)

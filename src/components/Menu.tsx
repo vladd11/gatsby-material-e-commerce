@@ -42,7 +42,7 @@ const Menu = (props: MenuProps) => {
             </ListItemText>
         </ListItemLink>
 
-        <ListItemLink to={(props.user.phone) ? "/" : "/login"} state={{logout: props.user.phone != undefined}}>
+        <ListItemLink to={(props.user.phone) ? "/" : "/login"} state={{logout: props.user.phone != null}}>
             <ListItemIcon>
                 <AccountCircleOutlinedIcon/>
             </ListItemIcon>

@@ -50,9 +50,6 @@ const config: GatsbyConfig = {
                 precachePages: ["/"]
             },
         },
-        // If you want to use styled components you should add the plugin here.
-        // 'gatsby-plugin-styled-components',
-        'gatsby-plugin-mui-emotion',
         {
             resolve: `gatsby-plugin-emotion`,
             options: {

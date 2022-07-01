@@ -1,37 +1,52 @@
-import {graphql, useStaticQuery} from "gatsby";
+import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import Api from "../api/api";
 
-import ConfirmComponent, {ConfirmComponentState} from "../components/order/ConfirmComponent";
+import ConfirmComponent from "../components/order/ConfirmComponent";
+
+interface ConfirmState {
+    phone: string
+}
 
 interface ConfirmProps {
     location: {
-        state: ConfirmComponentState
+        state: ConfirmState
     }
 }
 
+type ConfirmData = {
+    site: {
+        siteMetadata: {
+            title: string,
+            description: string
+        }
+    }
+};
+
 const Confirm = (props: ConfirmProps) => {
     const api = new Api()
-    const data: {
-        site: {
-            siteMetadata: {
-                title: string,
-                description: string
+    const data: ConfirmData = useStaticQuery(graphql`
+        {
+            site {
+                siteMetadata {
+                    title
+                    description
+                }
             }
         }
-    } = useStaticQuery(graphql`
-{
-  site {
-    siteMetadata {
-      title
-      description
-    }
-  }
-}`)
+    `)
 
     return ConfirmComponent({
         siteMetadata: data.site.siteMetadata,
-        state: props.location.state,
+        phone: props.location.state?.phone,
+        onSubmit: async (code) => {
+            const result = await api.login(props.location.state.phone, code)
+
+            console.log(result)
+            if(result) {
+                await navigate("/")
+            }
+        },
         api: api
     })
 }

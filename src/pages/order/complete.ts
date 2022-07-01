@@ -1,11 +1,11 @@
 import {graphql, navigate, PageProps, useStaticQuery} from "gatsby";
 import {useEffect, useState} from "react";
-import Api from "../api/api";
+import Api from "../../api/api";
 
-import OrderCompleteComponent from "../components/order/OrderCompleteComponent";
+import OrderCompleteComponent from "../../components/order/OrderCompleteComponent";
 
-import Data from "../interfaces/data";
-import OrderResponse from "../interfaces/order";
+import Data from "../../interfaces/data";
+import OrderResponse from "../../interfaces/order";
 
 type OrderCompleteProps = PageProps & {
     location: {
@@ -14,24 +14,9 @@ type OrderCompleteProps = PageProps & {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default function OrderComplete(props: OrderCompleteProps) {
+export default function Complete(props: OrderCompleteProps) {
     const data: Data = useStaticQuery(graphql`
 {
-  allSiteBuildMetadata {
-    nodes {
-      buildTime
-    }
-  }
-  allProducts(limit: 12, sort: {fields: Popularity}) {
-    nodes {
-      Category
-      Description
-      Price
-      ProductID
-      Title
-      ImageURI
-    }
-  }
   allFile {
     edges {
       node {
@@ -68,6 +53,11 @@ export default function OrderComplete(props: OrderCompleteProps) {
                 navigate("/404")
             } else {
                 api.getOrder(orderID).then((result) => {
+                    if (!result) {
+                        navigate("/404");
+                        return
+                    }
+
                     setOrderResponse(result)
                 })
             }

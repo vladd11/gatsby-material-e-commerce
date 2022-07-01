@@ -17,7 +17,7 @@ export default function useStickyState(defaultValue: any, key: string) : [any, D
     return [value, setValue];
 }
 
-export function optionalLocalStorage(call: () => any) {
+export function ifClientSide(call: () => any) {
     if (typeof localStorage !== 'undefined') {
         return call();
     }

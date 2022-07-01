@@ -21,12 +21,6 @@ interface IndexProps {
 }
 
 function IndexComponent(props: IndexProps) {
-    let headers: Headers;
-    if (typeof Headers !== 'undefined') {
-        headers = new Headers()
-        headers.append('cache-control', "public, max-age=31536000")
-    }
-
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 
@@ -36,10 +30,7 @@ function IndexComponent(props: IndexProps) {
         if (currentCategory === 0) {
             setProducts(props.data.allProducts.nodes)
         } else {
-            fetch(`categories/${currentCategory}.json?time=${props.data.allSiteBuildMetadata.nodes[0].buildTime}`,
-                {
-                    headers: headers
-                })
+            fetch(`categories/${currentCategory}.json?time=${props.data.allSiteBuildMetadata.nodes[0].buildTime}`)
                 .then(async r => {
                     setProducts(await r.json())
                 })

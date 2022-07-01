@@ -1,72 +1,62 @@
-import {JSONRPCClient, JSONRPCRequest} from "./client";
 import OrderResponse from "../interfaces/order";
-import User from "../interfaces/User";
-import {optionalLocalStorage} from "../states/localStorageState";
+import {ifClientSide} from "../states/localStorageState";
+import Product from "../interfaces/product";
+import {setPhone, toUnixTime} from "./utils";
+import {HTTPError} from "./exceptions";
 
-const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
-
-export const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)
-export const getPhone = (): string => optionalLocalStorage(() => localStorage.getItem("user.phone"))
-
-export function logout() {
-    localStorage.removeItem("jwt_token");
-    localStorage.removeItem("user.phone")
-}
-
-export function getCachedUser(): User {
-    return {
-        phone: getPhone()
-    }
-}
-
+const url = process.env.GATSBY_FUNCTION_URL!;
 export default class Api {
     jwtToken?: string | null;
-    private client: JSONRPCClient;
+    headers?: Headers;
 
     constructor() {
-        optionalLocalStorage(() => this.jwtToken = localStorage.getItem("jwt_token"))
-
-        this.client = new JSONRPCClient(process.env.GATSBY_FUNCTION_URL!);
-    }
-
-    handleVerifyResult(errors: Array<JSONRPCError>, response: any) {
-        if (errors?.[0]?.code !== 1005) {
-            setPhone(response.phone)
-        }
+        ifClientSide(() => {
+            this.jwtToken = localStorage.getItem("jwt_token")
+            this.headers = new Headers({
+                Authorization: `Bearer ${this.jwtToken}`
+            })
+        })
     }
 
     setJWTToken(token: string) {
         localStorage.setItem("jwt_token", token);
+
+        this.headers?.set("Authorization", `Bearer ${this.jwtToken}`)
         this.jwtToken = token;
     }
 
-    async getOrder(orderID: string): Promise<OrderResponse> {
-        const result = await this.client.call([
-            this._verify(0),
-            this._getOrder(orderID, 1)
-        ])
+    async getOrder(orderID: string): Promise<OrderResponse | null | undefined> {
+        if (!this.jwtToken) return null;
 
-        const responses = result.responses
-        const errors = result.errors
+        const result = await fetch(`${url}/order/${orderID}`, {headers: this.headers});
 
-        this.handleVerifyResult(errors, responses[0])
-
-        if (errors !== null && errors.length === 0) {
-            return responses[1];
-        } else { // This throws only one exception because method add_order depends on registration
-            throw new JSONRPCError(errors[0].code, errors[0].message)
-        }
+        if(result.ok) {
+            return await result.json()
+        } else throw new HTTPError(result.status)
     }
 
-    _getOrder(orderID: string, id?: any): JSONRPCRequest {
-        return {
-            jsonrpc: "2.0",
-            id: id,
-            method: "get_order",
-            params: {
-                orderID: orderID
+    async login(phone: string, code: number): Promise<boolean> {
+        const resultFetch = await fetch(`${url}/login`, {
+            headers: this.headers,
+            method: "POST",
+            body: JSON.stringify({
+                phone: phone,
+                code: code
+            })
+        })
+
+        if (resultFetch.ok) {
+            const result = await resultFetch.json()
+
+            if (result?.token) {
+                this.setJWTToken(result.token);
+                setPhone(phone)
+
+                return true;
             }
         }
+
+        return false;
     }
 
     async sendCodeAndOrder(cartProducts: Array<any>,
@@ -74,160 +64,84 @@ export default class Api {
                            address: string,
                            paymentMethod: string,
                            time: Date,
-                           code: string): Promise<OrderResponse> {
-        const result = await this.client.call([
-            Api._checkCode(phone, parseInt(code), 0),
-            Api._order(cartProducts, paymentMethod, address, phone, toUnixTime(time), 1)
-        ])
+                           code: number): Promise<OrderResponse> {
+        const resultFetch = await fetch(`${url}/order`, {
+            method: "POST",
+            body: JSON.stringify({
+                products: cartProducts.map(product => {
+                    return {
+                        id: product.ProductID,
+                        count: product.count
+                    }
+                }),
+                code: code,
+                paymentMethod: paymentMethod,
+                phone: phone,
+                address: address,
+                time: toUnixTime(time)
+            })
+        })
 
-        const responses = result.responses
-        const errors = result.errors
-
-        if (errors.length === 0) {
-            this.setJWTToken(responses[0].token)
-            setPhone(phone)
-
-            return responses[1]
-        } else {
-            throw new JSONRPCError(errors[0].code, errors[0].message)
-        }
+        if (resultFetch.ok) {
+            return await resultFetch.json();
+        } else throw new HTTPError(resultFetch.status)
     }
 
     async resendCode(phone: string): Promise<void> {
-        await this.client.call([
-            Api._sendCode(phone)
-        ])
+        const resultFetch = await fetch(`${url}/resend-code`, {
+            method: "POST",
+            body: JSON.stringify({
+                phone: phone
+            })
+        })
+
+        if(!resultFetch.ok) throw new HTTPError(resultFetch.status)
     }
 
-    async order(cartProducts: Array<any>,
+    /**
+     *
+     * @param cartProducts
+     * @param phone
+     * @param address
+     * @param paymentMethod
+     * @param time UNIX time
+     */
+    async order(cartProducts: Array<Product>,
                 phone: string,
                 address: string,
                 paymentMethod: string,
-                time: Date): Promise<OrderResponse> {
-        const result = await this.client.call([
-            this._login(phone, 0),
-            Api._order(cartProducts, paymentMethod, address, phone, toUnixTime(time), 1)
-        ])
-
-        const responses = result.responses
-        const errors = result.errors
-
-        if (errors?.[0]?.code !== 1005 && !(this.jwtToken)) {
-            setPhone(phone)
-            this.setJWTToken(responses[0].token)
-        } else this.handleVerifyResult(errors, responses[0])
-
-        if (errors.length === 0) {
-            return responses[1]
-        } else { // This throws only one exception because method add_order depends on registration
-            throw new JSONRPCError(errors[0].code, errors[0].message)
-        }
-    }
-
-    private _verify(id?: any): JSONRPCRequest {
-        return {
-            jsonrpc: '2.0',
-            id: id,
-            method: 'verify',
-            params: {
-                token: this.jwtToken
-            }
-        }
-    }
-
-    private _login(phone: string, id?: any): JSONRPCRequest {
-        if (this.jwtToken === null) {
-            return {
-                jsonrpc: '2.0',
-                id: id,
-                method: 'login',
-                params: {
-                    phone: phone,
-                    verify: false
-                },
-            }
-        } else {
-            return this._verify();
-        }
-    }
-
-    private static _order(cartProducts: Array<any>,
-                          paymentMethod: string,
-                          address: string,
-                          phone: string,
-                          time: number,
-                          id?: any): JSONRPCRequest {
-        return {
-            jsonrpc: '2.0',
-            id: id,
-            method: 'add_order',
-            params: {
-                products: cartProducts.map(
-                    (cartProduct) => {
-                        return {
-                            id: cartProduct.ProductID,
-                            count: 1
-                        }
+                time: number): Promise<OrderResponse> {
+        const fetchResult = await fetch(`${url}/order`, {
+            headers: this.headers,
+            method: "POST",
+            body: JSON.stringify({
+                products: cartProducts.map(product => {
+                    return {
+                        id: product.ProductID,
+                        count: product.count
                     }
-                ),
+                }),
                 paymentMethod: paymentMethod,
+                phone: phone,
                 address: address,
-                phone: phone,
                 time: time
-            }
-        }
+            })
+        });
+
+        if (fetchResult.ok) {
+            return await fetchResult.json()
+        } else throw new HTTPError(fetchResult.status)
     }
 
-    private static _checkCode(phone: string, code: number, id?: any): JSONRPCRequest {
-        return {
-            jsonrpc: "2.0",
-            id: id,
-            method: "check_code",
-            params: {
-                phone: phone,
-                code: code
-            }
-        }
-    }
-
-    private static _sendCode(phone: string, id?: any): JSONRPCRequest {
-        return {
-            jsonrpc: "2.0",
-            id: id,
-            method: "send_code",
-            params: {
-                phone: phone
-            }
-        }
-    }
 
     async sendCode(phone: string) {
-        const result = await fetch(`${process.env.GATSBY_FUNCTION_URL}/send-code`, {
+        const result = await fetch(`${url}/send-code`, {
+            headers: this.headers,
             method: "POST",
             body: JSON.stringify({phone: `+7${phone}`})
         })
-        if (result.status === 401) {
-            throw new UnauthorizedError();
+        if (!result.ok) {
+            throw new HTTPError(result.status);
         }
-    }
-}
-
-export class UnauthorizedError extends Error {
-    public code: number;
-
-    constructor() {
-        super("401 Unauthorized");
-
-        this.code = 401;
-    }
-}
-
-export class JSONRPCError extends Error {
-    public code: number;
-
-    constructor(code: number, message: string) {
-        super(message);
-
-        this.code = code;
     }
 }

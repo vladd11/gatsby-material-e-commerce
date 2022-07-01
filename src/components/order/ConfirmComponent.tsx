@@ -6,34 +6,25 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import FormFrame from "../frames/FormFrame";
-
-import Product from "../../interfaces/product";
-
 import CodeField from "./fields/CodeField";
-import redirect from "../../redirect";
 import Api from "../../api/api";
 
-export interface ConfirmComponentState {
-    cartProducts: Array<Product>,
-    address: string,
-    paymentMethod: string,
-    phone: string,
-    time: Date
-}
-
 interface ConfirmComponentProps {
-    state: ConfirmComponentState;
     siteMetadata: {
         title: string,
         description: string
-    };
-    api: Api
+    },
+    phone: string,
+    api: Api,
+    onSubmit: (code: number) => void
 }
 
 export default function ConfirmComponent(props: ConfirmComponentProps) {
     const [code, setCode] = useState("")
     const [codeError, setCodeError] = useState("")
     const [timeToResend, setTimeToResend] = useState(60);
+
+    let statelessCode: string;
 
     setTimeout(() => {
         if (timeToResend !== 0) {
@@ -61,7 +52,7 @@ export default function ConfirmComponent(props: ConfirmComponentProps) {
                     ml: "8px",
                     fontWeight: "bold"
                 }} component="span">
-                    {props.state.phone}
+                    {props.phone}
                 </Typography>
             </div>
 
@@ -73,19 +64,14 @@ export default function ConfirmComponent(props: ConfirmComponentProps) {
 
                 value={code}
                 onChange={value => {
+                    statelessCode = value;
                     setCode(value)
                     setCodeError("")
                 }}
                 onApply={async (oldValue) => {
-                    if (oldValue === code) {
+                    if (oldValue == statelessCode) {
                         try {
-                            await redirect(await props.api.sendCodeAndOrder(
-                                props.state.cartProducts,
-                                props.state.phone,
-                                props.state.address,
-                                props.state.paymentMethod,
-                                props.state.time,
-                                oldValue))
+                            props.onSubmit(parseInt(statelessCode, 10))
                         } catch (e: any) {
                             if (e.code === 1001) {
                                 setCodeError("Неверный SMS-код");
@@ -102,7 +88,7 @@ export default function ConfirmComponent(props: ConfirmComponentProps) {
             }}
                     disabled={timeToResend !== 0}
                     onClick={async () => {
-                        await props.api.resendCode(JSON.parse(props.state.phone))
+                        await props.api.resendCode(JSON.parse(props.phone))
                         setTimeToResend(60);
                     }}>
                 Отправить СМС заново

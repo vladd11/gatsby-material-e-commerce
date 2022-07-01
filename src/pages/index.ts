@@ -3,7 +3,7 @@ import {graphql, useStaticQuery} from "gatsby";
 import "../interfaces/product"
 
 import IndexComponent from "../components/index/IndexComponent"
-import { logout } from "../api/api";
+import {logout} from "../api/utils";
 
 interface IndexPageProps {
     location: {
@@ -15,45 +15,46 @@ interface IndexPageProps {
 
 export default function IndexPage(props: IndexPageProps) {
     const data = useStaticQuery(graphql`
-{
-  allSiteBuildMetadata {
-    nodes {
-      buildTime
-    }
-  }
-  allProducts(limit: 12, sort: {fields: Popularity}) {
-    nodes {
-      Category
-      Description
-      Price
-      ProductID
-      Title
-      ImageURI
-    }
-  }
-  allFile {
-    edges {
-      node {
-        relativePath
-        childImageSharp {
-          gatsbyImageData(width: 200)
-        }
-      }
-    }
-  }
-  site {
-    siteMetadata {
-      title
-      description
-      phone
-      
-      address
-      addressLink
-    }
-  }
-}`)
+        {
+            allSiteBuildMetadata {
+                nodes {
+                    buildTime
+                }
+            }
+            allProducts(limit: 12, sort: {fields: Popularity}) {
+                nodes {
+                    Category
+                    Description
+                    Price
+                    ProductID
+                    Title
+                    ImageURI
+                }
+            }
+            allFile {
+                edges {
+                    node {
+                        relativePath
+                        childImageSharp {
+                            gatsbyImageData(width: 200)
+                        }
+                    }
+                }
+            }
+            site {
+                siteMetadata {
+                    title
+                    description
+                    phone
 
-    if(props.location.state?.logout) {
+                    address
+                    addressLink
+                }
+            }
+        }
+    `)
+
+    if (props.location.state?.logout) {
         logout();
     }
 

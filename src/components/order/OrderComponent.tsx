@@ -9,7 +9,7 @@ import SpeedDial from "../ui/SpeedDial";
 
 import useStickyState from "../../states/localStorageState";
 
-import getCurrentDateTime, {parseDateTime, addTime} from "../../currentDateTime"
+import getCurrentDateTime, {parseDateTime} from "../../currentDateTime"
 
 import CartProduct from "../cart/CartProduct";
 import * as orderStyles from "../../styles/components/order.module.sass"
@@ -27,7 +27,6 @@ import AddressField from "./fields/AddressField";
 import PhoneField from "../fields/PhoneField";
 import DateField from "./fields/DateField";
 import TimeField from "./fields/TimeField";
-import {FromTime, ToTime} from "./fields/TimeComponents";
 
 import {SiteInfo} from "../../interfaces/data";
 import Product from "../../interfaces/product";
@@ -38,7 +37,6 @@ import mapboxgl from '!mapbox-gl';
 import {css} from "@emotion/react";
 import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";
 import {navigate} from "gatsby";
-import {toUnixTime} from "../../api/utils";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
@@ -49,25 +47,20 @@ interface OrderComponentProps {
 }
 
 const OrderComponent = (props: OrderComponentProps) => {
-    const {defaultTime, defaultDate} = getCurrentDateTime();
+    const {defaultDate} = getCurrentDateTime();
 
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
-    const [isTimeValid, setTimeValid] = useState(true)
     const [isDateValid, setDateValid] = useState(true)
 
     const [isAddressFormManual, setAddressFormType] = useStickyState(false, 'manualAddressChoice')
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('', 'phone')
-    const [time, setTime] = useStickyState(defaultTime, 'time')
-    const [date, setDate] = useStickyState(defaultDate, 'date')
+    const [time, setTime] = useStickyState<number[]>([0, 100], 'time')
+    const [date, setDate] = useStickyState<string>(defaultDate, 'date')
 
     const [lock, setLock] = useState(false)
     const [isDialSelected, setDialSelected] = useState(false)
-
-    const maxTime = addTime(parseDateTime(date, time), 3600 * 2);
-    const maxTimeMinutes = (maxTime.getMinutes() || 0).toString().padStart(2, "0")
-    const maxTimeHours = (maxTime.getHours() || 0).toString().padStart(2, "0")
 
     const mapContainer = useRef(null);
     const map = useRef<mapboxgl.Map>(null);
@@ -116,20 +109,19 @@ const OrderComponent = (props: OrderComponentProps) => {
         if (!clearPhone) notValid(setPhoneValid);
 
         if (!date) notValid(setDateValid)
-        if (!time) notValid(setTimeValid)
 
         if (valid) {
             try {
-                const datetime = toUnixTime(parseDateTime(date, time))
+                const times = parseDateTime(date, time)
                 await redirect(
                     await props.api.order(props.cartProducts,
                         clearPhone!,
                         clearAddress,
                         paymentMethod,
-                        datetime),
+                        times),
                     clearPhone!,
                     clearAddress,
-                    datetime,
+                    times,
                     paymentMethod
                 )
             } catch (e: any) {
@@ -190,11 +182,7 @@ const OrderComponent = (props: OrderComponentProps) => {
 
             <DatetimeForm>
                 <DateField value={date} onChange={setDate} lock={lock} valid={isDateValid}/>
-                <FromTime/>
-                <TimeField value={time} onChange={setTime} lock={lock} valid={isTimeValid}/>
-                <ToTime>
-                    {maxTimeHours}:{maxTimeMinutes}
-                </ToTime>
+                <TimeField value={time} onChange={setTime}/>
             </DatetimeForm>
 
             <AddressField value={address} onChange={setAddress}

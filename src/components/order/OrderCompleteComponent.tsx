@@ -66,7 +66,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                         <AccessTimeIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        Привезём {(props.order) ? toHumanReadable(new Date(props.order.time * 1000)) : "..."}
+                        Привезём {(props.order) ? toHumanReadable(props.order.time) : "..."}
                     </ListItemText>
                 </ListItem>
 

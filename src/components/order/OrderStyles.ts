@@ -22,7 +22,7 @@ export const DatetimeForm = styled.div`
   display: flex;
   flex-direction: row;
 
-  align-items: center;
+  align-items: end;
 `
 
 export const formStyle = {

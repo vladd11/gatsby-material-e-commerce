@@ -11,7 +11,7 @@ export default function DateField(props: FieldProps) {
         sx={{
             ...formStyle,
             minWidth: "112px",
-            flex: 4,
+            flex: 1,
         }}
         required={true}
         error={!props.valid}>

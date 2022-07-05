@@ -1,8 +1,9 @@
 import OrderResponse from "../interfaces/order";
 import {ifClientSide} from "../states/localStorageState";
 import Product from "../interfaces/product";
-import {setPhone, toUnixTime} from "./utils";
+import {setPhone} from "./utils";
 import {HTTPError} from "./exceptions";
+import {TimeRange} from "../currentDateTime";
 
 const url = process.env.GATSBY_FUNCTION_URL!;
 export default class Api {
@@ -12,9 +13,9 @@ export default class Api {
     constructor() {
         ifClientSide(() => {
             this.jwtToken = localStorage.getItem("jwt_token")
-            this.headers = new Headers({
+            this.headers = new Headers((this.jwtToken) ? {
                 Authorization: `Bearer ${this.jwtToken}`
-            })
+            } : {})
         })
     }
 
@@ -63,7 +64,7 @@ export default class Api {
                            phone: string,
                            address: string,
                            paymentMethod: string,
-                           time: Date,
+                           time: TimeRange,
                            code: number): Promise<OrderResponse> {
         const resultFetch = await fetch(`${url}/order`, {
             method: "POST",
@@ -78,7 +79,7 @@ export default class Api {
                 paymentMethod: paymentMethod,
                 phone: phone,
                 address: address,
-                time: toUnixTime(time)
+                time: time
             })
         })
 
@@ -104,13 +105,13 @@ export default class Api {
      * @param phone
      * @param address
      * @param paymentMethod
-     * @param time UNIX time
+     * @param time range
      */
     async order(cartProducts: Array<Product>,
                 phone: string,
                 address: string,
                 paymentMethod: string,
-                time: number): Promise<OrderResponse> {
+                time: TimeRange): Promise<OrderResponse> {
         const fetchResult = await fetch(`${url}/order`, {
             headers: this.headers,
             method: "POST",

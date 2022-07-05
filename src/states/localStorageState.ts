@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useEffect} from 'react'
 
-export default function useStickyState(defaultValue: any, key: string) : [any, Dispatch<SetStateAction<any>>] {
-    const [value, setValue] = React.useState<any>(defaultValue);
+export default function useStickyState<S>(defaultValue: S, key: string) : [S, Dispatch<SetStateAction<S>>] {
+    const [value, setValue] = React.useState<S>(defaultValue);
 
     useEffect(() => {
         const stickyValue = localStorage.getItem(key);

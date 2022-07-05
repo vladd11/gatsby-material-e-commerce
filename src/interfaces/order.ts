@@ -1,3 +1,4 @@
+import { TimeRange } from "../currentDateTime";
 import Product from "./product";
 
 export default interface OrderResponse {
@@ -6,7 +7,7 @@ export default interface OrderResponse {
 
     phone: string,
     price: number,
-    time: number,
+    time: TimeRange,
     paymentMethod: string,
     products: Array<Product>
 };

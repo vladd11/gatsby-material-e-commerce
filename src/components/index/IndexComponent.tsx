@@ -6,11 +6,11 @@ import Chip from "../ui/Chip";
 import Main from '../Main'
 import Product from '../Product'
 
-import ProductType from "../../interfaces/product"
-
 import {getImage} from "gatsby-plugin-image";
+
 import useStickyState from "../../states/localStorageState";
 
+import ProductType from "../../interfaces/product"
 import Data from "../../interfaces/data";
 import categories from "../../../categories";
 
@@ -21,7 +21,7 @@ interface IndexProps {
 }
 
 function IndexComponent(props: IndexProps) {
-    const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+    const [cartProducts, setCartProducts] = useStickyState<ProductType[]>([], 'cartProducts')
     const [currentCategory, setCurrentCategory] = useState(0)
 
     const [products, setProducts] = useState(props.data.allProducts.nodes)

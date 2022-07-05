@@ -6,14 +6,14 @@ import ConfirmComponent from "../../components/order/ConfirmComponent";
 
 import redirect from "../../redirect";
 import Product from "../../interfaces/product";
-import {toUnixTime} from "../../api/utils";
+import {TimeRange} from "../../currentDateTime";
 
 interface ConfirmState {
     cartProducts: Array<Product>,
     address: string,
     paymentMethod: string,
     phone: string,
-    time: Date
+    time: TimeRange
 }
 
 interface ConfirmProps {
@@ -61,7 +61,7 @@ const Confirm = (props: ConfirmProps) => {
                 ),
                 state.phone,
                 state.address,
-                toUnixTime(state.time),
+                state.time,
                 state.paymentMethod
             )
         },

@@ -1,28 +1,48 @@
 import React from "react";
 
-import Input from "@mui/material/Input";
-import FormControl from "@mui/material/FormControl";
+import Slider from "@mui/material/Slider";
+import {getTimeByRemainingDayPercent} from "../../../currentDateTime";
 
-import {formStyle} from "../OrderStyles";
-import FieldProps from "./FieldProps";
+const minDistance = 25;
 
-export default function TimeField(props: FieldProps) {
-    return <FormControl
+export default function TimeField(props: {
+    value: number[], onChange: (value: number[]) => void
+}) {
+    return <Slider
         sx={{
-            ...formStyle,
             flex: 2,
-            minWidth: "81px"
+            ml: "16px",
+            mr: "16px"
         }}
-        required={true}
-        error={!props.valid}>
-        <Input
-            readOnly={props.lock}
-            type="time"
-            id="time"
-            aria-describedby="time"
-            sx={{pl: 1}}
-            value={props.value}
-            onChange={event => props.onChange(event.target.value)}
-        />
-    </FormControl>;
+
+        getAriaLabel={() => 'Temperature range'}
+        value={props.value}
+        onChange={(event, newValue, activeThumb) => {
+            if (!Array.isArray(newValue)) {
+                return;
+            }
+
+            if (newValue[1] - newValue[0] < minDistance) {
+                if (activeThumb === 0) {
+                    const clamped = Math.min(newValue[0], 100 - minDistance);
+                    props.onChange([clamped, clamped + minDistance]);
+                } else {
+                    const clamped = Math.max(newValue[1], minDistance);
+                    props.onChange([clamped - minDistance, clamped]);
+                }
+            } else {
+                props.onChange(newValue as number[]);
+            }
+        }}
+        valueLabelDisplay="on"
+
+        valueLabelFormat={getTimeFromPercent}
+        getAriaValueText={getTimeFromPercent}
+        disableSwap
+    />
+}
+
+function getTimeFromPercent(percent: number): string {
+    const {hours, minutes} = getTimeByRemainingDayPercent(percent)
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`
 }

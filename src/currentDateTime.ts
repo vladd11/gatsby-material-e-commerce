@@ -1,3 +1,5 @@
+import {toUnixTime} from "./api/utils";
+
 export default function getCurrentDateTime() {
     let date = new Date();
     const offset = date.getTimezoneOffset() * 1000 * 60;
@@ -9,14 +11,21 @@ export default function getCurrentDateTime() {
     }
 }
 
-export function toHumanReadable(date: Date) {
-    return isToday(date)
-        ? `cегодня ${timeInterval(date)}`
-        : `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getFullYear().toString()} ${timeInterval(date)}`
+export function toHumanReadable(range: TimeRange) {
+    const startTime = new Date(range.startDate * 1000)
+
+    return isToday(startTime)
+        ? `cегодня ${timeInterval(range)}`
+        : `${startTime.getDate().toString().padStart(2, "0")}.${(startTime.getMonth() + 1).toString().padStart(2, "0")}.${startTime.getFullYear().toString()} ${timeInterval(range)}`
 }
 
-function timeInterval(date: Date) {
-    return `c ${toHours(date)} до ${toHours(addTime(date,3600 * 2))}`
+function timeInterval(range: TimeRange) {
+    const start = toHours(new Date(range.startDate * 1000))
+    let end = toHours(new Date(range.endDate * 1000))
+
+    if(end == start) end = "24:00"
+
+    return `c ${start} до ${end}`
 }
 
 function toHours(date: Date) {
@@ -30,19 +39,42 @@ export function isToday(date: Date) {
         date.getFullYear() == today.getFullYear()
 }
 
-export function parseDateTime(date: string, time: string) {
+export type TimeRange = { startDate: number, endDate: number }
+
+/**
+ * Parses string date and range of delivery time
+ * to start and end dates
+ *
+ * @param date Date in YYYY-MM-dd format
+ * @param percents array of 2 values, where first is the start time, second is end time
+ *
+ * @returns Object with start and end date, UNIX time (in ms)
+ */
+export function parseDateTime(date: string, percents: number[]): TimeRange {
     const dateArr = date.split("-");
     const year = parseInt(dateArr[0]);
     const month = parseInt(dateArr[1]);
     const day = parseInt(dateArr[2]);
 
-    const timeArr = time.split(":");
-    const hour = parseInt(timeArr[0]);
-    const minute = parseInt(timeArr[1]);
+    const startTime = getTimeByRemainingDayPercent(percents[0])
+    const endTime = getTimeByRemainingDayPercent(percents[1])
 
-    return new Date(year, month - 1, day, hour, minute)
+    return {
+        startDate: toUnixTime(new Date(year, month - 1, day, startTime.hours, startTime.minutes)),
+        endDate: toUnixTime(new Date(year, month - 1, day, endTime.hours, endTime.minutes))
+    }
 }
 
-export function addTime(date: Date, seconds: number) {
-    return new Date(date.getTime() + seconds * 1000);
+/**
+ * Convert percent of remaining time from start of the day to hour & minute
+ * @param percent number from 0-100
+ */
+export function getTimeByRemainingDayPercent(percent: number): { hours: number, minutes: number } {
+    const minutesInDay = 1440;
+    const minutes = percent / 100 * minutesInDay;
+
+    return {
+        hours: Math.floor(minutes / 60),
+        minutes: Math.floor(minutes % 60)
+    }
 }

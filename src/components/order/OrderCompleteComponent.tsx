@@ -2,6 +2,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import Checkbox from "@mui/material/Checkbox";
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -26,10 +27,13 @@ interface OrderCompleteProps {
     info: SiteInfo;
     allFile: {
         edges: Array<ImageFile>
-    }
+    },
+    enableNotifications: () => Promise<boolean>
 }
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
+    const [notificationsEnabled, setNotificationsEnabled] = useStickyState<boolean>(false, 'notificationsEnabled')
+
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const paymentMethod: PaymentMethod | undefined = (props.order) ? paymentMethods[props.order.paymentMethod] : undefined
 
@@ -44,6 +48,14 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                 return <CartProduct product={cartProduct}/>
             });
         } else return <div/>
+    }
+
+    async function notificationsEnabledChange() {
+        if (!notificationsEnabled) {
+            props.enableNotifications().then(setNotificationsEnabled)
+        } else {
+            setNotificationsEnabled(false)
+        }
     }
 
     return <>
@@ -75,7 +87,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                         {paymentMethod?.icon}
                     </ListItemIcon>
                     <ListItemText>
-                        <span>Вы оплатили заказ {paymentMethod?.instrumentalCaseName}, итого:</span>
+                        <span>{paymentMethod?.fullSentence}, итого:</span>
                         <BoldData>
                             {props.order?.price} рублей
                         </BoldData>
@@ -89,6 +101,22 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
                     <ListItemText>
                         <span>Телефон для связи:</span>
                         <BoldData>{props.order?.phone}</BoldData>
+                    </ListItemText>
+                </ListItem>
+
+                <ListItem>
+                    <ListItemIcon>
+                        <Checkbox
+                            sx={{padding: 0}}
+                            checked={notificationsEnabled}
+                            onClick={notificationsEnabledChange}
+                            inputProps={{
+                                'aria-label': 'Отправлять уведомления о заказе',
+                            }}
+                        />
+                    </ListItemIcon>
+                    <ListItemText>
+                        Отправлять уведомления о заказе
                     </ListItemText>
                 </ListItem>
             </List>

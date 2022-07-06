@@ -20,6 +20,10 @@ export default class Api {
     }
 
     setJWTToken(token: string) {
+        if(token == null || token == "") {
+            throw new Error("Token is null or empty");
+        }
+
         localStorage.setItem("jwt_token", token);
 
         this.headers?.set("Authorization", `Bearer ${this.jwtToken}`)
@@ -84,7 +88,10 @@ export default class Api {
         })
 
         if (resultFetch.ok) {
-            return await resultFetch.json();
+            const result = await resultFetch.json();
+            this.setJWTToken(result.token);
+
+            return result;
         } else throw new HTTPError(resultFetch.status)
     }
 
@@ -143,6 +150,25 @@ export default class Api {
         })
         if (!result.ok) {
             throw new HTTPError(result.status);
+        }
+    }
+
+    /**
+     * Enable notifications
+     * User should be authenticated to call this method
+     * @param token FCM token
+     */
+    async enableNotifications(token: string): Promise<void> {
+        const resultFetch = await fetch(`${url}/notifications/enable`, {
+            method: "POST",
+            headers: this.headers,
+            body: JSON.stringify({
+                token: token
+            })
+        })
+
+        if(!resultFetch.ok) {
+            throw new HTTPError(resultFetch.status)
         }
     }
 }

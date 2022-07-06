@@ -7,6 +7,10 @@ import OrderCompleteComponent from "../../components/order/OrderCompleteComponen
 import Data from "../../interfaces/data";
 import OrderResponse from "../../interfaces/order";
 
+import {initializeApp} from "firebase/app";
+import {getMessaging, getToken} from "firebase/messaging";
+
+
 type OrderCompleteProps = PageProps & {
     location: {
         state: OrderResponse
@@ -67,6 +71,34 @@ export default function Complete(props: OrderCompleteProps) {
     return OrderCompleteComponent({
         info: data.site.siteMetadata,
         order: orderResponse,
-        allFile: data.allFile
+        allFile: data.allFile,
+        enableNotifications: () => {
+            return new Promise((resolve) => {
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission().then((result) => {
+                        if (result == "granted") {
+                            initNotifications(api)
+                        }
+                        resolve(result == "granted")
+                    });
+                } else {
+                    resolve(true);
+                    initNotifications(api);
+                }
+            })
+        }
     })
+}
+
+function initNotifications(api: Api) {
+    const messaging = getMessaging(initializeApp(JSON.parse(process.env.GATSBY_FIREBASE!)));
+    getToken(messaging, {vapidKey: process.env.GATSBY_VAPID_KEY}).then((currentToken) => {
+        if (currentToken) {
+            api.enableNotifications(currentToken).catch(console.error)
+        } else {
+            console.error("FCM token is null")
+        }
+    }).catch((err) => {
+        console.log('An error occurred while retrieving FCM token. ', err);
+    });
 }

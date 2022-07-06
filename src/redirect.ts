@@ -7,7 +7,7 @@ export default async function redirect(response: OrderResponse, phone: string, a
         window.location.replace(response.redirect)
     } else {
         localStorage.removeItem("cartProducts")
-        await navigate(`/order/complete?orderID=${response.id}`, {
+        await navigate(`/order/complete/?orderID=${response.id}`, {
             state: {
                 ...response,
                 phone: phone,

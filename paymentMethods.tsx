@@ -5,15 +5,13 @@ import React, {ReactNode} from "react";
 const paymentMethods : PaymentMethods = {
     card: {
         icon: <CreditCardIcon/>,
-        instrumentalCaseName: "Картой",
+        fullSentence: "Вы оплатили заказ картой",
         buttonName: "Предоплата картой",
-        prepayment: true
     },
     cash: {
         icon: <MoneyIcon/>,
-        instrumentalCaseName: "наличными",
+        fullSentence: "Вы оплатите заказ наличными",
         buttonName: "Наличными при получении",
-        prepayment: false
     }
 };
 
@@ -23,9 +21,8 @@ export interface PaymentMethods {
 
 export interface PaymentMethod {
     icon: ReactNode,
-    instrumentalCaseName: ReactNode,
+    fullSentence: ReactNode,
     buttonName: ReactNode,
-    prepayment: boolean
 }
 
 export default paymentMethods;

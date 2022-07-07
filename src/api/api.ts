@@ -20,7 +20,7 @@ export default class Api {
     }
 
     setJWTToken(token: string) {
-        if(token == null || token == "") {
+        if (token == null || token == "") {
             throw new Error("Token is null or empty");
         }
 
@@ -35,7 +35,7 @@ export default class Api {
 
         const result = await fetch(`${url}/order/${orderID}`, {headers: this.headers});
 
-        if(result.ok) {
+        if (result.ok) {
             return await result.json()
         } else throw new HTTPError(result.status)
     }
@@ -103,7 +103,7 @@ export default class Api {
             })
         })
 
-        if(!resultFetch.ok) throw new HTTPError(resultFetch.status)
+        if (!resultFetch.ok) throw new HTTPError(resultFetch.status)
     }
 
     /**
@@ -167,8 +167,33 @@ export default class Api {
             })
         })
 
-        if(!resultFetch.ok) {
+        if (!resultFetch.ok) {
             throw new HTTPError(resultFetch.status)
         }
+    }
+
+    async disableNotifications(): Promise<void> {
+        const resultFetch = await fetch(`${url}/notifications/disable`, {
+            method: "POST",
+            headers: this.headers
+        })
+
+        if (!resultFetch.ok) throw new HTTPError(resultFetch.status)
+    }
+
+    /**
+     * @param token FCM token
+     * @return true if enabled, false if disabled
+     */
+    async getNotificationsStatus(token: string): Promise<boolean> {
+        const resultFetch = await fetch(`${url}/notifications/status/${token}`, {
+            method: "GET",
+            headers: this.headers
+        })
+
+        if(resultFetch.ok) {
+            const result = await resultFetch.json()
+            return result.enabled
+        } else throw new HTTPError(resultFetch.status)
     }
 }

@@ -7,7 +7,7 @@ import Checkbox from "@mui/material/Checkbox";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PhoneIcon from "@mui/icons-material/Phone";
 
-import React from "react"
+import React, {useEffect, useState} from "react"
 import Helmet from "react-helmet";
 
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
@@ -22,17 +22,20 @@ import {BoldData, Products} from "./OrderStyles";
 import {ImageFile, SiteInfo} from "../../interfaces/data";
 import OrderResponse from "../../interfaces/order";
 
+import Api from "../../api/api";
+import getFCMToken from "../../notifications/getFCMToken";
+
 interface OrderCompleteProps {
     order?: OrderResponse;
     info: SiteInfo;
     allFile: {
         edges: Array<ImageFile>
     },
-    enableNotifications: () => Promise<boolean>
+    api: Api
 }
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
-    const [notificationsEnabled, setNotificationsEnabled] = useStickyState<boolean>(false, 'notificationsEnabled')
+    const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(Notification.permission === "granted")
 
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const paymentMethod: PaymentMethod | undefined = (props.order) ? paymentMethods[props.order.paymentMethod] : undefined
@@ -50,12 +53,39 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
         } else return <div/>
     }
 
-    async function notificationsEnabledChange() {
+    async function notificationsEnabledChange(): Promise<void> {
         if (!notificationsEnabled) {
-            props.enableNotifications().then(setNotificationsEnabled)
+            setNotificationsEnabled(await enableNotifications())
         } else {
             setNotificationsEnabled(false)
+            await disableNotifications()
         }
+    }
+
+    async function disableNotifications() {
+        await props.api.disableNotifications()
+    }
+
+    useEffect(() => {
+        if (Notification.permission === "granted") {
+            getFCMToken().then(result => props.api.getNotificationsStatus(result).then(setNotificationsEnabled))
+        }
+    }, [])
+
+    async function enableNotifications(): Promise<boolean> {
+        return new Promise(async (resolve) => {
+            if (Notification.permission !== "granted") {
+                Notification.requestPermission().then(async (result) => {
+                    if (result == "granted") {
+                        props.api.enableNotifications(await getFCMToken()).catch(console.error)
+                    }
+                    resolve(result == "granted")
+                });
+            } else {
+                resolve(true);
+                props.api.enableNotifications(await getFCMToken()).catch(console.error);
+            }
+        })
     }
 
     return <>

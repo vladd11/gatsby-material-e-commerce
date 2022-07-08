@@ -13,7 +13,7 @@ import Helmet from "react-helmet";
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
 
 import Main from "../Main";
-import useStickyState from "../../states/localStorageState";
+import useStickyState, {ifClientSide} from "../../states/localStorageState";
 import CartProduct from "../cart/CartProduct";
 import {toHumanReadable} from "../../currentDateTime";
 
@@ -35,7 +35,7 @@ interface OrderCompleteProps {
 }
 
 export default function OrderCompleteComponent(props: OrderCompleteProps) {
-    const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(Notification.permission === "granted")
+    const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(ifClientSide(() => Notification.permission === "granted") ?? false)
 
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
     const paymentMethod: PaymentMethod | undefined = (props.order) ? paymentMethods[props.order.paymentMethod] : undefined
@@ -67,15 +67,15 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     }
 
     useEffect(() => {
-        if (Notification.permission === "granted") {
+        if (Notification?.permission === "granted") {
             getFCMToken().then(result => props.api.getNotificationsStatus(result).then(setNotificationsEnabled))
         }
     }, [])
 
     async function enableNotifications(): Promise<boolean> {
         return new Promise(async (resolve) => {
-            if (Notification.permission !== "granted") {
-                Notification.requestPermission().then(async (result) => {
+            if (Notification?.permission !== "granted") {
+                Notification?.requestPermission().then(async (result) => {
                     if (result == "granted") {
                         props.api.enableNotifications(await getFCMToken()).catch(console.error)
                     }

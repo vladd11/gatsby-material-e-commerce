@@ -1,8 +1,8 @@
 const {buildSync} = require('esbuild')
 
 buildSync({
-    entryPoints: ['./notifications/firebase-messaging-sw.js'],
-    outfile: './static/firebase-messaging-sw.js',
+    entryPoints: ['./notifications/getFCMToken-messaging-sw.js'],
+    outfile: './static/getFCMToken-messaging-sw.js',
     bundle: true,
     minify: true,
     define: {

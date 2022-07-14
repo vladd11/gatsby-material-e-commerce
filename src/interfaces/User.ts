@@ -1,3 +1,3 @@
 export default interface User {
-    phone: string
+    phone?: string | null
 }

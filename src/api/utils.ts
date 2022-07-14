@@ -3,7 +3,7 @@ import User from "../interfaces/User";
 
 export const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
 export const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)
-export const getPhone = (): string => ifClientSide(() => localStorage.getItem("user.phone"))
+export const getPhone = (): string | null | undefined => ifClientSide(() => localStorage.getItem("user.phone"))
 
 export function logout() {
     localStorage.removeItem("jwt_token");

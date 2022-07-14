@@ -42,7 +42,6 @@ const Confirm = (props: ConfirmProps) => {
         onSubmit: async (code) => {
             const result = await api.login(props.location.state.phone, code)
 
-            console.log(result)
             if(result) {
                 await navigate("/")
             }

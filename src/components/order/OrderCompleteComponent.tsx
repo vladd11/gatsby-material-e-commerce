@@ -23,7 +23,7 @@ import {ImageFile, SiteInfo} from "../../interfaces/data";
 import OrderResponse from "../../interfaces/order";
 
 import Api from "../../api/api";
-import getFCMToken from "../../notifications/getFCMToken";
+import {getFCMToken} from "../../notifications/getFCMToken";
 
 interface OrderCompleteProps {
     order?: OrderResponse;

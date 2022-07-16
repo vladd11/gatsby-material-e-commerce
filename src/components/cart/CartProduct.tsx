@@ -13,7 +13,7 @@ interface CartProductProps {
 }
 
 export default function CartProduct(props: CartProductProps) {
-    return <Card className={css`
+    return <Card css={css`
         min-width: 200px;
         margin: 12px;
     `}>

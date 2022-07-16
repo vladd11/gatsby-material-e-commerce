@@ -106,13 +106,14 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     await db.connect();
 
     const popularity: Array<ProductPopularity> = await db.readPopularity();
+    await db.readCarousels([]);
 
     (await db.readProducts()).forEach((product) => {
         product.Popularity = (popularity
             .find((value: ProductPopularity) => value.ProductID === product.ProductID) ?? {popularity: 0})
             .popularity
 
-        product.Price = Math.round(product.Price * 100) / 100
+        product.Price = Math.round(product.Price * 100) / 100;
         createNode({
             ...product,
             id: createNodeId(`Products-${product.ProductID}`),

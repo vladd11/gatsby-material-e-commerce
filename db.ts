@@ -1,7 +1,9 @@
 import {Driver} from "ydb-sdk";
-import Product, {ProductPopularity} from "./src/interfaces/product";
 import Long from "long";
+
 import priceToNumber from "./priceToNumber";
+import Product, {ProductPopularity} from "./src/interfaces/product";
+import {Ydb} from "ydb-sdk-proto";
 
 const ydb = require('ydb-sdk')
 
@@ -68,6 +70,27 @@ export default class Database {
                 })
             }
             return arr;
+        })
+    }
+
+    public async readCarousels(products: Product[]): Promise<{
+        alt: string,
+        image_uri: string,
+        product_id: string
+    }[] | undefined> {
+        return await this.driver!.tableClient.withSessionRetry(async (session) => {
+            let result: Ydb.Table.ReadTableResult;
+            await session.streamReadTable("image_carousels", dbResult =>
+                result = dbResult
+            );
+            return result!.resultSet?.rows?.map(value => {
+                //console.log(value)
+                return {
+                    alt: "",
+                    image_uri: "",
+                    product_id: ""
+                }
+            });
         })
     }
 

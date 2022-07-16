@@ -22,8 +22,6 @@ export const Elements = styled.div`
 
   display: flex;
   flex-direction: row;
-  
-  height: 289px;
 `;
 
 export const controlsStyles = css`
@@ -35,7 +33,7 @@ export const controlsStyles = css`
   height: 100%;
   width: 72px;
 
-  color: white;
+  color: black;
 
   transition: opacity 300ms, background 300ms;
 

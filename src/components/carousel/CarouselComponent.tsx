@@ -39,7 +39,7 @@ export default function CarouselComponent(props: CarouselProps) {
     return <Root>
         <Elements ref={root}>
             {props.elements.map(value => {
-                return <GatsbyImage imgStyle={{userSelect: "none"}}
+                return <GatsbyImage draggable="false"
                                     objectFit="contain"
                                     css={css`
                                       min-width: 100%;
@@ -48,7 +48,8 @@ export default function CarouselComponent(props: CarouselProps) {
             })}
         </Elements>
 
-        <ChevronLeftIcon onClick={goLeft}
+        <ChevronLeftIcon onSelect={(event) => event.preventDefault()}
+            onClick={goLeft}
                          className="icon"
                          css={css`
                            ${controlsStyles};

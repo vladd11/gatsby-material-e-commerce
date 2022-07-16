@@ -22,6 +22,10 @@ type ProductData = {}
 
 export default function Product(props: ProductProps) {
     const {data, product} = props.pageContext
+    if(data == undefined) { // IDK why sometimes data and product is undefined
+        return;
+    }
+
     product.Image = getImage(data.allFile.edges.find(value => value.node.relativePath === product.ImageURI)!.node.childImageSharp)
 
     return ProductComponent({

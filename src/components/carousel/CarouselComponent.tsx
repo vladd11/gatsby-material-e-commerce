@@ -5,7 +5,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import {GatsbyImage, IGatsbyImageData} from "gatsby-plugin-image";
-import {Elements, Root} from "./carouselStyles";
+import {controlsStyles, Elements, Root} from "./carouselStyles";
 
 type CarouselProps = {
     elements: {
@@ -18,7 +18,9 @@ export default function CarouselComponent(props: CarouselProps) {
     let currentElement = 0;
     const root = useRef<HTMLDivElement>(null)
 
-    const update = () => root.current!.scrollLeft = root.current!.clientWidth * currentElement;
+    const update = () => {
+        return root.current!.scrollLeft = root.current!.clientWidth * currentElement;
+    }
 
     function goRight() {
         currentElement = (currentElement >= props.elements.length - 1) ? 0 : currentElement + 1
@@ -37,52 +39,27 @@ export default function CarouselComponent(props: CarouselProps) {
     return <Root>
         <Elements ref={root}>
             {props.elements.map(value => {
-                return <GatsbyImage css={css`
-                  min-width: 100%;
-                `} image={value.image} alt={value.alt}/>
+                return <GatsbyImage imgStyle={{userSelect: "none"}}
+                                    objectFit="contain"
+                                    css={css`
+                                      min-width: 100%;
+                                    `}
+                                    image={value.image} alt={value.alt}/>
             })}
         </Elements>
 
         <ChevronLeftIcon onClick={goLeft}
                          className="icon"
                          css={css`
-                           position: absolute;
-                           top: 0;
+                           ${controlsStyles};
                            left: 0;
-
-                           display: none;
-
-                           height: 100%;
-                           width: 72px;
-
-                           color: white;
-
-                           transition: opacity 300ms, background 300ms;
-
-                           &:hover {
-                             background: rgba(185, 185, 185, 0.37);
-                           }
                          `}/>
 
         <ChevronRightIcon className="icon"
                           onClick={goRight}
                           css={css`
-                            position: absolute;
-                            top: 0;
+                            ${controlsStyles};
                             right: 0;
-
-                            display: none;
-
-                            height: 100%;
-                            width: 72px;
-
-                            color: white;
-
-                            transition: opacity 300ms, background 300ms;
-
-                            &:hover {
-                              background: rgba(185, 185, 185, 0.37);
-                            }
                           `}/>
     </Root>
 }

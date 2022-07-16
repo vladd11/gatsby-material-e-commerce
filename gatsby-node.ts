@@ -24,7 +24,7 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
             node {
                 relativePath
                 childImageSharp {
-                    gatsbyImageData(width: 200)
+                    gatsbyImageData(layout: CONSTRAINED)
                 }
             }
         }

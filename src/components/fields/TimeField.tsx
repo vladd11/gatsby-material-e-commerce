@@ -1,7 +1,7 @@
 import React from "react";
 
 import Slider from "@mui/material/Slider";
-import {getTimeByRemainingDayPercent} from "../../../currentDateTime";
+import {getTimeByRemainingDayPercent} from "../../currentDateTime";
 
 const minDistance = 25;
 

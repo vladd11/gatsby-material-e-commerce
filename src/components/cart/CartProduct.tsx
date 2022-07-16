@@ -1,9 +1,10 @@
 import React, {ReactNode} from 'react'
+import {css} from "@emotion/react";
 import {GatsbyImage} from "gatsby-plugin-image";
 
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import {css} from "@emotion/react";
+
 import Product from "../../interfaces/product";
 
 interface CartProductProps {

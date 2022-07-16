@@ -1,4 +1,3 @@
-import {formStyle} from "../order/OrderStyles";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import {css} from "@emotion/react";
@@ -6,12 +5,15 @@ import FormControl from "@mui/material/FormControl";
 
 import React from "react";
 
-import FieldProps from "../order/fields/FieldProps";
+import FieldProps from "./FieldProps";
 import FormHelperText from "@mui/material/FormHelperText";
 
 export default function PhoneField(props: FieldProps) {
     return <FormControl
-        sx={formStyle}
+        sx={{
+            mt: '16px',
+            width: "100%"
+        }}
         required={true}
         error={!props.valid}>
         <InputLabel htmlFor="phone">Номер телефона</InputLabel>

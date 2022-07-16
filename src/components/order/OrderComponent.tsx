@@ -22,11 +22,11 @@ import convertPhoneToE164 from "../../convertPhoneToE164";
 
 import FormFrame from "../frames/FormFrame";
 
-import {Products, BoldData, TotalField, DatetimeForm} from "./OrderStyles";
-import AddressField from "./fields/AddressField";
+import {BoldData, DatetimeForm, Products, TotalField} from "./orderStyles";
+import AddressField from "../fields/AddressField";
 import PhoneField from "../fields/PhoneField";
-import DateField from "./fields/DateField";
-import TimeField from "./fields/TimeField";
+import DateField from "../fields/DateField";
+import TimeField from "../fields/TimeField";
 
 import {SiteInfo} from "../../interfaces/data";
 import Product from "../../interfaces/product";

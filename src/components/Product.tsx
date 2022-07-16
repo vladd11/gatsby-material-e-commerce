@@ -11,7 +11,7 @@ interface ProductProps {
     product: ProductType,
     whenAddedToCart?: MouseEventHandler<HTMLButtonElement>,
     disabled: boolean,
-    loading? : "lazy" | "eager"
+    loading?: "lazy" | "eager"
 }
 
 const Product = (props: ProductProps) => {

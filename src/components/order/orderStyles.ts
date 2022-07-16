@@ -24,8 +24,3 @@ export const DatetimeForm = styled.div`
 
   align-items: end;
 `
-
-export const formStyle = {
-    mt: '16px',
-    width: "100%"
-};

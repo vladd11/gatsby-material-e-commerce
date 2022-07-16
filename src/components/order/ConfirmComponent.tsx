@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import FormFrame from "../frames/FormFrame";
-import CodeField from "./fields/CodeField";
+import CodeField from "../fields/CodeField";
 import Api from "../../api/api";
 
 interface ConfirmComponentProps {

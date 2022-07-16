@@ -2,7 +2,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import MoneyIcon from "@mui/icons-material/Money";
 import React, {ReactNode} from "react";
 
-const paymentMethods : PaymentMethods = {
+const paymentMethods: PaymentMethods = {
     card: {
         icon: <CreditCardIcon/>,
         fullSentence: "Вы оплатили заказ картой",

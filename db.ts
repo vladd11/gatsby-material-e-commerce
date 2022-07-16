@@ -55,7 +55,7 @@ export default class Database {
                 if (popularity instanceof Long) popularity = popularity.toNumber()
 
                 const id = row.items![1].bytesValue
-                if(!id) {
+                if (!id) {
                     console.warn("ID of product is null!")
                     continue;
                 }

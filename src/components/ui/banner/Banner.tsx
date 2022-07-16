@@ -4,7 +4,7 @@ import {css} from "@emotion/react";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
-import {Root, ButtonWrapper} from "./styles"
+import {ButtonWrapper, Root} from "./styles"
 
 type BannerProps = {
     image?: string

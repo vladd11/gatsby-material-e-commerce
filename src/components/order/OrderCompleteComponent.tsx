@@ -17,7 +17,7 @@ import useStickyState, {ifClientSide} from "../../states/localStorageState";
 import CartProduct from "../cart/CartProduct";
 import {toHumanReadable} from "../../currentDateTime";
 
-import {BoldData, Products} from "./OrderStyles";
+import {BoldData, Products} from "./orderStyles";
 
 import {ImageFile, SiteInfo} from "../../interfaces/data";
 import OrderResponse from "../../interfaces/order";

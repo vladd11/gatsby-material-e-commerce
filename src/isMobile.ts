@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-function IsMobile () : boolean {
+function IsMobile(): boolean {
     const [width, setWidth] = useState<number>(0);
 
     function handleWindowSizeChange() {

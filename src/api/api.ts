@@ -191,7 +191,7 @@ export default class Api {
             headers: this.headers
         })
 
-        if(resultFetch.ok) {
+        if (resultFetch.ok) {
             const result = await resultFetch.json()
             return result.enabled
         } else throw new HTTPError(resultFetch.status)

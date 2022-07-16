@@ -1,4 +1,4 @@
-import { TimeRange } from "../currentDateTime";
+import {TimeRange} from "../currentDateTime";
 import Product from "./product";
 
 export default interface OrderResponse {

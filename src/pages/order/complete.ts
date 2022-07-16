@@ -16,28 +16,28 @@ type OrderCompleteProps = PageProps & {
 // noinspection JSUnusedGlobalSymbols
 export default function Complete(props: OrderCompleteProps) {
     const data: Data = useStaticQuery(graphql`
-{
-  allFile {
-    edges {
-      node {
-        relativePath
-        childImageSharp {
-          gatsbyImageData(width: 200)
-        }
-      }
-    }
-  }
-  site {
-    siteMetadata {
-      title
-      description
-      phone
-      
-      address
-      addressLink
-    }
-  }
-}`)
+        {
+            allFile {
+                edges {
+                    node {
+                        relativePath
+                        childImageSharp {
+                            gatsbyImageData(width: 200)
+                        }
+                    }
+                }
+            }
+            site {
+                siteMetadata {
+                    title
+                    description
+                    phone
+
+                    address
+                    addressLink
+                }
+            }
+        }`)
 
     const [orderResponse, setOrderResponse] = useState<OrderResponse>(props.location.state);
 
@@ -54,6 +54,8 @@ export default function Complete(props: OrderCompleteProps) {
             } else {
                 api.getOrder(orderID).then((result) => {
                     if (!result) {
+                        // It's redirect
+                        // noinspection JSIgnoredPromiseFromCall
                         navigate("/404");
                         return
                     }

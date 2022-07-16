@@ -1,10 +1,9 @@
 import Product, {ProductPopularity} from "./src/interfaces/product";
+import Database from "./db";
+import {CreatePagesArgs, GatsbyNode} from "gatsby";
 
 const path = require("path")
 const fs = require("fs")
-
-import Database from "./db";
-import {CreatePagesArgs, GatsbyNode} from "gatsby";
 
 // It's used by Gatsby
 // noinspection JSUnusedGlobalSymbols
@@ -20,6 +19,27 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
         },
     } = await props.graphql(`
 {
+    allFile {
+        edges {
+            node {
+                relativePath
+                childImageSharp {
+                    gatsbyImageData(width: 200)
+                }
+            }
+        }
+    }
+    site {
+        siteMetadata {
+            title
+            description
+            phone
+
+            address
+            addressLink
+        }
+    }
+
     allProducts(sort: {fields: Popularity}) {
         nodes {
             Category
@@ -54,6 +74,19 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
 
     categories.forEach((value, key) => {
         fs.writeFileSync(path.join(categoriesDir, `${key.toString()}.json`), JSON.stringify(value))
+    })
+
+    products.forEach(value => {
+        props.actions.createPage({
+            path: `/products/${value.ProductID}`,
+            component: path.resolve('./src/pages/product.ts'),
+            // In your blog post template's graphql query, you can use pagePath
+            // as a GraphQL variable to query for data from the markdown file.
+            context: {
+                data: result,
+                product: value
+            },
+        })
     })
 }
 

@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl";
 
 import React, {ReactNode} from "react";
 import FieldProps from "./FieldProps";
-import * as orderStyles from "../../../styles/components/order.module.sass";
+import * as orderStyles from "../../styles/components/order.module.sass";
 import Button from "@mui/material/Button";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 

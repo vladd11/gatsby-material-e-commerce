@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import {BaseProps} from "./BaseProps";
-
 const IconButton = styled.button`
   border: none;
   padding: 12px;

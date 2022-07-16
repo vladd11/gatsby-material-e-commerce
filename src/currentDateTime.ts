@@ -23,7 +23,7 @@ function timeInterval(range: TimeRange) {
     const start = toHours(new Date(range.startDate * 1000))
     let end = toHours(new Date(range.endDate * 1000))
 
-    if(end == start) end = "24:00"
+    if (end == start) end = "24:00"
 
     return `c ${start} до ${end}`
 }

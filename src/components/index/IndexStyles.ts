@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import {css} from "@emotion/react";
 import queries from "../../queries";
 
 export const Categories = styled.div`

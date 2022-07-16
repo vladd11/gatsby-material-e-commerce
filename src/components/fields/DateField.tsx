@@ -3,13 +3,13 @@ import React from "react";
 import Input from "@mui/material/Input";
 import FormControl from "@mui/material/FormControl";
 
-import {formStyle} from "../OrderStyles";
 import FieldProps from "./FieldProps";
 
 export default function DateField(props: FieldProps) {
     return <FormControl
         sx={{
-            ...formStyle,
+            mt: '16px',
+            width: "100%",
             minWidth: "112px",
             flex: 1,
         }}

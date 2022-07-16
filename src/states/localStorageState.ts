@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect} from 'react'
 
-export default function useStickyState<S>(defaultValue: S, key: string) : [S, Dispatch<SetStateAction<S>>] {
+export default function useStickyState<S>(defaultValue: S, key: string): [S, Dispatch<SetStateAction<S>>] {
     const [value, setValue] = React.useState<S>(defaultValue);
 
     useEffect(() => {

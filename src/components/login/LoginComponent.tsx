@@ -57,7 +57,7 @@ export default function LoginComponent(props: LoginComponentProps) {
         </Helmet>
 
         <FormFrame title="Вход в аккаунт">
-            <PhoneField value={phone} onChange={(value) => {
+            <PhoneField value={phone} onChange={(value: any) => {
                 setPhone(value)
                 setPhoneError("")
             }} lock={false} valid={phoneError === ""}

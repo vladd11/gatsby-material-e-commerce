@@ -1,4 +1,4 @@
-import React, {ReactNode, MouseEventHandler} from "react"
+import React, {MouseEventHandler, ReactNode} from "react"
 import {css} from "@emotion/react";
 
 import {animationContext} from "./SpeedDial";

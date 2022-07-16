@@ -26,7 +26,7 @@ export default function Chip(props: ChipProps) {
 
       cursor: ${(props.disabled) ? "auto" : "pointer"};
     `}
-    onClick={props.onClick}>
+                onClick={props.onClick}>
         <span css={css`
           width: 100%;
           height: 100%;

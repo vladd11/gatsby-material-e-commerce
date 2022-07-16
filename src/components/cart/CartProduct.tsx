@@ -13,16 +13,21 @@ interface CartProductProps {
 }
 
 export default function CartProduct(props: CartProductProps) {
+    let subheader = "";
+    if(props.product) {
+        subheader = `${props.product?.Price} рублей`
+    }
+
     return <Card css={css`
-        min-width: 200px;
-        margin: 12px;
+      min-width: 200px;
+      margin: 12px;
     `}>
         <div css={css`
           display: flex;
           justify-content: space-between;
           align-items: center;
         `}>
-            <CardHeader title={props.product?.Title} subheader={`${props.product?.Price} рублей`}/>
+            <CardHeader title={props.product?.Title ?? ""} subheader={subheader}/>
             {props.children}
         </div>
 

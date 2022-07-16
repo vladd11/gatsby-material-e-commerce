@@ -5,14 +5,20 @@ export default interface Product {
     ProductID: string,
     Title: string,
     Description: string,
-
     Category: number,
+
     Price: number,
 
     ImageURI: string,
+    Images?: Images[];
     Image?: IGatsbyImageData, // Gatsby Image type
 
     count?: number
+}
+
+export type Images = {
+    alt: string,
+    image_uri: string,
 }
 
 export interface ProductPopularity {

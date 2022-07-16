@@ -2,7 +2,7 @@ import {Driver} from "ydb-sdk";
 import Long from "long";
 
 import priceToNumber from "./priceToNumber";
-import Product, {ProductPopularity} from "./src/interfaces/product";
+import Product from "./src/interfaces/product";
 import {Ydb} from "ydb-sdk-proto";
 
 const ydb = require('ydb-sdk')
@@ -41,7 +41,7 @@ export default class Database {
         })
     }
 
-    public async readPopularity(): Promise<Array<ProductPopularity>> {
+    public async readPopularity(products: Product[]): Promise<void> {
         return await this.driver!.tableClient.withSessionRetry(async (session) => {
             const resultQuery = await session.executeQuery(`
             SELECT * FROM (
@@ -50,45 +50,46 @@ export default class Database {
             )
             ORDER BY column1 DESC;`)
 
-            const arr: Array<ProductPopularity> = []
             for (const row of resultQuery.resultSets[0].rows!) {
-                let popularity = row.items![0].uint64Value
-
+                let popularity = row.items![0].uint64Value!
                 if (popularity instanceof Long) popularity = popularity.toNumber()
 
-                const id = row.items![1].bytesValue
+                // It's Node.js code
+                // @ts-ignore
+                const id = row.items![1].bytesValue?.toString("hex")
                 if (!id) {
                     console.warn("ID of product is null!")
                     continue;
                 }
 
-                arr.push({
-                    // It's Node.js code, toString("hex") is possible
-                    // @ts-ignore
-                    ProductID: id.toString("hex"),
-                    popularity: popularity!
-                })
+                const product = products.find(value => value.ProductID === id)
+                if (product) {
+                    product.Popularity = popularity ?? 0;
+                }
             }
-            return arr;
         })
     }
 
-    public async readCarousels(products: Product[]): Promise<{
-        alt: string,
-        image_uri: string,
-        product_id: string
-    }[] | undefined> {
-        return await this.driver!.tableClient.withSessionRetry(async (session) => {
+    public async readCarousels(products: Product[]): Promise<void> {
+        await this.driver!.tableClient.withSessionRetry(async (session) => {
             let result: Ydb.Table.ReadTableResult;
             await session.streamReadTable("image_carousels", dbResult =>
                 result = dbResult
             );
-            return result!.resultSet?.rows?.map(value => {
-                //console.log(value)
-                return {
-                    alt: "",
-                    image_uri: "",
-                    product_id: ""
+            return result!.resultSet?.rows?.forEach((response) => {
+                // It's Node.js code
+                // @ts-ignore
+                const product = products.find(value => value.ProductID === response.items![1].bytesValue!.toString("hex"))
+                if (product) {
+                    if (!product.Images) product.Images = [{
+                        alt: product.Title,
+                        image_uri: product.ImageURI
+                    }];
+
+                    product.Images.push({
+                        alt: response.items![2].textValue!,
+                        image_uri: response.items![3].textValue!
+                    });
                 }
             });
         })

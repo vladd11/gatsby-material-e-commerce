@@ -50,7 +50,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
                 return <CartProduct product={cartProduct}/>
             });
-        } else return <div/>
+        } else return <CartProduct product={undefined}/>
     }
 
     async function notificationsEnabledChange(): Promise<void> {

@@ -44,7 +44,7 @@
   },
   "scripts": {
     "develop": "node notifications/build.js && gatsby develop -H 0.0.0.0",
-    "build": "node notifications/build.js && cp _headers public/_headers && gatsby build",
+    "build": "node notifications/build.js && gatsby build",
     "serve": "gatsby serve",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   }

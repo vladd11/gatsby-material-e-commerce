@@ -83,7 +83,7 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
             // In your blog post template's graphql query, you can use pagePath
             // as a GraphQL variable to query for data from the markdown file.
             context: {
-                data: result,
+                data: result.data,
                 product: value
             },
         })

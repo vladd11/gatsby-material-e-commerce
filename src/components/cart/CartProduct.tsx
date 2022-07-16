@@ -12,11 +12,11 @@ interface CartProductProps {
     children?: ReactNode
 }
 
-const CartProduct = (props: CartProductProps) => {
-    return <Card sx={{
-        minWidth: "200px",
-        margin: "12px"
-    }}>
+export default function CartProduct(props: CartProductProps) {
+    return <Card className={css`
+        min-width: 200px;
+        margin: 12px;
+    `}>
         <div css={css`
           display: flex;
           justify-content: space-between;
@@ -29,5 +29,3 @@ const CartProduct = (props: CartProductProps) => {
         <GatsbyImage css={css`min-width: 100%`} alt={props.product.Title} image={props.product.Image!}/>
     </Card>
 }
-
-export default CartProduct;

@@ -19,11 +19,12 @@ import {toHumanReadable} from "../../currentDateTime";
 
 import {BoldData, Products} from "./orderStyles";
 
-import {ImageFile, SiteInfo} from "../../interfaces/data";
-import OrderResponse from "../../interfaces/order";
+import {ImageFile, SiteInfo} from "../../types/data";
+import OrderResponse from "../../types/order";
 
 import Api from "../../api/api";
 import {getFCMToken} from "../../notifications/getFCMToken";
+import getImageByPath from "../../../getImageByPath";
 
 interface OrderCompleteProps {
     order?: OrderResponse;
@@ -42,10 +43,9 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
     function renderProducts() {
         if (props.order) {
-            return props.order?.products?.map(cartProduct => {
+            return props.order?.products?.map((cartProduct) => {
                 if (!cartProduct.Image) {
-                    cartProduct.Image = props.allFile.edges.find(value => value.node.relativePath === cartProduct.ImageURI)!
-                        .node.childImageSharp.gatsbyImageData
+                    cartProduct.Image = getImageByPath(props.allFile.edges, cartProduct.ImageURI);
                 }
 
                 return <CartProduct product={cartProduct}/>

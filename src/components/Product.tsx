@@ -2,7 +2,7 @@ import React, {MouseEventHandler} from 'react'
 import {GatsbyImage} from "gatsby-plugin-image";
 import {css} from "@emotion/react";
 
-import ProductType from "../interfaces/product";
+import ProductType from "../types/product";
 
 import theme from "../theme";
 import queries from "../queries";

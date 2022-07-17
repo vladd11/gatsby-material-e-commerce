@@ -6,15 +6,14 @@ import Chip from "../ui/Chip";
 import Main from '../Main'
 import Product from '../Product'
 
-import {getImage} from "gatsby-plugin-image";
-
 import useStickyState from "../../states/localStorageState";
 
-import ProductType from "../../interfaces/product"
-import Data from "../../interfaces/data";
+import ProductType from "../../types/product"
+import Data from "../../types/data";
 import categories from "../../../categories";
 
 import {Categories, Products} from "./IndexStyles"
+import getImageByPath from "../../../getImageByPath";
 
 interface IndexProps {
     data: Data
@@ -39,7 +38,7 @@ function IndexComponent(props: IndexProps) {
 
     function renderProducts() {
         return products.map((product, index) => {
-            product.Image = getImage(props.data.allFile!.edges!.find(value => value.node.relativePath === product.ImageURI)!.node)
+            product.Image = getImageByPath(props.data.allFile!.edges!, product.ImageURI)
 
             return <Product
                 disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}

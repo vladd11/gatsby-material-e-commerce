@@ -28,8 +28,8 @@ import PhoneField from "../fields/PhoneField";
 import DateField from "../fields/DateField";
 import TimeField from "../fields/TimeField";
 
-import {SiteInfo} from "../../interfaces/data";
-import Product from "../../interfaces/product";
+import {SiteInfo} from "../../types/data";
+import Product from "../../types/product";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 // @ts-ignore

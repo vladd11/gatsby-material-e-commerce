@@ -4,7 +4,7 @@ import {css} from "@emotion/react";
 import theme from "../../theme"
 import {BaseProps} from "./BaseProps";
 
-import NotificationType from "../../interfaces/notification";
+import NotificationType from "../../types/notification";
 import Banner from "./banner/Banner";
 
 type AppbarProps = BaseProps & {
@@ -30,6 +30,8 @@ const Appbar = (props: AppbarProps) => {
 
           display: flex;
           flex-direction: column;
+          
+          z-index: 2;
         `}>
             <div css={css`
               padding: 0 16px;

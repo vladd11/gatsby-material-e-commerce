@@ -29,7 +29,7 @@ const Drawer = (props: DrawerProps) => {
                   background: #fff;
                   border-right: rgba(0, 0, 0, 0.12) solid 1px;
 
-                  z-index: 1;
+                  z-index: 3;
 
                   height: 100%;
                   overflow-y: auto;

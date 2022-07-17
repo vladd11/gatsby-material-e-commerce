@@ -1,6 +1,6 @@
-// Interface that describes GraphQL output
-import {ImageDataLike} from "gatsby-plugin-image"
 import Product from "./product"
+
+import {FileNode} from "gatsby-plugin-image/dist/src/components/hooks";
 
 export default interface Data {
     allSiteBuildMetadata: {
@@ -17,8 +17,7 @@ export default interface Data {
     }
 }
 
-export interface SiteInfo {
-    categories: Array<{ id: number, name: string }>,
+export type SiteInfo = {
     title: string,
     description: string,
     phone: string,
@@ -28,10 +27,10 @@ export interface SiteInfo {
 }
 
 export interface ImageFile {
-    node: Node
+    readonly node: ImgNode
 }
 
-type Node = ImageDataLike & {
-    relativePath: string,
-    [key: string]: any
+type ImgNode = FileNode & {
+    readonly relativePath: string,
+    readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null
 }

@@ -1,5 +1,5 @@
 import {navigate} from "gatsby";
-import OrderResponse from "./interfaces/order";
+import OrderResponse from "./types/order";
 import {TimeRange} from "./currentDateTime";
 
 export default async function redirect(response: OrderResponse, phone: string, address: string, time: TimeRange, paymentMethod: string) {

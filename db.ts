@@ -2,7 +2,7 @@ import {Driver} from "ydb-sdk";
 import Long from "long";
 
 import priceToNumber from "./priceToNumber";
-import Product from "./src/interfaces/product";
+import Product from "./src/types/product";
 import {Ydb} from "ydb-sdk-proto";
 
 const ydb = require('ydb-sdk')

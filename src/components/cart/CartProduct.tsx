@@ -5,7 +5,7 @@ import {GatsbyImage} from "gatsby-plugin-image";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 
-import Product from "../../interfaces/product";
+import Product from "../../types/product";
 
 interface CartProductProps {
     product?: Product,

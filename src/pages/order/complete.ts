@@ -4,8 +4,8 @@ import Api from "../../api/api";
 
 import OrderCompleteComponent from "../../components/order/OrderCompleteComponent";
 
-import Data from "../../interfaces/data";
-import OrderResponse from "../../interfaces/order";
+import Data from "../../types/data";
+import OrderResponse from "../../types/order";
 
 type OrderCompleteProps = PageProps & {
     location: {

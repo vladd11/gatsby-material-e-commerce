@@ -1,24 +1,14 @@
-import Product, {ProductPopularity} from "./src/interfaces/product";
 import Database from "./db";
-import {CreatePagesArgs, GatsbyNode} from "gatsby";
+import {GatsbyNode} from "gatsby";
 
 const path = require("path")
 const fs = require("fs")
 
 // It's used by Gatsby
 // noinspection JSUnusedGlobalSymbols
-export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesArgs) => {
-    let result: {
-        data?: {
-            allProducts?: {
-                nodes?: Array<Product>
-            },
-            allPopularity?: {
-                nodes?: Array<ProductPopularity>
-            }
-        },
-    } = await props.graphql(`
-{
+export const createPages: GatsbyNode["createPages"] = async ({actions, graphql}) => {
+    let result = await graphql<Queries.ProductPageQuery>(`
+query ProductPage {
     allFile {
         edges {
             node {
@@ -49,6 +39,10 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
             Title
             ImageURI
             Popularity
+            Images {
+                alt
+                image_uri
+            }
         }
     }
 }`)
@@ -76,8 +70,9 @@ export const createPages: GatsbyNode["createPages"] = async (props: CreatePagesA
         fs.writeFileSync(path.join(categoriesDir, `${key.toString()}.json`), JSON.stringify(value))
     })
 
+    // @ts-ignore
     products.forEach(value => {
-        props.actions.createPage({
+        actions.createPage({
             path: `/products/${value.ProductID}`,
             component: path.resolve('./src/pages/product.ts'),
             // In your blog post template's graphql query, you can use pagePath
@@ -122,4 +117,24 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
             }
         })
     });
+}
+
+// It's used by Gatsby
+// noinspection JSUnusedGlobalSymbols
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({ actions }) => {
+    actions.createTypes(`
+    type Site {
+      siteMetadata: SiteMetadata!
+    }
+    type SiteMetadata {
+      title: String!,
+      description: String!,
+      phone: String!,
+      addressLink: String!,
+      address: String!
+    }
+    type AllFile {
+        edges: [File!]!
+    }
+  `)
 }

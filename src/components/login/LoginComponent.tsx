@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet";
 import Fab from "@mui/material/Fab";
 import LoginIcon from '@mui/icons-material/Login';
 
-import {SiteInfo} from "../../interfaces/data";
+import {SiteInfo} from "../../types/data";
 
 import Api from "../../api/api";
 import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";

@@ -3,7 +3,7 @@ import Api from '../../api/api'
 
 import {graphql, navigate, useStaticQuery} from "gatsby";
 
-import Product from "../../interfaces/product";
+import Product from "../../types/product";
 import {ifClientSide} from "../../states/localStorageState";
 
 interface OrderProps {

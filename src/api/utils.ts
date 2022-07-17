@@ -1,5 +1,5 @@
 import {ifClientSide} from "../states/localStorageState";
-import User from "../interfaces/user";
+import User from "../types/user";
 
 export const toUnixTime = (date: Date) => Math.floor(date.getTime() / 1000);
 export const setPhone = (phone: string) => localStorage.setItem("user.phone", phone)

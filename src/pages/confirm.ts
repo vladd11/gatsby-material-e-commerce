@@ -26,7 +26,7 @@ type ConfirmData = {
 const Confirm = (props: ConfirmProps) => {
     const api = new Api()
     const data: ConfirmData = useStaticQuery(graphql`
-        {
+        query ConfirmPage {
             site {
                 siteMetadata {
                     title

@@ -5,7 +5,7 @@ import Api from "../../api/api";
 import ConfirmComponent from "../../components/order/ConfirmComponent";
 
 import redirect from "../../redirect";
-import Product from "../../interfaces/product";
+import Product from "../../types/product";
 import {TimeRange} from "../../currentDateTime";
 
 interface ConfirmState {

@@ -14,14 +14,14 @@ import {css} from "@emotion/react";
 
 import queries from "../queries";
 
-import Product from "../interfaces/product";
-import {SiteInfo} from "../interfaces/data";
+import Product from "../types/product";
+import {SiteInfo} from "../types/data";
 
 import {getCachedUser} from "../api/utils";
 
 const menuWidth = 330;
 
-interface MainProps {
+export type MainProps = {
     info: SiteInfo,
 
     cartProducts: Array<Product>,

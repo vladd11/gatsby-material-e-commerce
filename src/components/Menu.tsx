@@ -13,8 +13,8 @@ import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
 
-import {SiteInfo} from "../interfaces/data";
-import User from "../interfaces/user";
+import {SiteInfo} from "../types/data";
+import User from "../types/user";
 
 const Menu = (props: MenuProps) => {
     return (<Drawer

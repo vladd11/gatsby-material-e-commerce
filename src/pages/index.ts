@@ -1,6 +1,6 @@
 import {graphql, useStaticQuery} from "gatsby";
 
-import "../interfaces/product"
+import "../types/product"
 
 import IndexComponent from "../components/index/IndexComponent"
 import {logout} from "../api/utils";

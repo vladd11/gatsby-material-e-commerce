@@ -5,10 +5,7 @@ export default function getCurrentDateTime() {
     const offset = date.getTimezoneOffset() * 1000 * 60;
     date = new Date(date.getTime() - offset)
 
-    return {
-        defaultDate: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`,
-        defaultTime: `${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
-    }
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`
 }
 
 export function toHumanReadable(range: TimeRange) {

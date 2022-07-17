@@ -5,7 +5,7 @@ import Api from "../api/api";
 
 export default function Login() {
     const data = useStaticQuery(graphql`
-        {
+        query LoginPage {
             site {
                 siteMetadata {
                     title

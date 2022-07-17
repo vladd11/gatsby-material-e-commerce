@@ -16,7 +16,7 @@ export default function TimeField(props: {
         }}
 
         getAriaLabel={() => 'Temperature range'}
-        value={props.value}
+        value={props.value} step={300/144}
         onChange={(event, newValue, activeThumb) => {
             if (!Array.isArray(newValue)) {
                 return;

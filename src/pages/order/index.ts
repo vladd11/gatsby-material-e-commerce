@@ -14,19 +14,9 @@ interface OrderProps {
     }
 }
 
-export default function Index(props: OrderProps) {
-    const data = useStaticQuery(graphql`
-        {
-            allFile {
-                edges {
-                    node {
-                        relativePath
-                        childImageSharp {
-                            gatsbyImageData(width: 200)
-                        }
-                    }
-                }
-            }
+export default function IndexOrderPage(props: OrderProps) {
+    const data = useStaticQuery<Queries.IndexOrderPageQuery>(graphql`
+        query IndexOrderPage {
             site {
                 siteMetadata {
                     title
@@ -48,7 +38,7 @@ export default function Index(props: OrderProps) {
     })
 
     return OrderComponent({
-        siteMetadata: data.site.siteMetadata,
+        siteMetadata: data.site!.siteMetadata,
         api: api,
         cartProducts: props.location.state?.cartProducts
     })

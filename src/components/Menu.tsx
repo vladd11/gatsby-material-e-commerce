@@ -13,7 +13,6 @@ import {css} from "@emotion/react";
 
 import Drawer from "./Drawer";
 
-import {SiteInfo} from "../types/data";
 import User from "../types/user";
 
 const Menu = (props: MenuProps) => {
@@ -81,7 +80,7 @@ const Menu = (props: MenuProps) => {
 }
 
 interface MenuProps {
-    info: SiteInfo,
+    info: Queries.SiteMetadata,
 
     isDrawerOpened: boolean,
     shouldNotExpand: boolean,

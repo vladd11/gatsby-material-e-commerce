@@ -15,7 +15,7 @@ interface IndexPageProps {
 
 export default function IndexPage(props: IndexPageProps) {
     const data = useStaticQuery(graphql`
-        {
+        query IndexPage {
             allSiteBuildMetadata {
                 nodes {
                     buildTime

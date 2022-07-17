@@ -4,7 +4,7 @@ import Api from "../../api/api";
 
 import OrderCompleteComponent from "../../components/order/OrderCompleteComponent";
 
-import Data from "../../types/data";
+import {ImageFile} from "../../types/data";
 import OrderResponse from "../../types/order";
 
 type OrderCompleteProps = PageProps & {
@@ -15,8 +15,8 @@ type OrderCompleteProps = PageProps & {
 
 // noinspection JSUnusedGlobalSymbols
 export default function Complete(props: OrderCompleteProps) {
-    const data: Data = useStaticQuery(graphql`
-        {
+    const data = useStaticQuery<Queries.CompletePageQuery>(graphql`
+        query CompletePage {
             allFile {
                 edges {
                     node {
@@ -67,9 +67,9 @@ export default function Complete(props: OrderCompleteProps) {
     }, [])
 
     return OrderCompleteComponent({
-        info: data.site.siteMetadata,
+        info: data.site!.siteMetadata,
         order: orderResponse,
-        allFile: data.allFile,
+        images: data.allFile.edges as ImageFile[],
         api: api
     })
 }

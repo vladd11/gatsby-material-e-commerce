@@ -4,8 +4,6 @@ import {Helmet} from "react-helmet";
 import Fab from "@mui/material/Fab";
 import LoginIcon from '@mui/icons-material/Login';
 
-import {SiteInfo} from "../../types/data";
-
 import Api from "../../api/api";
 import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";
 import PhoneField from "../fields/PhoneField";
@@ -15,7 +13,7 @@ import {FabStyles} from "./loginStyles";
 import {navigate} from "gatsby";
 
 interface LoginComponentProps {
-    siteMetadata: SiteInfo,
+    siteMetadata: Queries.SiteMetadata,
     api: Api
 }
 

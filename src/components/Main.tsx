@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect} from 'react'
-
+import {css} from "@emotion/react";
 import IsMobile from '../isMobile'
 
 import Menu from "./Menu";
@@ -7,22 +7,18 @@ import CartMenuProduct from "./cart/CartMenuProduct";
 import Appbar from "./ui/Appbar";
 import IconButton from "./ui/IconButton";
 import Badge from "./ui/Badge";
-
 import MenuIcon from "@mui/icons-material/Menu";
-
-import {css} from "@emotion/react";
 
 import queries from "../queries";
 
 import Product from "../types/product";
-import {SiteInfo} from "../types/data";
 
 import {getCachedUser} from "../api/utils";
 
 const menuWidth = 330;
 
 export type MainProps = {
-    info: SiteInfo,
+    info: Queries.SiteMetadata,
 
     cartProducts: Array<Product>,
     setCartProducts: (value: any) => void,

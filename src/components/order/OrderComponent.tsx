@@ -1,34 +1,29 @@
 import React, {useEffect, useRef, useState} from "react";
-
 import {Helmet} from "react-helmet";
+
 import Fab from "@mui/material/Fab";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-
 import SpeedDialButton from "../ui/SpeedDialButton";
 import SpeedDial from "../ui/SpeedDial";
-
-import useStickyState from "../../states/localStorageState";
-
-import getCurrentDateTime, {parseDateTime} from "../../currentDateTime"
-
-import CartProduct from "../cart/CartProduct";
-import * as orderStyles from "../../styles/components/order.module.sass"
-
-import paymentMethods from "../../../paymentMethods"
-import Api from "../../api/api";
-
-import redirect from "../../redirect";
-import convertPhoneToE164 from "../../convertPhoneToE164";
-
 import FormFrame from "../frames/FormFrame";
-
 import {BoldData, DatetimeForm, Products, TotalField} from "./orderStyles";
+import CartProduct from "../cart/CartProduct";
 import AddressField from "../fields/AddressField";
 import PhoneField from "../fields/PhoneField";
 import DateField from "../fields/DateField";
 import TimeField from "../fields/TimeField";
 
-import {SiteInfo} from "../../types/data";
+import useStickyState from "../../states/localStorageState";
+
+import getCurrentDateTime, {parseDateTime} from "../../currentDateTime"
+
+import * as orderStyles from "../../styles/components/order.module.sass"
+import paymentMethods from "../../../paymentMethods"
+
+import Api from "../../api/api";
+import redirect from "../../redirect";
+import convertPhoneToE164 from "../../convertPhoneToE164";
+
 import Product from "../../types/product";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -43,12 +38,10 @@ mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 interface OrderComponentProps {
     api: Api,
     cartProducts: Array<Product>,
-    siteMetadata: SiteInfo
+    siteMetadata: { title: string, description: string }
 }
 
 const OrderComponent = (props: OrderComponentProps) => {
-    const {defaultDate} = getCurrentDateTime();
-
     const [isPhoneValid, setPhoneValid] = useState(true)
     const [isAddressValid, setAddressValid] = useState(true)
     const [isDateValid, setDateValid] = useState(true)
@@ -57,7 +50,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     const [address, setAddress] = useStickyState('', 'address')
     const [phone, setPhone] = useStickyState('', 'phone')
     const [time, setTime] = useStickyState<number[]>([0, 100], 'time')
-    const [date, setDate] = useStickyState<string>(defaultDate, 'date')
+    const [date, setDate] = useStickyState<string>(getCurrentDateTime(), 'date')
 
     const [lock, setLock] = useState(false)
     const [isDialSelected, setDialSelected] = useState(false)
@@ -154,9 +147,7 @@ const OrderComponent = (props: OrderComponentProps) => {
     }
 
     return <>
-        <Helmet htmlAttributes={{
-            lang: 'ru',
-        }}>
+        <Helmet htmlAttributes={{lang: 'ru'}}>
             <title>{props.siteMetadata.title} | Оформление заказа</title>
             <meta name="description" content={props.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>

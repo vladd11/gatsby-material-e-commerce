@@ -91,7 +91,6 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     {
         actions,
         createContentDigest,
-        createNodeId,
     }
 ) => {
     const {createNode} = actions
@@ -108,7 +107,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
         product.Price = Math.round(product.Price * 100) / 100;
         createNode({
             ...product,
-            id: createNodeId(`Products-${product.ProductID}`),
+            id: product.ProductID,
             parent: null,
             children: [],
             internal: {
@@ -132,9 +131,6 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       phone: String!,
       addressLink: String!,
       address: String!
-    }
-    type AllFile {
-        edges: [File!]!
     }
   `)
 }

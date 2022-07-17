@@ -34,10 +34,6 @@ type AVIFOptions = {
   readonly speed: InputMaybe<Scalars['Int']>;
 };
 
-type AllFile = {
-  readonly edges: ReadonlyArray<File>;
-};
-
 type BlurredOptions = {
   /** Force the output format for the low-res preview. Default is to use the same format as the input. You should rarely need to change this */
   readonly toFormat: InputMaybe<ImageFormat>;
@@ -3197,6 +3193,16 @@ type WebPOptions = {
   readonly quality: InputMaybe<Scalars['Int']>;
 };
 
+type CompletePageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type CompletePageQuery = { readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null };
+
+type ConfirmOrderPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type ConfirmOrderPageQuery = { readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string } } | null };
+
 type ConfirmPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3227,6 +3233,21 @@ type GatsbyImageSharpFluid_withWebp_noBase64Fragment = { readonly aspectRatio: n
 type GatsbyImageSharpFluid_withWebp_tracedSVGFragment = { readonly tracedSVG: string | null, readonly aspectRatio: number, readonly src: string, readonly srcSet: string, readonly srcWebp: string | null, readonly srcSetWebp: string | null, readonly sizes: string };
 
 type GatsbyImageSharpFluidLimitPresentationSizeFragment = { readonly maxHeight: number, readonly maxWidth: number };
+
+type IndexOrderPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type IndexOrderPageQuery = { readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string } } | null };
+
+type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type IndexPageQuery = { readonly allSiteBuildMetadata: { readonly nodes: ReadonlyArray<{ readonly buildTime: string | null }> }, readonly allProducts: { readonly nodes: ReadonlyArray<{ readonly Category: number | null, readonly Description: string | null, readonly Price: number | null, readonly ProductID: string | null, readonly Title: string | null, readonly ImageURI: string | null }> }, readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null };
+
+type LoginPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type LoginPageQuery = { readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null };
 
 type ProductPageQueryVariables = Exact<{ [key: string]: never; }>;
 

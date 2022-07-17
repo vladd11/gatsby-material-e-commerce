@@ -9,14 +9,18 @@ import Product from '../Product'
 import useStickyState from "../../states/localStorageState";
 
 import ProductType from "../../types/product"
-import Data from "../../types/data";
 import categories from "../../../categories";
 
 import {Categories, Products} from "./IndexStyles"
 import getImageByPath from "../../../getImageByPath";
+import {ImageFile} from "../../types/data";
 
 interface IndexProps {
-    data: Data
+    data: Queries.IndexPageQuery & {
+        allProducts: {
+            nodes: ProductType[]
+        }
+    }
 }
 
 function IndexComponent(props: IndexProps) {
@@ -37,8 +41,8 @@ function IndexComponent(props: IndexProps) {
     }, [currentCategory])
 
     function renderProducts() {
-        return products.map((product, index) => {
-            product.Image = getImageByPath(props.data.allFile!.edges!, product.ImageURI)
+        return products.map((product: ProductType, index) => {
+            product.Image = getImageByPath(props.data.allFile!.edges! as ImageFile[], product.ImageURI!)
 
             return <Product
                 disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}
@@ -67,13 +71,13 @@ function IndexComponent(props: IndexProps) {
         <Helmet htmlAttributes={{
             lang: 'ru',
         }}>
-            <title>{props.data.site.siteMetadata.title}</title>
-            <meta name="description" content={props.data.site.siteMetadata.description}/>
+            <title>{props.data.site!.siteMetadata.title}</title>
+            <meta name="description" content={props.data.site!.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>
         </Helmet>
 
         <Main
-            info={props.data.site.siteMetadata}
+            info={props.data.site!.siteMetadata}
             cartProducts={cartProducts}
             setCartProducts={setCartProducts}>
 

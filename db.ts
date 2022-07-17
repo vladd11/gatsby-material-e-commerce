@@ -22,7 +22,7 @@ export default class Database {
                             let price: number = priceToNumber(row.items![5].uint64Value!)
 
                             products.push({
-                                // @ts-ignore
+                                // @ts-ignore - It's Node.js code
                                 ProductID: row.items[1].bytesValue.toString('hex'),
                                 Category: row.items![4].int32Value!,
 
@@ -96,12 +96,28 @@ export default class Database {
     }
 
     async connect() {
-        process.env.YDB_ACCESS_TOKEN_CREDENTIALS = (await (await fetch("https://iam.api.cloud.yandex.net/iam/v1/tokens", {
-            method: "POST",
-            body: JSON.stringify({
-                yandexPassportOauthToken: process.env.OAUTH_TOKEN
-            })
-        })).json()).iamToken
+        try {
+            const result = await fetch("https://iam.api.cloud.yandex.net/iam/v1/tokens", {
+                method: "POST",
+                body: JSON.stringify({
+                    yandexPassportOauthToken: process.env.OAUTH_TOKEN
+                })
+            });
+            if(!result.ok) {
+                console.error("Having ")
+                return;
+            }
+
+            const token = (await result.json()).iamToken;
+            if(!token) {
+                console.error(`Can't request IAM token. Status code: ${result.status} ${result.statusText}`);
+                return;
+            }
+            process.env.YDB_ACCESS_TOKEN_CREDENTIALS = token;
+        } catch (e) {
+            console.error("Can't connect to https://iam.api.cloud.yandex.net", e)
+            return;
+        }
 
         const authService = ydb.getCredentialsFromEnv();
 

@@ -3,7 +3,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
-
+import Main from "../Main";
+import CartProduct from "../cart/CartProduct";
+import {BoldData, Products} from "./orderStyles";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PhoneIcon from "@mui/icons-material/Phone";
 
@@ -11,27 +13,20 @@ import React, {useEffect, useState} from "react"
 import Helmet from "react-helmet";
 
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
-
-import Main from "../Main";
 import useStickyState, {ifClientSide} from "../../states/localStorageState";
-import CartProduct from "../cart/CartProduct";
+import getImageByPath from "../../../getImageByPath";
 import {toHumanReadable} from "../../currentDateTime";
 
-import {BoldData, Products} from "./orderStyles";
-
-import {ImageFile, SiteInfo} from "../../types/data";
+import {ImageFile} from "../../types/data";
 import OrderResponse from "../../types/order";
 
 import Api from "../../api/api";
 import {getFCMToken} from "../../notifications/getFCMToken";
-import getImageByPath from "../../../getImageByPath";
 
 interface OrderCompleteProps {
     order?: OrderResponse;
-    info: SiteInfo;
-    allFile: {
-        edges: Array<ImageFile>
-    },
+    info: Queries.SiteMetadata;
+    images: Array<ImageFile>,
     api: Api
 }
 
@@ -45,7 +40,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
         if (props.order) {
             return props.order?.products?.map((cartProduct) => {
                 if (!cartProduct.Image) {
-                    cartProduct.Image = getImageByPath(props.allFile.edges, cartProduct.ImageURI);
+                    cartProduct.Image = getImageByPath(props.images, cartProduct.ImageURI);
                 }
 
                 return <CartProduct product={cartProduct}/>

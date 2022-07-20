@@ -13,7 +13,6 @@ import categories from "../../../categories";
 
 import {Categories, Products} from "./IndexStyles"
 import getImageByPath from "../../../getImageByPath";
-import {ImageFile} from "../../types/data";
 
 interface IndexProps {
     data: Queries.IndexPageQuery & {
@@ -42,7 +41,7 @@ function IndexComponent(props: IndexProps) {
 
     function renderProducts() {
         return products.map((product: ProductType, index) => {
-            product.Image = getImageByPath(props.data.allFile!.edges! as ImageFile[], product.ImageURI!)
+            product.Image = getImageByPath(props.data.allFile!.edges!, product.ImageURI!)
 
             return <Product
                 disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}
@@ -68,9 +67,7 @@ function IndexComponent(props: IndexProps) {
     }
 
     return (<>
-        <Helmet htmlAttributes={{
-            lang: 'ru',
-        }}>
+        <Helmet htmlAttributes={{lang: 'ru'}}>
             <title>{props.data.site!.siteMetadata.title}</title>
             <meta name="description" content={props.data.site!.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/"/>

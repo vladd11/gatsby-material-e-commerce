@@ -11,7 +11,7 @@ export default interface Product {
 
     ImageURI: string,
     Images?: Images[];
-    Image?: IGatsbyImageData, // Gatsby Image type
+    Image?: IGatsbyImageData, // Gatsby ImageFile type
 
     count?: number
 }

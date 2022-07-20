@@ -4,7 +4,6 @@ import Api from "../../api/api";
 
 import OrderCompleteComponent from "../../components/order/OrderCompleteComponent";
 
-import {ImageFile} from "../../types/data";
 import OrderResponse from "../../types/order";
 
 type OrderCompleteProps = PageProps & {
@@ -69,7 +68,7 @@ export default function Complete(props: OrderCompleteProps) {
     return OrderCompleteComponent({
         info: data.site!.siteMetadata,
         order: orderResponse,
-        images: data.allFile.edges as ImageFile[],
+        images: data.allFile.edges,
         api: api
     })
 }

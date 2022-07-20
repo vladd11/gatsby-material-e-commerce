@@ -17,16 +17,16 @@ import useStickyState, {ifClientSide} from "../../states/localStorageState";
 import getImageByPath from "../../../getImageByPath";
 import {toHumanReadable} from "../../currentDateTime";
 
-import {ImageFile} from "../../types/data";
 import OrderResponse from "../../types/order";
 
 import Api from "../../api/api";
 import {getFCMToken} from "../../notifications/getFCMToken";
+import ImageFile from "../../types/imageFile";
 
 interface OrderCompleteProps {
     order?: OrderResponse;
     info: Queries.SiteMetadata;
-    images: Array<ImageFile>,
+    images: ImageFile[],
     api: Api
 }
 
@@ -37,15 +37,13 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     const paymentMethod: PaymentMethod | undefined = (props.order) ? paymentMethods[props.order.paymentMethod] : undefined
 
     function renderProducts() {
-        if (props.order) {
-            return props.order?.products?.map((cartProduct) => {
-                if (!cartProduct.Image) {
-                    cartProduct.Image = getImageByPath(props.images, cartProduct.ImageURI);
-                }
+        return (props.order?.products ?? [undefined]).map((cartProduct) => {
+            if (cartProduct && !cartProduct.Image) {
+                cartProduct.Image = getImageByPath(props.images, cartProduct.ImageURI);
+            }
 
-                return <CartProduct product={cartProduct}/>
-            });
-        } else return <CartProduct product={undefined}/>
+            return <CartProduct product={cartProduct}/>
+        })
     }
 
     async function notificationsEnabledChange(): Promise<void> {
@@ -84,9 +82,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
     }
 
     return <>
-        <Helmet htmlAttributes={{
-            lang: 'ru',
-        }}>
+        <Helmet htmlAttributes={{lang: 'ru'}}>
             <title>{props.info.title} | Заказ оформлен</title>
             <meta name="description" content={props.info.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/order-complete"/>

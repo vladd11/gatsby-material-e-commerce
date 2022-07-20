@@ -46,9 +46,7 @@ export default function LoginComponent(props: LoginComponentProps) {
     }
 
     return <>
-        <Helmet htmlAttributes={{
-            lang: 'ru',
-        }}>
+        <Helmet htmlAttributes={{lang: 'ru'}}>
             <title>{props.siteMetadata.title} | Вход</title>
             <meta name="description" content="Вход в аккаунт"/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/login"/>

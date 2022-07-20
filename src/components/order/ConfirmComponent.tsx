@@ -33,9 +33,7 @@ export default function ConfirmComponent(props: ConfirmComponentProps) {
     }, 1000)
 
     return <>
-        <Helmet htmlAttributes={{
-            lang: 'ru',
-        }}>
+        <Helmet htmlAttributes={{lang: 'ru'}}>
             <title>{props.siteMetadata.title} | Подтверждение номера телефона</title>
             <meta name="description" content={props.siteMetadata.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/confirm"/>

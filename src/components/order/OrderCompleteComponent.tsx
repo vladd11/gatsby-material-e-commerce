@@ -26,7 +26,7 @@ import ImageFile from "../../types/imageFile";
 interface OrderCompleteProps {
     order?: OrderResponse;
     info: Queries.SiteMetadata;
-    images: ImageFile[],
+    images: ReadonlyArray<ImageFile>,
     api: Api
 }
 

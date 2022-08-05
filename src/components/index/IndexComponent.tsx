@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet";
 import Chip from "../ui/Chip";
 
 import Main from '../Main'
-import Product from '../Product'
+import Product from '../product/Product'
 
 import useStickyState from "../../states/localStorageState";
 
@@ -12,7 +12,7 @@ import ProductType from "../../types/product"
 import categories from "../../../categories";
 
 import {Categories, Products} from "./IndexStyles"
-import getImageByPath from "../../../getImageByPath";
+import {getDescriptionByPath, getImageByPath} from "../../../getResourceByPath";
 
 interface IndexProps {
     data: Queries.IndexPageQuery & {
@@ -42,6 +42,7 @@ function IndexComponent(props: IndexProps) {
     function renderProducts() {
         return products.map((product: ProductType, index) => {
             product.Image = getImageByPath(props.data.allFile!.edges!, product.ImageURI!)
+            product.ShortDescription = getDescriptionByPath(props.data.shortTexts!.nodes!, product.DescriptionURI!)
 
             return <Product
                 disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}

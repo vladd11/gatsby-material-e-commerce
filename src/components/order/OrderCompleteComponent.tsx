@@ -14,7 +14,7 @@ import Helmet from "react-helmet";
 
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
 import useStickyState, {ifClientSide} from "../../states/localStorageState";
-import getImageByPath from "../../../getImageByPath";
+import {getImageByPath} from "../../../getResourceByPath";
 import {toHumanReadable} from "../../currentDateTime";
 
 import OrderResponse from "../../types/order";

@@ -59,7 +59,7 @@ const Drawer = (props: DrawerProps) => {
                         `}>
                             <ChevronLeftIcon/>
                         </button>
-                        : null}
+                        : undefined}
 
                     {props.children}
                 </div>

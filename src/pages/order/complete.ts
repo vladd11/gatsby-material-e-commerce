@@ -16,7 +16,7 @@ type OrderCompleteProps = PageProps & {
 export default function Complete(props: OrderCompleteProps) {
     const data = useStaticQuery<Queries.CompletePageQuery>(graphql`
         query CompletePage {
-            allFile {
+            allFile(filter: {sourceInstanceName: {eq: "images"}}) {
                 edges {
                     node {
                         relativePath

@@ -4,12 +4,14 @@ export default interface Product {
     Popularity?: number;
     ProductID: string,
     Title: string,
-    Description: string,
     Category: number,
 
     Price: number,
-
     ImageURI: string,
+
+    DescriptionURI: string,
+
+    ShortDescription?: string | null;
     Images?: Images[];
     Image?: IGatsbyImageData, // Gatsby ImageFile type
 

@@ -20,7 +20,7 @@ export default class Api {
     }
 
     setJWTToken(token: string) {
-        if (token == null || token == "") {
+        if (token == undefined || token == "") {
             throw new Error("Token is null or empty");
         }
 

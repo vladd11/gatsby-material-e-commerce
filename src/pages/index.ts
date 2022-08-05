@@ -24,20 +24,28 @@ export default function IndexPage(props: IndexPageProps) {
             allProducts(limit: 12, sort: {fields: Popularity}) {
                 nodes {
                     Category
-                    Description
+                    DescriptionURI
                     Price
                     ProductID
                     Title
                     ImageURI
                 }
             }
-            allFile {
+            allFile(filter: {sourceInstanceName: {eq: "images"}}) {
                 edges {
                     node {
                         relativePath
                         childImageSharp {
                             gatsbyImageData(width: 200)
                         }
+                    }
+                }
+            }
+            shortTexts:allFile(filter: {sourceInstanceName: {eq: "shortTexts"}}) {
+                nodes {
+                    relativePath
+                    childMarkdownRemark {
+                        html
                     }
                 }
             }

@@ -19,7 +19,7 @@ export default function CarouselComponent(props: CarouselProps) {
     const root = useRef<HTMLDivElement>(null)
 
     const update = () => {
-        return root.current!.scrollLeft = root.current!.clientWidth * currentElement;
+        root.current!.scrollLeft = root.current!.clientWidth * currentElement;
     }
 
     function goRight() {

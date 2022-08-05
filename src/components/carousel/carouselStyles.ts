@@ -34,6 +34,7 @@ export const controlsStyles = css`
   width: 72px;
 
   color: black;
+  opacity: 50%;
 
   transition: opacity 300ms, background 300ms;
 

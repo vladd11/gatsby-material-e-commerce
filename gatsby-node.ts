@@ -7,15 +7,31 @@ const fs = require("fs")
 // It's used by Gatsby
 // noinspection JSUnusedGlobalSymbols
 export const createPages: GatsbyNode["createPages"] = async ({actions, graphql}) => {
-    let result = await graphql<Queries.ProductPageQuery>(`
+    const result = await graphql<Queries.ProductPageQuery>(`
 query ProductPage {
-    allFile {
+    allFile(filter: {sourceInstanceName: {eq: "images"}}) {
         edges {
             node {
                 relativePath
                 childImageSharp {
                     gatsbyImageData(layout: CONSTRAINED)
                 }
+            }
+        }
+    }
+    shortTexts:allFile(filter: {sourceInstanceName: {eq: "shortTexts"}}) {
+        nodes {
+            relativePath
+            childMarkdownRemark {
+                html
+            }
+        }
+    }
+    longTexts:allFile(filter: {sourceInstanceName: {eq: "longTexts"}}) {
+        nodes {
+            relativePath
+            childMarkdownRemark {
+                html
             }
         }
     }
@@ -33,7 +49,7 @@ query ProductPage {
     allProducts(sort: {fields: Popularity}) {
         nodes {
             Category
-            Description
+            DescriptionURI
             Price
             ProductID
             Title
@@ -47,7 +63,9 @@ query ProductPage {
     }
 }`)
 
-    const products = result.data!.allProducts!.nodes!;
+    if (result.data === undefined) throw new Error("result.data of query is undefined");
+
+    const products = result.data.allProducts!.nodes!;
 
     const categories = new Map()
     products.forEach((product) => {
@@ -100,6 +118,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     await db.connect();
 
     const products = await db.readProducts();
+
     await db.readPopularity(products);
     await db.readCarousels(products);
 
@@ -120,7 +139,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
 // It's used by Gatsby
 // noinspection JSUnusedGlobalSymbols
-export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({ actions }) => {
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({actions}) => {
     actions.createTypes(`
     type Site {
       siteMetadata: SiteMetadata!

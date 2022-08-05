@@ -1,40 +1,69 @@
 import React from "react";
+import {css} from "@emotion/react";
 import {IGatsbyImageData} from "gatsby-plugin-image";
-
-import CardActions from "@mui/material/CardActions";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
+import Carousel from "../carousel/CarouselComponent";
+import Main from "../Main";
+
+import {Description, Header, Root, Segment} from "./productStyles"
 
 import type Product from "../../types/product";
-
-import Carousel from "../carousel/CarouselComponent";
-import {Header} from "./productStyles";
-
-import Main from "../Main";
 import useStickyState from "../../states/localStorageState";
+import queries from "../../queries";
 
 type ProductProps = {
     info: Queries.SiteMetadata,
     product: Product,
     getImage: (uri: string) => IGatsbyImageData
+    getDescription: (uri: string) => string
 }
 
 export default function ProductComponent(props: ProductProps) {
     const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
 
     return <Main cartProducts={cartProducts} setCartProducts={setCartProducts} info={props.info}>
-        <Carousel elements={
-            props.product.Images?.map(img => {
-                return {
-                    alt: img.alt,
-                    image: props.getImage(img.image_uri)
-                }
-            }) ?? []}/>
-        <Header>
-            <CardHeader title={props.product.Title} subheader={`${props.product.Price} рублей`}/>
-            <CardActions>
-                <Button size="small">Learn More</Button>
-            </CardActions>
-        </Header>
+        <Root>
+            <Segment>
+                <Carousel elements={
+                    props.product.Images?.map(img => {
+                        return {
+                            alt: img.alt,
+                            image: props.getImage(img.image_uri)
+                        }
+                    }) ?? []}/>
+            </Segment>
+
+            <Segment>
+                <Header>
+                    <CardHeader css={css`
+                      flex: 2;
+                      border: 1px solid rgba(0, 0, 0, 0.1);
+
+                      ${queries.large} {
+                        border: none;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                      }
+                    `} title={props.product.Title} subheader={`${props.product.Price} рублей`}/>
+
+                    <Button css={css`
+                      border-radius: 0;
+                      padding: 32px;
+
+                      flex: 1;
+                      
+                      border: 1px solid rgba(0, 0, 0, 0.1);
+                      border-left: none;
+                      ${queries.large} {
+                        border: none;
+                      }
+                    `}>
+                        Добавить в корзину
+                    </Button>
+                </Header>
+            </Segment>
+        </Root>
+
+        <Description dangerouslySetInnerHTML={{__html: props.getDescription(props.product.DescriptionURI)}}/>
     </Main>
 }

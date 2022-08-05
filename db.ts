@@ -15,21 +15,19 @@ export default class Database {
     async readProducts(): Promise<Array<Product>> {
         return new Promise(async (resolve) => {
             await this.driver!.tableClient.withSessionRetry(async (session) => {
-                await session.streamReadTable("products", (result1) => {
+                await session.streamReadTable("products", async(result1) => {
                         const products: Array<Product> = []
 
                         for (const row of result1.resultSet!.rows!) {
-                            let price: number = priceToNumber(row.items![5].uint64Value!)
-
                             products.push({
                                 // @ts-ignore - It's Node.js code
                                 ProductID: row.items[1].bytesValue.toString('hex'),
-                                Category: row.items![4].int32Value!,
+                                Category: row.items![3].int32Value!,
 
-                                Description: row.items![3].textValue!,
+                                DescriptionURI: row.items![4].textValue ?? "",
                                 ImageURI: row.items![0].textValue!,
 
-                                Price: price,
+                                Price: priceToNumber(row.items![5].uint64Value!),
                                 Title: row.items![2].textValue!,
                             })
                         }
@@ -103,13 +101,13 @@ export default class Database {
                     yandexPassportOauthToken: process.env.OAUTH_TOKEN
                 })
             });
-            if(!result.ok) {
+            if (!result.ok) {
                 console.error("Having ")
                 return;
             }
 
             const token = (await result.json()).iamToken;
-            if(!token) {
+            if (!token) {
                 console.error(`Can't request IAM token. Status code: ${result.status} ${result.statusText}`);
                 return;
             }

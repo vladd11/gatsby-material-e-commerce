@@ -2,10 +2,12 @@ import React, {MouseEventHandler} from 'react'
 import {GatsbyImage} from "gatsby-plugin-image";
 import {css} from "@emotion/react";
 
-import ProductType from "../types/product";
+import ProductType from "../../types/product";
 
-import theme from "../theme";
-import queries from "../queries";
+import theme from "../../theme";
+import queries from "../../queries";
+import { PriceElement } from './productStyles';
+import { ShortDescription } from './productStyles';
 
 interface ProductProps {
     product: ProductType,
@@ -39,12 +41,10 @@ const Product = (props: ProductProps) => {
           line-height: 1.5;
           letter-spacing: 0.00938em;
         `}>
-            <span>
-                {props.product.Description}
-            </span>
-            <span>
+            <ShortDescription dangerouslySetInnerHTML={{__html: props.product.ShortDescription!}} />
+            <PriceElement>
                 {props.product.Price} рублей
-            </span>
+            </PriceElement>
         </div>
 
         <GatsbyImage css={css`

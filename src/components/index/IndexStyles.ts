@@ -13,7 +13,7 @@ export const Products = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  @media ${queries.mobile} {
+  ${queries.mobile} {
     justify-content: center
   }
 `;

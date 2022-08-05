@@ -11,6 +11,21 @@ const config: GatsbyConfig = {
             },
         },
         {
+            resolve: "gatsby-source-filesystem",
+            options: {
+                path: `${__dirname}/static/shortTexts`,
+                name: "shortTexts",
+            },
+        },
+        {
+            resolve: "gatsby-source-filesystem",
+            options: {
+                path: `${__dirname}/static/longTexts`,
+                name: "longTexts",
+            },
+        },
+        `gatsby-transformer-remark`,
+        {
             resolve: "gatsby-plugin-react-svg",
             options: {
                 rule: {
@@ -18,7 +33,6 @@ const config: GatsbyConfig = {
                 }
             }
         },
-
         {
             resolve: 'gatsby-plugin-robots-txt',
             options: {

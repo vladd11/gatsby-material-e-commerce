@@ -87,7 +87,7 @@ export default function Main(props: MainProps) {
           flex: 1 1 auto;
 
           ${queries.large} {
-            margin-left: ${menuWidth}px
+            margin-left: ${menuWidth - 5}px
           }
         `}>
             {props.children}

@@ -25,7 +25,12 @@ inquirer.prompt([
     {
         type: "input",
         name: "name",
-        message: "Please enter your site name",
+        message: `Please enter your site name.
+  This name will be used by Cloudflare, so it should be situable to this requirements: 
+  1. You may use only lowercase letters, numbers and hyphens ("-")
+  2. First and last symbols should be letter or number
+  This name may not be equal with site name that will be displayed on site.
+  Enter site name:`,
         validate: input => /^[a-z\d][a-z\d\-]*[a-z\d]/.test(input)
     },
     {
@@ -47,11 +52,21 @@ inquirer.prompt([
         message: "Would you like to enable notifications on your site?"
     },
     {
-        type: "input",
+        type: "editor",
         name: "firebaseConfig",
         message: `You need to obtain Firebase Cloud Messaging token and VAPID key to enable in-browser notifications.
   Please go to: https://console.firebase.google.com/ and create new project.
-  Then add new web app there and copy firebaseConfig const that was provided to you in "Add Firebase SDK" section.\n`,
+  Then add new web app there and copy firebaseConfig const that was provided to you in "Add Firebase SDK" section.
+  Example: 
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
+}
+Paste your config:`,
         when: answers => answers.enableNotifications
     },
     {
@@ -98,6 +113,13 @@ inquirer.prompt([
         name: "mapToken",
         message: `Please go to https://www.mapbox.com/ and create account there (if not already).
   Then obtain your public token. Enter it there:`
+    },
+    {
+        type: "input",
+        name: "ycToken",
+        message: `Please go to https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb 
+  to obtain your Yandex.Cloud OAuth token.`,
+        when: () => !process.env.YC_OAUTH_TOKEN
     }
 ]).then(async answers => {
     const email = answers.cfEmail ?? process.env.CF_EMAIL
@@ -110,7 +132,7 @@ inquirer.prompt([
     headers.set("X-Auth-Email", email)
     headers.set("X-Auth-Key", token)
 
-    const env = {
+    const env: { [key: string]: any } = {
         OAUTH_TOKEN: {
             value: ycToken
         },
@@ -119,6 +141,21 @@ inquirer.prompt([
         },
         GATSBY_FUNCTION_URL: {
             value: answers.endpoint
+        },
+        GATSBY_MAP_KEY: {
+            value: answers.mapToken
+        }
+    }
+
+    if(answers.enableNotifications) {
+        env.GATSBY_VAPID_KEY = {}
+        env.GATSBY_VAPID_KEY.value = answers.vapidKey
+        try {
+            env.GATSBY_FIREBASE = {}
+            env.GATSBY_FIREBASE.value = JSON.stringify(new Function(`${answers.firebaseConfig}
+return firebaseConfig;`)())
+        } catch (e) {
+            console.error("You provided wrong Firebase Config. Notifications won't work.")
         }
     }
 

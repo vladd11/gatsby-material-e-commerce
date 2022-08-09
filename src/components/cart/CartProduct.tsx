@@ -34,6 +34,6 @@ export default function CartProduct(props: CartProductProps) {
 
         <GatsbyImage css={css`min-width: 100%`}
                      alt={props.product?.Title ?? ""}
-                     image={props.getImage(props.product!.ImageURI)}/>
+                     image={props.getImage(props.product?.ImageURI!)}/>
     </Card>
 }

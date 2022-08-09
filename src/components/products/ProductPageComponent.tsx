@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Carousel from "../carousel/CarouselComponent";
 import Main from "../Main";
 
-import {Description, Header, Root, Segment} from "./productStyles"
+import {Description, Header, Root, Segment} from "./productPageStyles"
 
 import type Product from "../../types/product";
 import useStickyState from "../../states/localStorageState";
@@ -19,8 +19,8 @@ type ProductProps = {
     getDescription: (uri: string) => string
 }
 
-export default function ProductComponent(props: ProductProps) {
-    const [cartProducts, setCartProducts] = useStickyState([], 'cartProducts')
+export default function ProductPageComponent(props: ProductProps) {
+    const [cartProducts, setCartProducts] = useStickyState<Product[]>([], 'cartProducts')
 
     return <Main cartProducts={cartProducts} setCartProducts={setCartProducts} info={props.info}>
         <Root>
@@ -57,7 +57,7 @@ export default function ProductComponent(props: ProductProps) {
                       ${queries.large} {
                         border: none;
                       }
-                    `}>
+                    `} onClick={() => setCartProducts([...cartProducts, props.product])}>
                         Добавить в корзину
                     </Button>
                 </Header>

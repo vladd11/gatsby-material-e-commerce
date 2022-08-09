@@ -1,5 +1,5 @@
 import type ProductType from "../types/product"
-import ProductComponent from "../components/products/ProductComponent";
+import ProductPageComponent from "../components/products/ProductPageComponent";
 import {getDescriptionByPath, getImageByPath} from "../../getResourceByPath";
 
 type ProductProps = {
@@ -17,7 +17,7 @@ export default function Product(props: ProductProps) {
 
     product.Image = getImageByPath(data.allFile.edges, product.ImageURI);
 
-    return ProductComponent({
+    return ProductPageComponent({
         info: data.site!.siteMetadata,
         product: product,
         getImage: (uri) => getImageByPath(data.allFile.edges, uri)!,

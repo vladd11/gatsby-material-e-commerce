@@ -4,6 +4,7 @@ import "../types/product"
 
 import IndexComponent from "../components/index/IndexComponent"
 import {logout} from "../api/utils";
+import {getImageByPath} from "../../getResourceByPath";
 
 interface IndexPageProps {
     location: {
@@ -14,7 +15,7 @@ interface IndexPageProps {
 }
 
 export default function IndexPage(props: IndexPageProps) {
-    const data = useStaticQuery(graphql`
+    const data = useStaticQuery<Queries.IndexPageQuery>(graphql`
         query IndexPage {
             allSiteBuildMetadata {
                 nodes {
@@ -66,5 +67,8 @@ export default function IndexPage(props: IndexPageProps) {
         logout();
     }
 
-    return IndexComponent({data: data});
+    return IndexComponent({
+        data: data,
+        getImage: imageUri => getImageByPath(data.allFile.edges, imageUri)!
+    });
 }

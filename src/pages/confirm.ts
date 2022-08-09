@@ -14,18 +14,9 @@ interface ConfirmProps {
     }
 }
 
-type ConfirmData = {
-    site: {
-        siteMetadata: {
-            title: string,
-            description: string
-        }
-    }
-};
-
 const Confirm = (props: ConfirmProps) => {
     const api = new Api()
-    const data: ConfirmData = useStaticQuery(graphql`
+    const data = useStaticQuery<Queries.ConfirmPageQuery>(graphql`
         query ConfirmPage {
             site {
                 siteMetadata {
@@ -37,7 +28,7 @@ const Confirm = (props: ConfirmProps) => {
     `)
 
     return ConfirmComponent({
-        siteMetadata: data.site.siteMetadata,
+        siteMetadata: data.site!.siteMetadata,
         phone: props.location.state?.phone,
         onSubmit: async (code) => {
             const result = await api.login(props.location.state.phone, code)

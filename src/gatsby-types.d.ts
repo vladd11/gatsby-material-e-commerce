@@ -1931,14 +1931,14 @@ type PotraceTurnPolicy =
   | 'white';
 
 type Products = Node & {
-  readonly Category: Maybe<Scalars['Int']>;
-  readonly DescriptionURI: Maybe<Scalars['String']>;
-  readonly ImageURI: Maybe<Scalars['String']>;
+  readonly Category: Scalars['Int'];
+  readonly DescriptionURI: Scalars['String'];
+  readonly ImageURI: Scalars['String'];
   readonly Images: Maybe<ReadonlyArray<Maybe<ProductsImages>>>;
   readonly Popularity: Maybe<Scalars['Int']>;
-  readonly Price: Maybe<Scalars['Int']>;
-  readonly ProductID: Maybe<Scalars['String']>;
-  readonly Title: Maybe<Scalars['String']>;
+  readonly Price: Scalars['Float'];
+  readonly ProductID: Scalars['String'];
+  readonly Title: Scalars['String'];
   readonly children: ReadonlyArray<Node>;
   readonly id: Scalars['ID'];
   readonly internal: Internal;
@@ -2094,7 +2094,7 @@ type ProductsFilterInput = {
   readonly ImageURI: InputMaybe<StringQueryOperatorInput>;
   readonly Images: InputMaybe<ProductsImagesFilterListInput>;
   readonly Popularity: InputMaybe<IntQueryOperatorInput>;
-  readonly Price: InputMaybe<IntQueryOperatorInput>;
+  readonly Price: InputMaybe<FloatQueryOperatorInput>;
   readonly ProductID: InputMaybe<StringQueryOperatorInput>;
   readonly Title: InputMaybe<StringQueryOperatorInput>;
   readonly children: InputMaybe<NodeFilterListInput>;
@@ -2390,7 +2390,7 @@ type Query_productsArgs = {
   ImageURI: InputMaybe<StringQueryOperatorInput>;
   Images: InputMaybe<ProductsImagesFilterListInput>;
   Popularity: InputMaybe<IntQueryOperatorInput>;
-  Price: InputMaybe<IntQueryOperatorInput>;
+  Price: InputMaybe<FloatQueryOperatorInput>;
   ProductID: InputMaybe<StringQueryOperatorInput>;
   Title: InputMaybe<StringQueryOperatorInput>;
   children: InputMaybe<NodeFilterListInput>;
@@ -3693,12 +3693,12 @@ type GatsbyImageSharpFluidLimitPresentationSizeFragment = { readonly maxHeight: 
 type IndexOrderPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type IndexOrderPageQuery = { readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string } } | null };
+type IndexOrderPageQuery = { readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string } } | null, readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> } };
 
 type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type IndexPageQuery = { readonly allSiteBuildMetadata: { readonly nodes: ReadonlyArray<{ readonly buildTime: string | null }> }, readonly allProducts: { readonly nodes: ReadonlyArray<{ readonly Category: number | null, readonly DescriptionURI: string | null, readonly Price: number | null, readonly ProductID: string | null, readonly Title: string | null, readonly ImageURI: string | null }> }, readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly shortTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null };
+type IndexPageQuery = { readonly allSiteBuildMetadata: { readonly nodes: ReadonlyArray<{ readonly buildTime: string | null }> }, readonly allProducts: { readonly nodes: ReadonlyArray<{ readonly Category: number, readonly DescriptionURI: string, readonly Price: number, readonly ProductID: string, readonly Title: string, readonly ImageURI: string }> }, readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly shortTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null };
 
 type LoginPageQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3708,7 +3708,7 @@ type LoginPageQuery = { readonly site: { readonly siteMetadata: { readonly title
 type ProductPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type ProductPageQuery = { readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly shortTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly longTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null, readonly allProducts: { readonly nodes: ReadonlyArray<{ readonly Category: number | null, readonly DescriptionURI: string | null, readonly Price: number | null, readonly ProductID: string | null, readonly Title: string | null, readonly ImageURI: string | null, readonly Popularity: number | null, readonly Images: ReadonlyArray<{ readonly alt: string | null, readonly image_uri: string | null } | null> | null }> } };
+type ProductPageQuery = { readonly allFile: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly bigImages: { readonly edges: ReadonlyArray<{ readonly node: { readonly relativePath: string, readonly childImageSharp: { readonly gatsbyImageData: import('gatsby-plugin-image').IGatsbyImageData } | null } }> }, readonly shortTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly longTexts: { readonly nodes: ReadonlyArray<{ readonly relativePath: string, readonly childMarkdownRemark: { readonly html: string | null } | null }> }, readonly site: { readonly siteMetadata: { readonly title: string, readonly description: string, readonly phone: string, readonly address: string, readonly addressLink: string } } | null, readonly allProducts: { readonly nodes: ReadonlyArray<{ readonly Category: number, readonly DescriptionURI: string, readonly Price: number, readonly ProductID: string, readonly Title: string, readonly ImageURI: string, readonly Popularity: number | null, readonly Images: ReadonlyArray<{ readonly alt: string | null, readonly image_uri: string | null } | null> | null }> } };
 
 
 }

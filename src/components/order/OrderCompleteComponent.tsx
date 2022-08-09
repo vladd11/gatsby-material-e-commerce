@@ -1,32 +1,31 @@
+import React, {useEffect, useState} from "react"
+import Helmet from "react-helmet";
+
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PhoneIcon from "@mui/icons-material/Phone";
 import Main from "../Main";
 import CartProduct from "../cart/CartProduct";
 import {BoldData, Products} from "./orderStyles";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PhoneIcon from "@mui/icons-material/Phone";
-
-import React, {useEffect, useState} from "react"
-import Helmet from "react-helmet";
+import {IGatsbyImageData} from "gatsby-plugin-image";
 
 import paymentMethods, {PaymentMethod} from "../../../paymentMethods"
 import useStickyState, {ifClientSide} from "../../states/localStorageState";
-import {getImageByPath} from "../../../getResourceByPath";
 import {toHumanReadable} from "../../currentDateTime";
 
 import OrderResponse from "../../types/order";
 
 import Api from "../../api/api";
 import {getFCMToken} from "../../notifications/getFCMToken";
-import ImageFile from "../../types/imageFile";
 
 interface OrderCompleteProps {
     order?: OrderResponse;
     info: Queries.SiteMetadata;
-    images: ReadonlyArray<ImageFile>,
+    getImage: (imageUri: string) => IGatsbyImageData,
     api: Api
 }
 
@@ -38,11 +37,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
 
     function renderProducts() {
         return (props.order?.products ?? [undefined]).map((cartProduct) => {
-            if (cartProduct && !cartProduct.Image) {
-                cartProduct.Image = getImageByPath(props.images, cartProduct.ImageURI);
-            }
-
-            return <CartProduct product={cartProduct}/>
+            return <CartProduct getImage={props.getImage} product={cartProduct}/>
         })
     }
 
@@ -87,7 +82,7 @@ export default function OrderCompleteComponent(props: OrderCompleteProps) {
             <meta name="description" content={props.info.description}/>
             <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/order-complete"/>
         </Helmet>
-        <Main info={props.info}
+        <Main getImage={props.getImage} info={props.info}
               cartProducts={cartProducts} setCartProducts={setCartProducts}>
             <List>
                 <Products>

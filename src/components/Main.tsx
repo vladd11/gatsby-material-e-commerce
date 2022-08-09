@@ -1,6 +1,6 @@
-import React, {ReactNode, useEffect} from 'react'
+import React, {ReactNode, useEffect, useState} from 'react'
 import {css} from "@emotion/react";
-import IsMobile from '../isMobile'
+import IsLargeScreen from '../isMobile'
 
 import Menu from "./Menu";
 import CartMenuProduct from "./cart/CartMenuProduct";
@@ -14,11 +14,14 @@ import queries from "../queries";
 import Product from "../types/product";
 
 import {getCachedUser} from "../api/utils";
+import {IGatsbyImageData} from "gatsby-plugin-image";
 
 const menuWidth = 330;
 
 export type MainProps = {
     info: Queries.SiteMetadata,
+
+    getImage: (imageUri: string) => IGatsbyImageData,
 
     cartProducts: Array<Product>,
     setCartProducts: (value: any) => void,
@@ -27,8 +30,8 @@ export type MainProps = {
 }
 
 export default function Main(props: MainProps) {
-    const isMobile = IsMobile();
-    const [isDrawerOpened, setDrawerOpened] = React.useState(!isMobile)
+    const isMobile = IsLargeScreen();
+    const [isDrawerOpened, setDrawerOpened] = useState(!isMobile)
 
     useEffect(() => {
         setDrawerOpened(!isMobile)
@@ -36,12 +39,14 @@ export default function Main(props: MainProps) {
 
     function renderCartProducts() {
         return props.cartProducts?.map((cartProduct, index) => {
-            return <CartMenuProduct product={cartProduct}
-                                    onDelete={() => {
-                                        props.setCartProducts(props.cartProducts.filter((value, arrIndex) => {
-                                            return index !== arrIndex;
-                                        }));
-                                    }}/>
+            return <CartMenuProduct
+                getImage={props.getImage}
+                product={cartProduct}
+                onDelete={() => {
+                    props.setCartProducts(props.cartProducts.filter((value, arrIndex) => {
+                        return index !== arrIndex;
+                    }));
+                }}/>
         })
     }
 

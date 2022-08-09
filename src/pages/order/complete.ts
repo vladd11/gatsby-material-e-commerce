@@ -5,6 +5,7 @@ import Api from "../../api/api";
 import OrderCompleteComponent from "../../components/order/OrderCompleteComponent";
 
 import OrderResponse from "../../types/order";
+import {getImageByPath} from "../../../getResourceByPath";
 
 type OrderCompleteProps = PageProps & {
     location: {
@@ -67,8 +68,8 @@ export default function Complete(props: OrderCompleteProps) {
 
     return OrderCompleteComponent({
         info: data.site!.siteMetadata,
+        getImage: imageUri => getImageByPath(data.allFile.edges, imageUri)!,
         order: orderResponse,
-        images: data.allFile.edges,
         api: api
     })
 }

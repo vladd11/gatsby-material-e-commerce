@@ -14,6 +14,16 @@ query ProductPage {
             node {
                 relativePath
                 childImageSharp {
+                    gatsbyImageData(width: 200)
+                }
+            }
+        }
+    }
+    bigImages:allFile(filter: {sourceInstanceName: {eq: "images"}}) {
+        edges {
+            node {
+                relativePath
+                childImageSharp {
                     gatsbyImageData(layout: CONSTRAINED)
                 }
             }
@@ -150,6 +160,14 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       phone: String!,
       addressLink: String!,
       address: String!
+    }
+    type Products implements Node {
+        Category: Int!,
+        DescriptionURI: String!,
+        ImageURI: String!,
+        Price: Float!,
+        ProductID: String!,
+        Title: String!
     }
   `)
 }

@@ -5,6 +5,7 @@ import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import Product from "../../types/product";
 import {ifClientSide} from "../../states/localStorageState";
+import { getImageByPath } from '../../../getResourceByPath';
 
 interface OrderProps {
     location: {
@@ -23,6 +24,16 @@ export default function IndexOrderPage(props: OrderProps) {
                     description
                 }
             }
+            allFile(filter: {sourceInstanceName: {eq: "images"}}) {
+                edges {
+                    node {
+                        relativePath
+                        childImageSharp {
+                            gatsbyImageData(width: 200)
+                        }
+                    }
+                }
+            }
         }
     `)
 
@@ -39,6 +50,7 @@ export default function IndexOrderPage(props: OrderProps) {
 
     return OrderComponent({
         siteMetadata: data.site!.siteMetadata,
+        getImage: imageUri => getImageByPath(data.allFile.edges, imageUri)!,
         api: api,
         cartProducts: props.location.state?.cartProducts
     })

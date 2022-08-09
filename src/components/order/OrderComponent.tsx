@@ -32,12 +32,14 @@ import mapboxgl from '!mapbox-gl';
 import {css} from "@emotion/react";
 import ExpandedButtonLabel from "../ui/ExpandedButtonLabel";
 import {navigate} from "gatsby";
+import {IGatsbyImageData} from "gatsby-plugin-image";
 
 mapboxgl.accessToken = process.env.GATSBY_MAP_KEY;
 
 interface OrderComponentProps {
     api: Api,
     cartProducts: Array<Product>,
+    getImage: (imageUri: string) => IGatsbyImageData,
     siteMetadata: { title: string, description: string }
 }
 
@@ -156,7 +158,7 @@ const OrderComponent = (props: OrderComponentProps) => {
         <FormFrame title="Оформление заказа">
             <Products>
                 {(props.cartProducts) ? props.cartProducts.map(cartProduct => {
-                    return <CartProduct product={cartProduct}/>
+                    return <CartProduct getImage={props.getImage} product={cartProduct}/>
                 }) : null}
             </Products>
 

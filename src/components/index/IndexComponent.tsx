@@ -13,13 +13,11 @@ import categories from "../../../categories";
 
 import {Categories, Products} from "./IndexStyles"
 import {getDescriptionByPath, getImageByPath} from "../../../getResourceByPath";
+import {IGatsbyImageData} from "gatsby-plugin-image";
 
 interface IndexProps {
-    data: Queries.IndexPageQuery & {
-        allProducts: {
-            nodes: ProductType[]
-        }
-    }
+    data: Queries.IndexPageQuery,
+    getImage: (imageUri: string) => IGatsbyImageData
 }
 
 function IndexComponent(props: IndexProps) {
@@ -40,17 +38,14 @@ function IndexComponent(props: IndexProps) {
     }, [currentCategory])
 
     function renderProducts() {
-        return products.map((product: ProductType, index) => {
-            product.Image = getImageByPath(props.data.allFile!.edges!, product.ImageURI!)
-            product.ShortDescription = getDescriptionByPath(props.data.shortTexts!.nodes!, product.DescriptionURI!)
-
+        return products.map((product, index) => {
             return <Product
+                getImage={(uri) => getImageByPath(props.data.allFile!.edges!, uri)!}
+                getDescription={(uri) => getDescriptionByPath(props.data.shortTexts!.nodes!, uri)!}
+
                 disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === product.ProductID)}
                 product={product}
-                whenAddedToCart={() => {
-                    product.count = 1;
-                    setCartProducts([...cartProducts, product])
-                }}
+                whenAddedToCart={() => setCartProducts([...cartProducts, product])}
                 loading={(index > 3) ? "lazy" : "eager"}
             />
         });
@@ -75,6 +70,7 @@ function IndexComponent(props: IndexProps) {
         </Helmet>
 
         <Main
+            getImage={props.getImage}
             info={props.data.site!.siteMetadata}
             cartProducts={cartProducts}
             setCartProducts={setCartProducts}>

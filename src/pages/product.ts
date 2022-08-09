@@ -15,12 +15,11 @@ export default function Product(props: ProductProps) {
         return;
     }
 
-    product.Image = getImageByPath(data.allFile.edges, product.ImageURI);
-
     return ProductPageComponent({
         info: data.site!.siteMetadata,
         product: product,
         getImage: (uri) => getImageByPath(data.allFile.edges, uri)!,
+        getBigImage: (uri) => getImageByPath(data.bigImages.edges, uri)!,
         getDescription: uri => getDescriptionByPath(props.pageContext.data.longTexts.nodes, uri)!
     })
 }

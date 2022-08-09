@@ -9,27 +9,31 @@ import Main from "../Main";
 import {Description, Header, Root, Segment} from "./productPageStyles"
 
 import type Product from "../../types/product";
+import ProductType from "../../types/product";
 import useStickyState from "../../states/localStorageState";
 import queries from "../../queries";
 
 type ProductProps = {
     info: Queries.SiteMetadata,
     product: Product,
-    getImage: (uri: string) => IGatsbyImageData
+    getImage: (uri: string) => IGatsbyImageData,
+    getBigImage: (uri: string) => IGatsbyImageData,
     getDescription: (uri: string) => string
 }
 
 export default function ProductPageComponent(props: ProductProps) {
     const [cartProducts, setCartProducts] = useStickyState<Product[]>([], 'cartProducts')
 
-    return <Main cartProducts={cartProducts} setCartProducts={setCartProducts} info={props.info}>
+    return <Main getImage={props.getImage}
+                 cartProducts={cartProducts} setCartProducts={setCartProducts}
+                 info={props.info}>
         <Root>
             <Segment>
                 <Carousel elements={
                     props.product.Images?.map(img => {
                         return {
                             alt: img.alt,
-                            image: props.getImage(img.image_uri)
+                            image: props.getBigImage(img.image_uri)
                         }
                     }) ?? []}/>
             </Segment>
@@ -51,13 +55,16 @@ export default function ProductPageComponent(props: ProductProps) {
                       padding: 32px;
 
                       flex: 1;
-                      
+
                       border: 1px solid rgba(0, 0, 0, 0.1);
                       border-left: none;
+
                       ${queries.large} {
                         border: none;
                       }
-                    `} onClick={() => setCartProducts([...cartProducts, props.product])}>
+                    `}
+                            disabled={cartProducts?.some((cartProduct: ProductType) => cartProduct.ProductID === props.product.ProductID)}
+                            onClick={() => setCartProducts([...cartProducts, props.product])}>
                         Добавить в корзину
                     </Button>
                 </Header>

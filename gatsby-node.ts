@@ -34,6 +34,7 @@ query ProductPage {
             relativePath
             childMarkdownRemark {
                 html
+                excerpt
             }
         }
     }

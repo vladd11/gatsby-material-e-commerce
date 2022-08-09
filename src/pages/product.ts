@@ -1,6 +1,6 @@
 import type ProductType from "../types/product"
 import ProductPageComponent from "../components/products/ProductPageComponent";
-import {getDescriptionByPath, getImageByPath} from "../../getResourceByPath";
+import {getDescriptionByPath, getImageByPath, getRawDescriptionByPath} from "../../getResourceByPath";
 
 type ProductProps = {
     pageContext: {
@@ -20,6 +20,7 @@ export default function Product(props: ProductProps) {
         product: product,
         getImage: (uri) => getImageByPath(data.allFile.edges, uri)!,
         getBigImage: (uri) => getImageByPath(data.bigImages.edges, uri)!,
-        getDescription: uri => getDescriptionByPath(props.pageContext.data.longTexts.nodes, uri)!
+        getDescription: uri => getDescriptionByPath(props.pageContext.data.longTexts.nodes, uri)!,
+        getRawDescription: uri => getRawDescriptionByPath(props.pageContext.data.shortTexts.nodes, uri)!
     })
 }

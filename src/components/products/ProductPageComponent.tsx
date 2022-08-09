@@ -12,13 +12,15 @@ import type Product from "../../types/product";
 import ProductType from "../../types/product";
 import useStickyState from "../../states/localStorageState";
 import queries from "../../queries";
+import {Helmet} from "react-helmet";
 
 type ProductProps = {
     info: Queries.SiteMetadata,
     product: Product,
     getImage: (uri: string) => IGatsbyImageData,
     getBigImage: (uri: string) => IGatsbyImageData,
-    getDescription: (uri: string) => string
+    getDescription: (uri: string) => string,
+    getRawDescription: (uri: string) => string
 }
 
 export default function ProductPageComponent(props: ProductProps) {
@@ -27,6 +29,10 @@ export default function ProductPageComponent(props: ProductProps) {
     return <Main getImage={props.getImage}
                  cartProducts={cartProducts} setCartProducts={setCartProducts}
                  info={props.info}>
+        <Helmet title={`${props.product.Title} - ${props.info.title}`}>
+            <meta name="description" content={props.getRawDescription(props.product.DescriptionURI)} />
+            <link rel="canonical" href="https://gatsby-test-nuk.pages.dev/login"/>
+        </Helmet>
         <Root>
             <Segment>
                 <Carousel elements={

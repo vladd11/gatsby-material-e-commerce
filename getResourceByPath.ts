@@ -16,3 +16,7 @@ export function getImageByPath(files: ReadonlyArray<ImageFile>,
 export function getDescriptionByPath(files: ReadonlyArray<MarkdownFile>, uri: string): string | undefined | null {
     return files.find(value => value.relativePath === uri)?.childMarkdownRemark?.html
 }
+
+export function getRawDescriptionByPath(files: ReadonlyArray<MarkdownFile>, uri: string): string | undefined | null {
+    return files.find(value => value.relativePath === uri)?.childMarkdownRemark?.excerpt
+}

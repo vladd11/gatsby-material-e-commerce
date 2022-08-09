@@ -36,12 +36,21 @@ const config: GatsbyConfig = {
         {
             resolve: 'gatsby-plugin-robots-txt',
             options: {
-                host: 'https://gatsby-test-nuk.pages.dev',
-                sitemap: 'https://gatsby-test-nuk.pages.dev/sitemap.xml',
-                policy: [{userAgent: '*', allow: '/'}]
+                host: 'https://yc-serverless-site.pages.dev',
+                sitemap: 'https://yc-serverless-site.pages.dev/sitemap/sitemap-index.xml',
+                policy: [
+                    {userAgent: '*', allow: '/'},
+                    {userAgent: "*", disallow: "/order"},
+                    {userAgent: "*", disallow: "/confirm"}
+                ]
             }
         },
-
+        {
+            resolve: "gatsby-plugin-sitemap",
+            options: {
+                excludes: ["/order/*", "/order", "/confirm"]
+            }
+        },
         {
             resolve: `gatsby-plugin-manifest`,
             options: {
@@ -87,6 +96,7 @@ const config: GatsbyConfig = {
         description: "Just a shop site",
         phone: "79170324874",
 
+        siteUrl: `https://yc-serverless-site.pages.dev`,
         addressLink: "https://yandex.ru/maps/51/samara/house/novo_vokzalnaya_ulitsa_28/YUkYdANiTUEGQFtpfX5wd3lmYg==",
         address: "Самара, Ново-Вокзальная улица, 18"
     },

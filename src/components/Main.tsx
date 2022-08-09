@@ -1,5 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react'
 import {css} from "@emotion/react";
+import {IGatsbyImageData} from "gatsby-plugin-image";
 import IsLargeScreen from '../isMobile'
 
 import Menu from "./Menu";
@@ -14,7 +15,6 @@ import queries from "../queries";
 import Product from "../types/product";
 
 import {getCachedUser} from "../api/utils";
-import {IGatsbyImageData} from "gatsby-plugin-image";
 
 const menuWidth = 330;
 

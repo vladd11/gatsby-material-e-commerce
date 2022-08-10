@@ -4,8 +4,8 @@ import Api from '../../api/api'
 import {graphql, navigate, useStaticQuery} from "gatsby";
 
 import Product from "../../types/product";
-import {ifClientSide} from "../../states/localStorageState";
-import { getImageByPath } from '../../../getResourceByPath';
+import {getImageByPath} from '../../../getResourceByPath';
+import {useEffect} from 'react';
 
 interface OrderProps {
     location: {
@@ -39,14 +39,14 @@ export default function IndexOrderPage(props: OrderProps) {
 
     const api = new Api()
 
-    ifClientSide(() => {
+    useEffect(() => {
         if (!props.location.state) {
             // It's redirect and then() function never call.
             // noinspection JSIgnoredPromiseFromCall
             navigate("/")
             return
         }
-    })
+    }, [])
 
     return OrderComponent({
         siteMetadata: data.site!.siteMetadata,

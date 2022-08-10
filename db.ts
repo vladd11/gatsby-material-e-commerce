@@ -15,7 +15,7 @@ export default class Database {
     async readProducts(): Promise<Array<Product>> {
         return new Promise(async (resolve) => {
             await this.driver!.tableClient.withSessionRetry(async (session) => {
-                await session.streamReadTable("products", async(result1) => {
+                await session.streamReadTable("products", async (result1) => {
                         const products: Array<Product> = []
 
                         for (const row of result1.resultSet!.rows!) {
@@ -40,31 +40,31 @@ export default class Database {
     }
 
     public async readPopularity(products: Product[]): Promise<void> {
-        return await this.driver!.tableClient.withSessionRetry(async (session) => {
-            const resultQuery = await session.executeQuery(`
+        return await this.driver!.tableClient.withSession(async (session) => {
+            await session.streamExecuteScanQuery(`
             SELECT * FROM (
                 SELECT product_id, COUNT(product_id)
                 FROM order_items GROUP BY product_id
             )
-            ORDER BY column1 DESC;`)
+            ORDER BY column1 DESC;`, result => {
+                for (const row of result.resultSet!.rows!) {
+                    let popularity = row.items![0].uint64Value!
+                    if (popularity instanceof Long) popularity = popularity.toNumber()
 
-            for (const row of resultQuery.resultSets[0].rows!) {
-                let popularity = row.items![0].uint64Value!
-                if (popularity instanceof Long) popularity = popularity.toNumber()
+                    // It's Node.js code
+                    // @ts-ignore
+                    const id = row.items![1].bytesValue?.toString("hex")
+                    if (!id) {
+                        console.warn("ID of product is null!")
+                        continue;
+                    }
 
-                // It's Node.js code
-                // @ts-ignore
-                const id = row.items![1].bytesValue?.toString("hex")
-                if (!id) {
-                    console.warn("ID of product is null!")
-                    continue;
+                    const product = products.find(value => value.ProductID === id)
+                    if (product) {
+                        product.Popularity = popularity ?? 0;
+                    }
                 }
-
-                const product = products.find(value => value.ProductID === id)
-                if (product) {
-                    product.Popularity = popularity ?? 0;
-                }
-            }
+            })
         })
     }
 

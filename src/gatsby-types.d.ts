@@ -2843,6 +2843,7 @@ type SiteFieldsEnum =
   | 'siteMetadata.addressLink'
   | 'siteMetadata.description'
   | 'siteMetadata.phone'
+  | 'siteMetadata.siteUrl'
   | 'siteMetadata.title'
   | 'trailingSlash';
 
@@ -3122,6 +3123,7 @@ type SiteMetadata = {
   readonly addressLink: Scalars['String'];
   readonly description: Scalars['String'];
   readonly phone: Scalars['String'];
+  readonly siteUrl: Maybe<Scalars['String']>;
   readonly title: Scalars['String'];
 };
 
@@ -3130,6 +3132,7 @@ type SiteMetadataFilterInput = {
   readonly addressLink: InputMaybe<StringQueryOperatorInput>;
   readonly description: InputMaybe<StringQueryOperatorInput>;
   readonly phone: InputMaybe<StringQueryOperatorInput>;
+  readonly siteUrl: InputMaybe<StringQueryOperatorInput>;
   readonly title: InputMaybe<StringQueryOperatorInput>;
 };
 
